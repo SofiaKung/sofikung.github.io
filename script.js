@@ -91,6 +91,47 @@ const roleData = {
                     ]
                 }
             ]
+        },
+        experience: {
+            subtitle: "Risk management expertise across leading fintech and crypto organizations",
+            experiences: [
+                {
+                    title: "Senior Risk Data Analyst",
+                    company: "Binance",
+                    period: "2022 - 2024",
+                    type: "Fraud & Trust Safety"
+                },
+                {
+                    title: "Senior Risk Data Analyst", 
+                    company: "Gojek",
+                    period: "2021 - 2022",
+                    type: "Risk Management"
+                },
+                {
+                    title: "Product Data Analyst",
+                    company: "Atome",
+                    period: "2021",
+                    type: "Risk Assessment"
+                },
+                {
+                    title: "Data Analyst Consultant",
+                    company: "PwC",
+                    period: "2019 - 2021",
+                    type: "Financial Services"
+                },
+                {
+                    title: "Python Teaching Assistant",
+                    company: "Hackwagon Academy",
+                    period: "2018 - 2021",
+                    type: "Data Science Education"
+                },
+                {
+                    title: "Data Analyst Intern",
+                    company: "Lazada/Alibaba",
+                    period: "2018",
+                    type: "E-commerce Analytics"
+                }
+            ]
         }
     },
     data: {
@@ -184,6 +225,47 @@ const roleData = {
                     ]
                 }
             ]
+        },
+        experience: {
+            subtitle: "Product analytics and business intelligence expertise across diverse industries",
+            experiences: [
+                {
+                    title: "Senior Risk Data Analyst",
+                    company: "Binance",
+                    period: "2022 - 2024",
+                    type: "Analytics & Insights"
+                },
+                {
+                    title: "Senior Risk Data Analyst",
+                    company: "Gojek",
+                    period: "2021 - 2022", 
+                    type: "Data Analytics"
+                },
+                {
+                    title: "Product Data Analyst",
+                    company: "Atome",
+                    period: "2021",
+                    type: "Product Intelligence"
+                },
+                {
+                    title: "Data Analyst Consultant",
+                    company: "PwC",
+                    period: "2019 - 2021",
+                    type: "Business Consulting"
+                },
+                {
+                    title: "Python Teaching Assistant",
+                    company: "Hackwagon Academy",
+                    period: "2018 - 2021",
+                    type: "Data Science Education"
+                },
+                {
+                    title: "Data Analyst Intern",
+                    company: "Lazada/Alibaba",
+                    period: "2018",
+                    type: "E-commerce Analytics"
+                }
+            ]
         }
     }
 };
@@ -202,6 +284,8 @@ const elements = {
     aboutSubtitle: document.getElementById('aboutSubtitle'),
     aboutDescription: document.getElementById('aboutDescription'),
     expertiseAreas: document.getElementById('expertiseAreas'),
+    experienceSubtitle: document.getElementById('experienceSubtitle'),
+    experienceList: document.getElementById('experienceList'),
     skillsSubtitle: document.getElementById('skillsSubtitle'),
     skillsGrid: document.getElementById('skillsGrid'),
     projectsSubtitle: document.getElementById('projectsSubtitle'),
@@ -284,6 +368,19 @@ function updateContent(role) {
                 </div>
             `).join('');
         
+        // Update experience section
+        elements.experienceSubtitle.textContent = data.experience.subtitle;
+        elements.experienceList.innerHTML = data.experience.experiences
+            .map(experience => `
+                <div class="experience-item">
+                    <div class="experience-title">${experience.title}</div>
+                    <div class="experience-company">
+                        <span class="company-name">${experience.company}</span>
+                        <span class="experience-period">${experience.period}</span>
+                    </div>
+                </div>
+            `).join('');
+        
         // Update skills section
         elements.skillsSubtitle.textContent = data.skills.subtitle;
         elements.skillsGrid.innerHTML = data.skills.categories
@@ -334,7 +431,7 @@ function updateContent(role) {
 
 // Animate content change
 function animateContentChange(updateCallback) {
-    const sections = ['hero-content', 'about-content', 'skills-grid', 'projects-grid'];
+    const sections = ['hero-content', 'about-content', 'experience-content', 'skills-grid', 'projects-grid'];
     
     sections.forEach(sectionClass => {
         const element = document.querySelector(`.${sectionClass}`) || document.getElementById(sectionClass);

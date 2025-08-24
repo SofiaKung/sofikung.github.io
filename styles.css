@@ -4,9 +4,9 @@
     --primary-dark: #e5e5e5;
     --secondary-color: #a855f7;
     --accent-color: #06ffa5;
-    --text-primary: #ffffff;
-    --text-secondary: #a1a1aa;
-    --text-light: #71717a;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-light: #94a3b8;
     --bg-primary: #0a0a0a;
     --bg-secondary: #111111;
     --bg-tertiary: #1a1a1a;
@@ -132,7 +132,7 @@ body {
 .nav-links a {
     text-decoration: none;
     color: var(--text-primary);
-    font-weight: 500;
+    font-weight: 400;
     transition: color 0.3s ease;
     position: relative;
 }
@@ -242,7 +242,7 @@ body {
 
 .role-label {
     font-size: 1.2rem;
-    font-weight: 500;
+    font-weight: 400;
     opacity: 0.9;
 }
 
@@ -270,7 +270,7 @@ body {
 
 .role-option {
     padding: 12px 24px;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 0.9rem;
     transition: all 0.3s ease;
     z-index: 2;
@@ -304,10 +304,10 @@ body {
 /* Hero Text */
 .hero-title {
     font-size: 3.5rem;
-    font-weight: 800;
+    font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.1;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.03em;
 }
 
 .title-main {
@@ -321,6 +321,7 @@ body {
     max-width: 700px;
     margin: 0 auto 3rem;
     line-height: 1.6;
+    font-weight: 300;
     animation: fadeInUp 1s ease 0.5s both;
 }
 
@@ -340,14 +341,14 @@ body {
 .stat-number {
     display: block;
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 0.5rem;
 }
 
 .stat-label {
     font-size: 0.9rem;
     color: var(--text-light);
-    font-weight: 500;
+    font-weight: 300;
 }
 
 /* Hero Actions */
@@ -388,7 +389,7 @@ body {
     background: var(--gradient-secondary);
     color: var(--bg-primary);
     box-shadow: 0 4px 20px var(--glow-purple);
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .btn-primary:hover {
@@ -401,7 +402,7 @@ body {
     color: var(--text-primary);
     border: 1px solid var(--border-light);
     backdrop-filter: blur(10px);
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .btn-secondary:hover {
@@ -423,13 +424,13 @@ section {
 
 .section-title {
     font-size: 2.5rem;
-    font-weight: 800;
+    font-weight: 700;
     margin-bottom: 1rem;
     background: var(--gradient-secondary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
 .section-subtitle {
@@ -437,11 +438,77 @@ section {
     color: var(--text-secondary);
     max-width: 600px;
     margin: 0 auto;
+    font-weight: 300;
 }
 
 /* About Section */
 .about-section {
     background: var(--bg-secondary);
+}
+
+/* Experience Section */
+.experience-section {
+    background: var(--bg-primary);
+    position: relative;
+}
+
+.experience-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.experience-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.experience-item {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border-light);
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.experience-item:last-child {
+    border-bottom: none;
+}
+
+.experience-item:hover {
+    transform: translateX(8px);
+    opacity: 0.9;
+}
+
+.experience-title {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    text-align: left;
+}
+
+.experience-company {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.company-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    letter-spacing: -0.01em;
+}
+
+.experience-period {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-weight: 300;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 .about-content {
@@ -456,6 +523,7 @@ section {
     font-size: 1.1rem;
     line-height: 1.7;
     color: var(--text-secondary);
+    font-weight: 300;
 }
 
 .expertise-areas {
@@ -514,6 +582,8 @@ section {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
 }
 
 .skill-category i {
@@ -532,8 +602,8 @@ section {
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-secondary);
+    font-weight: 400;
+    color: var(--text-primary);
     transition: all 0.3s ease;
     border: 1px solid var(--border-light);
 }
@@ -578,7 +648,7 @@ section {
 
 .project-title {
     font-size: 1.4rem;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 0.5rem;
 }
 
@@ -596,6 +666,7 @@ section {
     color: var(--text-secondary);
     margin-bottom: 1.5rem;
     line-height: 1.6;
+    font-weight: 300;
 }
 
 .project-metrics {
@@ -611,7 +682,7 @@ section {
 .metric-value {
     display: block;
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 600;
     color: var(--secondary-color);
 }
 
@@ -632,8 +703,9 @@ section {
     padding: 0.25rem 0.75rem;
     border-radius: 12px;
     font-size: 0.8rem;
-    color: var(--text-secondary);
+    color: var(--text-primary);
     border: 1px solid var(--border-light);
+    font-weight: 300;
 }
 
 .project-links {
@@ -647,7 +719,7 @@ section {
     gap: 0.5rem;
     color: var(--secondary-color);
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 400;
     transition: opacity 0.3s ease;
 }
 
@@ -689,8 +761,9 @@ section {
 
 .contact-label {
     display: block;
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 0.25rem;
+    color: var(--text-primary);
 }
 
 .contact-value {
@@ -800,6 +873,20 @@ section {
     .contact-content {
         grid-template-columns: 1fr;
         gap: 2rem;
+    }
+    
+    .experience-item {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .experience-company {
+        text-align: center;
+    }
+    
+    .experience-item:hover {
+        transform: none;
     }
     
     .expertise-areas {
