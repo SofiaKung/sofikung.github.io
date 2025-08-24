@@ -385,26 +385,30 @@ body {
 }
 
 .btn-primary {
-    background: white;
-    color: var(--primary-color);
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+    background: var(--gradient-secondary);
+    color: var(--bg-primary);
+    box-shadow: 0 4px 20px var(--glow-purple);
+    font-weight: 600;
 }
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 30px var(--glow-purple);
 }
 
 .btn-secondary {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
     backdrop-filter: blur(10px);
+    font-weight: 600;
 }
 
 .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--bg-tertiary);
+    border-color: var(--secondary-color);
     transform: translateY(-2px);
+    box-shadow: 0 4px 20px var(--glow-purple);
 }
 
 /* Sections */
@@ -419,12 +423,13 @@ section {
 
 .section-title {
     font-size: 2.5rem;
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 1rem;
-    background: var(--gradient-primary);
+    background: var(--gradient-secondary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    letter-spacing: -0.03em;
 }
 
 .section-subtitle {
@@ -465,18 +470,20 @@ section {
     align-items: center;
     gap: 0.75rem;
     padding: 1rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px var(--shadow-light);
-    transition: transform 0.3s ease;
+    background: var(--bg-card);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
 }
 
 .expertise-item:hover {
     transform: translateY(-2px);
+    border-color: var(--secondary-color);
+    box-shadow: 0 4px 20px var(--glow-purple);
 }
 
 .expertise-item i {
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-size: 1.2rem;
 }
 
@@ -488,16 +495,17 @@ section {
 }
 
 .skill-category {
-    background: white;
+    background: var(--bg-card);
     padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px var(--shadow-light);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
 }
 
 .skill-category:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px var(--shadow-medium);
+    border-color: var(--secondary-color);
+    box-shadow: 0 8px 30px var(--glow-purple);
 }
 
 .skill-category h3 {
@@ -509,7 +517,7 @@ section {
 }
 
 .skill-category i {
-    color: var(--primary-color);
+    color: var(--secondary-color);
     font-size: 1.4rem;
 }
 
@@ -520,19 +528,21 @@ section {
 }
 
 .skill-tag {
-    background: var(--bg-secondary);
+    background: var(--bg-tertiary);
     padding: 0.5rem 1rem;
     border-radius: 20px;
     font-size: 0.9rem;
     font-weight: 500;
-    color: var(--text-primary);
+    color: var(--text-secondary);
     transition: all 0.3s ease;
+    border: 1px solid var(--border-light);
 }
 
 .skill-tag:hover {
-    background: var(--primary-color);
-    color: white;
+    background: var(--secondary-color);
+    color: var(--bg-primary);
     transform: scale(1.05);
+    border-color: var(--secondary-color);
 }
 
 /* Projects Section */
@@ -547,22 +557,23 @@ section {
 }
 
 .project-card {
-    background: white;
-    border-radius: 12px;
+    background: var(--bg-card);
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 4px 20px var(--shadow-light);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--border-light);
+    transition: all 0.3s ease;
 }
 
 .project-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 12px 35px var(--shadow-medium);
+    border-color: var(--secondary-color);
+    box-shadow: 0 12px 40px var(--glow-purple);
 }
 
 .project-header {
     padding: 2rem;
-    background: var(--gradient-primary);
-    color: white;
+    background: var(--gradient-secondary);
+    color: var(--bg-primary);
 }
 
 .project-title {
@@ -572,8 +583,9 @@ section {
 }
 
 .project-category {
-    opacity: 0.9;
+    opacity: 0.8;
     font-size: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 .project-content {
@@ -600,7 +612,7 @@ section {
     display: block;
     font-size: 1.5rem;
     font-weight: 700;
-    color: var(--primary-color);
+    color: var(--secondary-color);
 }
 
 .metric-label {
@@ -616,11 +628,12 @@ section {
 }
 
 .project-tag {
-    background: var(--bg-secondary);
+    background: var(--bg-tertiary);
     padding: 0.25rem 0.75rem;
     border-radius: 12px;
     font-size: 0.8rem;
-    color: var(--text-primary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
 }
 
 .project-links {
@@ -632,7 +645,7 @@ section {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    color: var(--primary-color);
+    color: var(--secondary-color);
     text-decoration: none;
     font-weight: 500;
     transition: opacity 0.3s ease;
@@ -667,10 +680,11 @@ section {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--gradient-primary);
-    color: white;
+    background: var(--gradient-secondary);
+    color: var(--bg-primary);
     border-radius: 50%;
     font-size: 1.2rem;
+    box-shadow: 0 4px 15px var(--glow-purple);
 }
 
 .contact-label {
@@ -685,10 +699,10 @@ section {
 
 /* Form */
 .form {
-    background: white;
+    background: var(--bg-card);
     padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px var(--shadow-light);
+    border-radius: 16px;
+    border: 1px solid var(--border-light);
 }
 
 .form-group {
@@ -699,16 +713,19 @@ section {
 .form textarea {
     width: 100%;
     padding: 1rem;
-    border: 2px solid var(--border-light);
+    border: 1px solid var(--border-light);
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    transition: all 0.3s ease;
 }
 
 .form input:focus,
 .form textarea:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px var(--glow-purple);
 }
 
 .form textarea {
@@ -718,9 +735,10 @@ section {
 
 /* Footer */
 .footer {
-    background: var(--bg-dark);
-    color: white;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     padding: 2rem 0;
+    border-top: 1px solid var(--border-light);
 }
 
 .footer-content {
@@ -735,13 +753,13 @@ section {
 }
 
 .footer-links a {
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--text-secondary);
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .footer-links a:hover {
-    color: white;
+    color: var(--secondary-color);
 }
 
 /* Skills Radar */

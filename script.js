@@ -388,9 +388,9 @@ function setupNavigation() {
     window.addEventListener('scroll', () => {
         const navbar = document.querySelector('.navbar');
         if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+            navbar.style.background = 'rgba(10, 10, 10, 0.98)';
         } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+            navbar.style.background = 'rgba(10, 10, 10, 0.95)';
         }
     });
 }
@@ -429,8 +429,8 @@ function showNotification(message, type = 'info') {
         position: fixed;
         top: 20px;
         right: 20px;
-        background: ${type === 'success' ? 'var(--accent-color)' : 'var(--primary-color)'};
-        color: white;
+        background: ${type === 'success' ? 'var(--accent-color)' : 'var(--secondary-color)'};
+        color: var(--bg-primary);
         padding: 1rem 1.5rem;
         border-radius: 8px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
@@ -636,7 +636,7 @@ style.textContent = `
         top: 100%;
         left: 0;
         width: 100%;
-        background: rgba(255, 255, 255, 0.98);
+        background: rgba(10, 10, 10, 0.98);
         backdrop-filter: blur(20px);
         padding: 1rem 2rem;
         border-bottom: 1px solid var(--border-light);
