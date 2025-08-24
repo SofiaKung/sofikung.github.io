@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Role Toggle Design Options - Sofia Kung</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary-color: #f59e0b;
+            --accent-color: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --text-light: #9ca3af;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f9fafb;
+            --bg-dark: #111827;
+            --border-light: #e5e7eb;
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-medium: rgba(0, 0, 0, 0.1);
+            --shadow-heavy: rgba(0, 0, 0, 0.25);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --risk-color: #ef4444;
+            --data-color: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .demo-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            padding: 3rem;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .demo-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .demo-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .option-card {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.2);
+        }
+
+        .option-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .option-description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .toggle-demo {
+            margin: 2rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Option 1: Morphing Icon Toggle - Material Design */
+        .toggle-option-1 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .morphing-toggle {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 50px;
+            padding: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .morphing-option {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 12px 20px;
+            border-radius: 42px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .morphing-icon {
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .morphing-slider {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            width: calc(50% - 8px);
+            height: calc(100% - 16px);
+            border-radius: 42px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1;
+        }
+
+        .morphing-toggle .morphing-option.risk {
+            color: var(--risk-color);
+        }
+
+        .morphing-toggle .morphing-option.data {
+            color: var(--text-secondary);
+        }
+
+        .morphing-toggle .morphing-slider {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+        }
+
+        .morphing-toggle.data-active .morphing-option.risk {
+            color: var(--text-secondary);
+        }
+
+        .morphing-toggle.data-active .morphing-option.data {
+            color: var(--data-color);
+        }
+
+        .morphing-toggle.data-active .morphing-slider {
+            transform: translateX(100%);
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Option 2: Glassmorphism Card Flip Toggle */
+        .toggle-option-2 {
+            perspective: 1000px;
+        }
+
+        .glass-toggle {
+            position: relative;
+            width: 300px;
+            height: 60px;
+            cursor: pointer;
+        }
+
+        .glass-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-style: preserve-3d;
+            border-radius: 16px;
+        }
+
+        .glass-side {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-front {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--risk-color);
+            box-shadow: 0 8px 32px rgba(239, 68, 68, 0.2);
+        }
+
+        .glass-back {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--data-color);
+            transform: rotateY(180deg);
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.2);
+        }
+
+        .glass-toggle.flipped .glass-card {
+            transform: rotateY(180deg);
+        }
+
+        .glass-icon {
+            font-size: 1.2rem;
+        }
+
+        /* Option 3: Neumorphism Segmented Control */
+        .toggle-option-3 {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .neuro-toggle {
+            background: #e6e7eb;
+            border-radius: 16px;
+            padding: 6px;
+            display: flex;
+            position: relative;
+            box-shadow: 
+                inset 8px 8px 16px #d1d2d6,
+                inset -8px -8px 16px #ffffff;
+        }
+
+        .neuro-option {
+            padding: 14px 24px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .neuro-option.active {
+            background: #e6e7eb;
+            box-shadow: 
+                6px 6px 12px #d1d2d6,
+                -6px -6px 12px #ffffff;
+            color: var(--primary-color);
+        }
+
+        .neuro-option:not(.active) {
+            color: var(--text-secondary);
+        }
+
+        .neuro-option:not(.active):hover {
+            color: var(--text-primary);
+        }
+
+        .neuro-icon {
+            font-size: 1rem;
+        }
+
+        /* Implementation buttons */
+        .implementation-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .implement-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .implement-btn.primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .implement-btn.primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .implement-btn.secondary {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            border: 2px solid var(--border-light);
+        }
+
+        .implement-btn.secondary:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .demo-container {
+                padding: 2rem;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .demo-title {
+                font-size: 2rem;
+            }
+            
+            .implementation-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1 class="demo-title">Role Toggle Design Options</h1>
+            <p class="demo-subtitle">Three aesthetically pleasing design variations for the Risk Analyst / Data Analyst toggle</p>
+        </div>
+
+        <div class="options-grid">
+            <!-- Option 1: Morphing Icon Toggle -->
+            <div class="option-card">
+                <h3 class="option-title">Option 1: Morphing Icon Toggle</h3>
+                <p class="option-description">
+                    <strong>Design Principle:</strong> Material Design with smooth morphing animations.<br>
+                    Features fluid transitions, elevated shadows, and color-coded states with intuitive iconography.
+                </p>
+                
+                <div class="toggle-demo">
+                    <div class="toggle-option-1">
+                        <div class="morphing-toggle" id="morphToggle1">
+                            <div class="morphing-option risk">
+                                <i class="morphing-icon fas fa-shield-alt"></i>
+                                <span>Risk Analyst</span>
+                            </div>
+                            <div class="morphing-option data">
+                                <i class="morphing-icon fas fa-chart-line"></i>
+                                <span>Data Analyst</span>
+                            </div>
+                            <div class="morphing-slider"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="implementation-buttons">
+                    <button class="implement-btn primary" onclick="implementOption(1)">
+                        <i class="fas fa-code"></i>
+                        Implement This Design
+                    </button>
+                </div>
+            </div>
+
+            <!-- Option 2: Glassmorphism Card Flip -->
+            <div class="option-card">
+                <h3 class="option-title">Option 2: Glassmorphism Card Flip</h3>
+                <p class="option-description">
+                    <strong>Design Principle:</strong> Modern glassmorphism with 3D card flip animation.<br>
+                    Creates depth with frosted glass effect, smooth 3D transitions, and premium feel.
+                </p>
+                
+                <div class="toggle-demo">
+                    <div class="toggle-option-2">
+                        <div class="glass-toggle" id="glassToggle">
+                            <div class="glass-card">
+                                <div class="glass-side glass-front">
+                                    <i class="glass-icon fas fa-shield-alt"></i>
+                                    <span>Risk Analyst</span>
+                                </div>
+                                <div class="glass-side glass-back">
+                                    <i class="glass-icon fas fa-chart-line"></i>
+                                    <span>Data Analyst</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="implementation-buttons">
+                    <button class="implement-btn primary" onclick="implementOption(2)">
+                        <i class="fas fa-code"></i>
+                        Implement This Design
+                    </button>
+                </div>
+            </div>
+
+            <!-- Option 3: Neumorphism Segmented Control -->
+            <div class="option-card">
+                <h3 class="option-title">Option 3: Neumorphism Segmented Control</h3>
+                <p class="option-description">
+                    <strong>Design Principle:</strong> Soft UI with tactile neumorphic elements.<br>
+                    Mimics physical buttons with subtle shadows and highlights for intuitive interaction.
+                </p>
+                
+                <div class="toggle-demo">
+                    <div class="toggle-option-3">
+                        <div class="neuro-toggle">
+                            <div class="neuro-option active" data-role="risk">
+                                <i class="neuro-icon fas fa-shield-alt"></i>
+                                <span>Risk Analyst</span>
+                            </div>
+                            <div class="neuro-option" data-role="data">
+                                <i class="neuro-icon fas fa-chart-line"></i>
+                                <span>Data Analyst</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="implementation-buttons">
+                    <button class="implement-btn primary" onclick="implementOption(3)">
+                        <i class="fas fa-code"></i>
+                        Implement This Design
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="implementation-buttons">
+            <a href="index.html" class="implement-btn secondary">
+                <i class="fas fa-arrow-left"></i>
+                Back to Portfolio
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Option 1: Morphing Toggle
+        document.getElementById('morphToggle1').addEventListener('click', function() {
+            this.classList.toggle('data-active');
+        });
+
+        // Option 2: Glass Toggle
+        document.getElementById('glassToggle').addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+
+        // Option 3: Neumorphism Toggle
+        document.querySelectorAll('.neuro-option').forEach(option => {
+            option.addEventListener('click', function() {
+                // Remove active class from all options
+                document.querySelectorAll('.neuro-option').forEach(opt => opt.classList.remove('active'));
+                // Add active class to clicked option
+                this.classList.add('active');
+            });
+        });
+
+        // Implementation function
+        function implementOption(optionNumber) {
+            // Store the selected option
+            localStorage.setItem('selectedToggleOption', optionNumber);
+            
+            // Show confirmation
+            alert(`Option ${optionNumber} selected! This design will be implemented in your portfolio.`);
+            
+            // In a real implementation, you would:
+            // 1. Update the CSS in styles.css
+            // 2. Update the HTML structure if needed
+            // 3. Update the JavaScript functionality
+            
+            console.log(`Implementing toggle option ${optionNumber}`);
+        }
+
+        // Add some interactive animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate cards on load
+            const cards = document.querySelectorAll('.option-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                
+                setTimeout(() => {
+                    card.style.transition = 'all 0.6s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 200);
+            });
+        });
+    </script>
+</body>
+</html>
