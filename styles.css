@@ -160,6 +160,75 @@ p {
   gap: var(--space-6);
 }
 
+/* Toggle styles */
+.hero-toggle {
+  display: inline-block;
+}
+
+.segmented-toggle {
+  display: flex;
+  position: relative;
+  background: #f3f4f6;
+  border-radius: 999px;
+  padding: 3px; /* slightly thinner vertically */
+  box-shadow: inset 0 0 0 1px #e5e7eb;
+  width: fit-content; /* expand to fit labels */
+  min-width: 350px; /* ensure enough room for both labels */
+}
+
+.seg-item {
+  flex: 1 1 50%;
+  border: 0;
+  background: transparent;
+  color: #333;
+  padding: 12px 14px; /* narrower vertical height */
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.seg-item span {
+  white-space: nowrap;
+}
+
+.seg-item:hover {
+  color: #4a6cf7;
+}
+.seg-item.active {
+  color: #4a6cf7;
+  font-weight: 600;
+}
+
+.seg-thumb {
+  position: absolute;
+  top: 3px; /* match container padding */
+  bottom: 3px;
+  left: 4px;
+  width: calc(50% - 8px);
+  background: #fff;
+  border-radius: 999px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: left 0.25s ease;
+}
+
+.segmented-toggle.mode-risk .seg-thumb {
+  left: calc(50% + 4px);
+}
+
+@media (max-width: 480px) {
+  .segmented-toggle {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
 /* Remove spacing between contact and social within hero */
 .hero-contact + .hero-social {
   margin-top: calc(-1 * var(--space-6));

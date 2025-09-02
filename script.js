@@ -102,6 +102,29 @@ document.addEventListener('DOMContentLoaded', function() {
         category.style.transition = 'all 0.6s ease';
         observer.observe(category);
     });
+
+    // Hero toggle: Data Analyst vs Risk Analytics
+    const blurb = document.getElementById('hero-blurb');
+    const seg = document.getElementById('profile-toggle');
+    const toggleButtons = document.querySelectorAll('.segmented-toggle .seg-item');
+    const copy = {
+        data: "I’m a senior data analyst with 6+ years across tech, crypto and e‑commerce. I turn complex data into dashboards, reports and clear insights that drive product and business decisions.",
+        risk: "Risk analytics specialist focused on fraud prevention, trust & safety and risk metrics. I design rule engines, build scalable pipelines and dashboards, and partner with DS/Eng to reduce loss and improve customer safety."
+    };
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            toggleButtons.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-selected','false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-selected','true');
+            const mode = btn.getAttribute('data-mode');
+            blurb.textContent = copy[mode] || copy.data;
+            seg.classList.toggle('mode-risk', mode === 'risk');
+            seg.classList.toggle('mode-data', mode !== 'risk');
+        });
+    });
 });
 
 // Add CSS for active nav state

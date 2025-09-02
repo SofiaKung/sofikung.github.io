@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <style>
+      .t { font: 700 320px 'Helvetica Neue', Arial, sans-serif; letter-spacing: -12px; }
+    </style>
+  </defs>
+  <!-- Transparent background, blue monogram -->
+  <g fill="#4a6cf7" text-anchor="middle" dominant-baseline="middle">
+    <text class="t" x="256" y="330">SK</text>
+  </g>
+</svg>
+
