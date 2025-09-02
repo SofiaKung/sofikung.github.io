@@ -1,263 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sofia Kung - Data Professional</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="page-loader">
-        <div class="loader-content">
-            <div class="data-wave"></div>
-            <span>Loading Portfolio...</span>
-        </div>
-    </div>
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sofia Kung - Senior Data Analyst</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
     <nav class="navbar">
-        <div class="nav-container">
-            <div class="nav-brand">
-                <span class="brand-text">Sofia Kung</span>
-            </div>
-            <div class="nav-links">
-                <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#experience">Experience</a>
-                <a href="#skills">Skills</a>
-                <a href="#projects">Projects</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <div class="nav-toggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
+      <div class="nav-container">
+        <div class="nav-brand">Portfolio</div>
+        <div class="nav-links">
+          <a href="#resume">Resume</a>
+          <a href="#contact">Contact</a>
+          <a href="#" class="btn-download">DOWNLOAD CV</a>
         </div>
+      </div>
     </nav>
 
-    <main>
-        <section id="home" class="hero-section">
-            <div class="hero-background">
-                <div class="floating-elements">
-                    <div class="floating-icon" data-icon="📊"></div>
-                    <div class="floating-icon" data-icon="📈"></div>
-                    <div class="floating-icon" data-icon="🔍"></div>
-                    <div class="floating-icon" data-icon="💡"></div>
-                    <div class="floating-icon" data-icon="🎯"></div>
-                </div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-layout">
+          <div class="hero-content">
+            <h1 class="hero-name">Sofia Kung</h1>
+            <div class="hero-contact">
+              <div class="contact-row">
+                <span class="contact-label">Phone:</span>
+                <span class="contact-value">+65 9XXX XXXX</span>
+              </div>
+              <div class="contact-row">
+                <span class="contact-label">Email:</span>
+                <span class="contact-value">sofiakung@gmail.com</span>
+              </div>
             </div>
-            
-            <div class="hero-content">
-                <div class="role-toggle-container">
-                    <span class="role-label">I am a</span>
-                    <div class="role-toggle">
-                        <input type="checkbox" id="roleToggle" class="role-checkbox">
-                        <label for="roleToggle" class="role-switch">
-                            <span class="role-option" data-role="risk">Risk Analyst</span>
-                            <span class="role-option" data-role="data">Data Analyst</span>
-                            <div class="role-slider"></div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        <span class="title-main" id="mainTitle">Transforming Data into Strategic Insights</span>
-                    </h1>
-                    <p class="hero-description" id="heroDescription">
-                        Specialized in quantitative risk assessment, regulatory compliance, and data-driven decision making to protect organizational value and drive strategic growth.
-                    </p>
-                </div>
-
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-number" id="stat1">5+</span>
-                        <span class="stat-label" id="statLabel1">Years Experience</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="stat2">50+</span>
-                        <span class="stat-label" id="statLabel2">Risk Models Built</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="stat3">$2M+</span>
-                        <span class="stat-label" id="statLabel3">Risk Mitigated</span>
-                    </div>
-                </div>
-
-                <div class="hero-actions">
-                    <button class="btn btn-primary" onclick="scrollToSection('projects')">
-                        <i class="fas fa-briefcase"></i>
-                        View My Work
-                    </button>
-                    <button class="btn btn-secondary" onclick="scrollToSection('contact')">
-                        <i class="fas fa-envelope"></i>
-                        Get In Touch
-                    </button>
-                </div>
+            <div class="hero-social">
+              <a
+                href="https://linkedin.com/in/sofiakung"
+                target="_blank"
+                class="social-icon"
+              >
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a
+                href="https://github.com/SofiaKung"
+                target="_blank"
+                class="social-icon"
+              >
+                <i class="fab fa-github"></i>
+              </a>
             </div>
-        </section>
-
-        <section id="about" class="about-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">About Me</h2>
-                    <p class="section-subtitle" id="aboutSubtitle">Passionate about leveraging data to mitigate risks and drive informed business decisions</p>
-                </div>
-
-                <div class="about-content">
-                    <div class="about-text">
-                        <div class="about-description" id="aboutDescription">
-                            <p>With a strong foundation in quantitative analysis and risk management, I specialize in developing sophisticated models that help organizations understand, measure, and mitigate various types of risk.</p>
-                            <p>My expertise spans across credit risk, market risk, operational risk, and regulatory compliance, with a proven track record of implementing data-driven solutions that protect organizational value while enabling strategic growth.</p>
-                        </div>
-
-                        <div class="expertise-areas" id="expertiseAreas">
-                            <div class="expertise-item">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Risk Modeling & Assessment</span>
-                            </div>
-                            <div class="expertise-item">
-                                <i class="fas fa-chart-line"></i>
-                                <span>Quantitative Analysis</span>
-                            </div>
-                            <div class="expertise-item">
-                                <i class="fas fa-balance-scale"></i>
-                                <span>Regulatory Compliance</span>
-                            </div>
-                            <div class="expertise-item">
-                                <i class="fas fa-database"></i>
-                                <span>Statistical Modeling</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="about-visual">
-                        <div class="skills-radar" id="skillsRadar">
-                            <div class="radar-chart">
-                                <canvas id="radarCanvas" width="300" height="300"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="hero-description">
+              <p>
+                I'm a senior data analyst with 6 years of experience across
+                tech, crypto, consulting and e-commerce. I specialize in
+                transforming complex data into actionable insights, focusing on
+                reporting, dashboard development, and statistical analysis to
+                drive informed business decisions.
+              </p>
             </div>
-        </section>
-
-        <section id="experience" class="experience-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Experience</h2>
-                    <p class="section-subtitle" id="experienceSubtitle">Professional journey across leading tech and financial organizations</p>
-                </div>
-
-                <div class="experience-content">
-                    <div class="experience-list" id="experienceList">
-                        <!-- Experience entries will be populated by JavaScript based on role -->
-                    </div>
-                </div>
+          </div>
+          <div class="hero-graphic">
+            <div class="graphic-element">
+              <div class="cube-container">
+                <div class="cube cube-1"></div>
+                <div class="cube cube-2"></div>
+                <div class="cube cube-3"></div>
+              </div>
             </div>
-        </section>
-
-        <section id="skills" class="skills-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Skills & Technologies</h2>
-                    <p class="section-subtitle" id="skillsSubtitle">Advanced proficiency in risk analysis tools and methodologies</p>
-                </div>
-
-                <div class="skills-grid" id="skillsGrid">
-                    <!-- Skills will be populated by JavaScript based on role -->
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="projects-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Featured Projects</h2>
-                    <p class="section-subtitle" id="projectsSubtitle">Risk management solutions that drive measurable business impact</p>
-                </div>
-
-                <div class="projects-grid" id="projectsGrid">
-                    <!-- Projects will be populated by JavaScript based on role -->
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="contact-section">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Let's Connect</h2>
-                    <p class="section-subtitle">Ready to discuss how data-driven insights can transform your business?</p>
-                </div>
-
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <div class="contact-item">
-                            <i class="fas fa-envelope"></i>
-                            <div>
-                                <span class="contact-label">Email</span>
-                                <span class="contact-value">Contact via LinkedIn</span>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fab fa-linkedin"></i>
-                            <div>
-                                <span class="contact-label">LinkedIn</span>
-                                <span class="contact-value">linkedin.com/in/sofiakung</span>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fab fa-github"></i>
-                            <div>
-                                <span class="contact-label">GitHub</span>
-                                <span class="contact-value">github.com/SofiaKung</span>
-                            </div>
-                        </div>
-                        <div class="contact-item">
-                            <i class="fas fa-chart-bar"></i>
-                            <div>
-                                <span class="contact-label">Tableau</span>
-                                <span class="contact-value">public.tableau.com/app/profile/sofiakung</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="contact-form">
-                        <form class="form">
-                            <div class="form-group">
-                                <input type="text" id="name" name="name" placeholder="Your Name" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="email" id="email" name="email" placeholder="Your Email" required>
-                            </div>
-                            <div class="form-group">
-                                <textarea id="message" name="message" placeholder="Your Message" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-paper-plane"></i>
-                                Send Message
-                            </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <p>&copy; 2024 Sofia Kung. All rights reserved.</p>
-                <div class="footer-links">
-                    <a href="#privacy">Privacy Policy</a>
-                    <a href="#terms">Terms of Service</a>
-                </div>
-            </div>
+          </div>
         </div>
-    </footer>
+      </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section class="experience" id="resume">
+      <div class="container">
+        <h2 class="section-title">Professional Experience</h2>
+        <div class="experience-list">
+          <div class="experience-item">
+            <div class="experience-period">2022 - 2024</div>
+            <div class="experience-details">
+              <h3 class="experience-title">Senior Risk Data Analyst</h3>
+              <div class="experience-company">Binance</div>
+              <ul class="experience-description">
+                <li>Fraud analytics and user behavior analysis</li>
+                <li>Metrics design and strategic thinking</li>
+                <li>Project management and cross-functional leadership</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-period">2021 - 2022</div>
+            <div class="experience-details">
+              <h3 class="experience-title">Senior Risk Data Analyst</h3>
+              <div class="experience-company">Gojek</div>
+              <ul class="experience-description">
+                <li>Statistical analysis and reporting analytics</li>
+                <li>Pipeline creation and anomaly detection</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-period">2021</div>
+            <div class="experience-details">
+              <h3 class="experience-title">Product Data Analyst</h3>
+              <div class="experience-company">Atome</div>
+              <ul class="experience-description">
+                <li>Product funnel analysis</li>
+                <li>Feature performance analysis</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-period">2019 - 2021</div>
+            <div class="experience-details">
+              <h3 class="experience-title">Data Analyst Consultant</h3>
+              <div class="experience-company">PwC</div>
+              <ul class="experience-description">
+                <li>ETL development and data migration</li>
+                <li>Reporting analytics</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-period">2018 - 2021</div>
+            <div class="experience-details">
+              <h3 class="experience-title">Python Teaching Assistant</h3>
+              <div class="experience-company">Hackwagon Academy</div>
+              <ul class="experience-description">
+                <li>Python visualization and data manipulation</li>
+                <li>Machine learning instruction</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="experience-item">
+            <div class="experience-period">2018</div>
+            <div class="experience-details">
+              <h3 class="experience-title">Data Analyst Intern</h3>
+              <div class="experience-company">Lazada/Alibaba</div>
+              <ul class="experience-description">
+                <li>Dashboard development</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills">
+      <div class="container">
+        <h2 class="section-title">Skills & Technologies</h2>
+        <div class="skills-grid">
+          <div class="skill-category">
+            <h3>Technical Skills</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">Statistical Analysis</span>
+              <span class="skill-tag">Dashboard Development</span>
+              <span class="skill-tag">ETL Development</span>
+              <span class="skill-tag">Machine Learning</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>Programming</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">PySpark</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">R</span>
+              <span class="skill-tag">JavaScript</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <h3>Business Skills</h3>
+            <div class="skill-tags">
+              <span class="skill-tag">Strategic Planning</span>
+              <span class="skill-tag">Project Management</span>
+              <span class="skill-tag">Process Optimization</span>
+              <span class="skill-tag">Stakeholder Management</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+      <div class="container">
+        <h2 class="section-title">Let's Connect</h2>
+        <div class="contact-content">
+          <p class="contact-description">
+            Ready to discuss how data-driven insights can transform your
+            business?
+          </p>
+          <div class="contact-links">
+            <a
+              href="https://linkedin.com/in/sofiakung"
+              class="contact-link"
+              target="_blank"
+            >
+              <span class="contact-icon">in</span>
+              <span>LinkedIn</span>
+            </a>
+            <a
+              href="https://github.com/SofiaKung"
+              class="contact-link"
+              target="_blank"
+            >
+              <span class="contact-icon">gh</span>
+              <span>GitHub</span>
+            </a>
+            <a
+              href="https://public.tableau.com/app/profile/sofiakung"
+              class="contact-link"
+              target="_blank"
+            >
+              <span class="contact-icon">📊</span>
+              <span>Tableau</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
