@@ -187,6 +187,94 @@ document.addEventListener("DOMContentLoaded", function () {
       seg.classList.toggle("mode-risk", mode === "risk");
       seg.classList.toggle("mode-data", mode !== "risk");
       startTimer();
+
+      // Photo deck drag/swipe
+      const deck = document.getElementById("photo-deck");
+      function layoutDeck() {
+        if (!deck) return;
+        const cards = Array.from(deck.querySelectorAll(".deck-card"));
+        cards.forEach((c) => c.classList.remove("top"));
+        if (cards[0]) cards[0].classList.add("top");
+      }
+      layoutDeck();
+
+      if (deck) {
+        let startX = 0,
+          dx = 0,
+          dragging = false,
+          topCard = null;
+        let animReq = null,
+          currentX = 0,
+          targetX = 0;
+        function onPointerDown(e) {
+          topCard = deck.querySelector(".deck-card.top");
+          if (!topCard) return;
+          dragging = true;
+          startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+          topCard.style.transition = "none";
+          window.addEventListener("pointermove", onPointerMove);
+          window.addEventListener("pointerup", onPointerUp, { once: true });
+          // start RAF loop for smoothness
+          cancelAnimationFrame(animReq);
+          animReq = requestAnimationFrame(tick);
+        }
+        function onPointerMove(e) {
+          if (!dragging || !topCard) return;
+          const x = e.clientX || (e.touches && e.touches[0].clientX) || startX;
+          dx = x - startX;
+          targetX = dx; // smooth towards this with RAF
+        }
+        function onPointerUp() {
+          if (!topCard) return;
+          dragging = false;
+          const w = deck.clientWidth;
+          const shouldDismiss = Math.abs(dx) > w * 0.35;
+          topCard.style.transition = "transform .35s ease, opacity .35s ease";
+          if (shouldDismiss) {
+            const dir = Math.sign(dx) || 1;
+            const y = Math.sin((dir * Math.PI) / 2) * 60;
+            // Rotate to 180deg on dismiss and fade out fully
+            topCard.style.transform = `translate(${
+              dir * w * 1.2
+            }px, ${y}px) rotate(${dir * 180}deg)`;
+            topCard.style.opacity = "0";
+            topCard.addEventListener(
+              "transitionend",
+              () => {
+                deck.appendChild(topCard); // send to back
+                topCard.style.transition = "none";
+                topCard.style.transform = "";
+                topCard.style.opacity = "";
+                layoutDeck();
+              },
+              { once: true }
+            );
+          } else {
+            topCard.style.transform = "";
+            topCard.style.opacity = "";
+          }
+          dx = 0;
+          targetX = 0;
+          cancelAnimationFrame(animReq);
+          window.removeEventListener("pointermove", onPointerMove);
+        }
+        deck.addEventListener("pointerdown", onPointerDown);
+
+        function tick() {
+          if (topCard) {
+            // interpolate towards target for smoothness
+            currentX += (targetX - currentX) * 0.22;
+            const w = deck.clientWidth;
+            const p = Math.max(-1, Math.min(1, currentX / (w * 0.6)));
+            const y = Math.sin((p * Math.PI) / 2) * 40; // half-circle arc
+            const rot = p * 12; // modest during drag
+            const opacity = 1 - Math.min(1, Math.abs(p)) * 0.8; // stronger fade while dragging
+            topCard.style.transform = `translate(${currentX}px, ${y}px) rotate(${rot}deg)`;
+            topCard.style.opacity = String(opacity);
+          }
+          if (dragging) animReq = requestAnimationFrame(tick);
+        }
+      }
     });
   });
 
@@ -202,6 +290,76 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initial render
   render();
   startTimer();
+
+  // Photo deck drag/swipe
+  const deck = document.getElementById("photo-deck");
+  function layoutDeck() {
+    if (!deck) return;
+    const cards = Array.from(deck.querySelectorAll(".deck-card"));
+    cards.forEach((c) => c.classList.remove("top"));
+    if (cards[0]) cards[0].classList.add("top");
+  }
+  layoutDeck();
+
+  if (deck) {
+    let startX = 0,
+      dx = 0,
+      dragging = false,
+      topCard = null;
+    function onPointerDown(e) {
+      topCard = deck.querySelector(".deck-card.top");
+      if (!topCard) return;
+      dragging = true;
+      startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      topCard.style.transition = "none";
+      window.addEventListener("pointermove", onPointerMove);
+      window.addEventListener("pointerup", onPointerUp, { once: true });
+    }
+    function onPointerMove(e) {
+      if (!dragging || !topCard) return;
+      const x = e.clientX || (e.touches && e.touches[0].clientX) || startX;
+      dx = x - startX;
+      const w = deck.clientWidth;
+      const p = Math.max(-1, Math.min(1, dx / (w * 0.6)));
+      const y = Math.sin((p * Math.PI) / 2) * 40; // half-circle arc
+      const rot = p * 10;
+      const opacity = 1 - Math.min(1, Math.abs(p)) * 0.6;
+      topCard.style.transform = `translate(${dx}px, ${y}px) rotate(${rot}deg)`;
+      topCard.style.opacity = String(opacity);
+    }
+    function onPointerUp() {
+      if (!topCard) return;
+      dragging = false;
+      const w = deck.clientWidth;
+      const shouldDismiss = Math.abs(dx) > w * 0.15;
+      topCard.style.transition = "transform .35s ease, opacity .35s ease";
+      if (shouldDismiss) {
+        const dir = Math.sign(dx) || 1;
+        const y = Math.sin((dir * Math.PI) / 2) * 60;
+        topCard.style.transform = `translate(${
+          dir * w * 1.2
+        }px, ${y}px) rotate(${dir * 16}deg)`;
+        topCard.style.opacity = "0";
+        topCard.addEventListener(
+          "transitionend",
+          () => {
+            deck.appendChild(topCard); // send to back
+            topCard.style.transition = "none";
+            topCard.style.transform = "";
+            topCard.style.opacity = "";
+            layoutDeck();
+          },
+          { once: true }
+        );
+      } else {
+        topCard.style.transform = "";
+        topCard.style.opacity = "";
+      }
+      dx = 0;
+      window.removeEventListener("pointermove", onPointerMove);
+    }
+    deck.addEventListener("pointerdown", onPointerDown);
+  }
 });
 
 // Add CSS for active nav state
