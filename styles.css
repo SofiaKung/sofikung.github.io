@@ -307,6 +307,7 @@ p {
   width: min(100%, clamp(38ch, 45vw, 80ch));
   min-height: 207px;
   margin-top: var(--space-2);
+  position: relative;
 }
 
 .hero-description p {
@@ -319,7 +320,11 @@ p {
   word-wrap: break-word;
   overflow-wrap: break-word;
   text-align: start;
+  transition: opacity .35s ease, transform .35s ease;
 }
+
+#hero-blurb.fade-out { opacity: 0; transform: translateY(6px); }
+#hero-blurb.fade-in { opacity: 1; transform: translateY(0); }
 
 /* Hero Graphic - 3D Element */
 .hero-graphic {
