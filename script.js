@@ -51,7 +51,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initial call to set active state
     updateActiveNavLink();
-    
+
+    // Mobile nav toggle
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinksEl = document.getElementById('primary-nav');
+    if (navToggle && navLinksEl) {
+        navToggle.addEventListener('click', () => {
+            const isOpen = document.body.classList.toggle('nav-open');
+            navToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+        // Close menu when a nav link is clicked
+        navLinksEl.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+            document.body.classList.remove('nav-open');
+            navToggle.setAttribute('aria-expanded', 'false');
+        }));
+    }
+
     // Add scroll effect to navbar
     let lastScrollTop = 0;
     const navbar = document.querySelector('.navbar');
