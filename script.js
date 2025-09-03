@@ -375,11 +375,15 @@ document.addEventListener("DOMContentLoaded", function () {
         topCard.addEventListener(
           "transitionend",
           () => {
-            deck.appendChild(topCard); // send to back
-            topCard.style.transition = "none";
-            topCard.style.transform = "translate(0,0) rotate(0deg)";
-            topCard.style.opacity = "1";
+            // Remove card instead of recycling, then hide deck if empty
+            if (topCard && topCard.parentElement === deck) {
+              topCard.remove();
+            }
+            topCard = null;
             layoutDeck();
+            if (!deck.querySelector(".deck-card")) {
+              deck.style.display = "none";
+            }
           },
           { once: true }
         );
