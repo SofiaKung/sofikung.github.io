@@ -187,6 +187,8 @@ document.addEventListener("DOMContentLoaded", function () {
       seg.classList.toggle("mode-risk", mode === "risk");
       seg.classList.toggle("mode-data", mode !== "risk");
       startTimer();
+      // stop here; disable legacy duplicated deck logic in this handler
+      return;
 
       // Photo deck drag/swipe
       const deck = document.getElementById("photo-deck");
@@ -250,8 +252,8 @@ document.addEventListener("DOMContentLoaded", function () {
               { once: true }
             );
           } else {
-            topCard.style.transform = "";
-            topCard.style.opacity = "";
+            topCard.style.transform = "translate(0,0) rotate(0deg)";
+            topCard.style.opacity = "1";
           }
           dx = 0;
           targetX = 0;
@@ -303,60 +305,100 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (deck) {
     let startX = 0,
+      startY = 0,
       dx = 0,
+      dy = 0,
       dragging = false,
-      topCard = null;
+      topCard = null,
+      activePointerId = null;
+    // Prevent native image drag ghosting which can block first drag
+    deck.addEventListener("dragstart", (ev) => ev.preventDefault());
+    // Ensure images are not draggable by the browser
+    deck.querySelectorAll("img").forEach((img) => img.setAttribute("draggable", "false"));
+
     function onPointerDown(e) {
       topCard = deck.querySelector(".deck-card.top");
       if (!topCard) return;
+      // Prevent default to avoid initiating native drag/image behaviors
+      e.preventDefault();
       dragging = true;
       startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
+      startY = e.clientY || (e.touches && e.touches[0].clientY) || 0;
+      dx = 0;
+      dy = 0;
+      activePointerId = e.pointerId != null ? e.pointerId : null;
+      try {
+        if (activePointerId != null && topCard.setPointerCapture) {
+          topCard.setPointerCapture(activePointerId);
+        }
+      } catch (_) {}
       topCard.style.transition = "none";
-      window.addEventListener("pointermove", onPointerMove);
-      window.addEventListener("pointerup", onPointerUp, { once: true });
+      document.addEventListener("pointermove", onPointerMove, { passive: true });
+      document.addEventListener("pointerup", onPointerUp, { once: true });
+      document.addEventListener("pointercancel", onPointerUp, { once: true });
     }
     function onPointerMove(e) {
       if (!dragging || !topCard) return;
       const x = e.clientX || (e.touches && e.touches[0].clientX) || startX;
+      const y = e.clientY || (e.touches && e.touches[0].clientY) || startY;
       dx = x - startX;
+      dy = (y - startY) * 0.3; // damped vertical movement
       const w = deck.clientWidth;
       const p = Math.max(-1, Math.min(1, dx / (w * 0.6)));
-      const y = Math.sin((p * Math.PI) / 2) * 40; // half-circle arc
-      const rot = p * 10;
-      const opacity = 1 - Math.min(1, Math.abs(p)) * 0.6;
-      topCard.style.transform = `translate(${dx}px, ${y}px) rotate(${rot}deg)`;
+      const rot = p * 12;
+      const opacity = 1 - Math.min(1, Math.abs(p)) * 0.7;
+      topCard.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
       topCard.style.opacity = String(opacity);
     }
     function onPointerUp() {
       if (!topCard) return;
       dragging = false;
+      try {
+        if (activePointerId != null && topCard && topCard.releasePointerCapture) {
+          topCard.releasePointerCapture(activePointerId);
+        }
+      } catch (_) {}
+      const rect = topCard.getBoundingClientRect();
+      const cardW = rect.width;
       const w = deck.clientWidth;
-      const shouldDismiss = Math.abs(dx) > w * 0.15;
-      topCard.style.transition = "transform .35s ease, opacity .35s ease";
+      const threshold = Math.min(120, cardW * 0.25);
+      const shouldDismiss = Math.abs(dx) > threshold;
+      const spring = "cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+      topCard.style.transition = `transform .25s ${spring}, opacity .25s ease`;
       if (shouldDismiss) {
         const dir = Math.sign(dx) || 1;
-        const y = Math.sin((dir * Math.PI) / 2) * 60;
+        const y = dy;
         topCard.style.transform = `translate(${
           dir * w * 1.2
-        }px, ${y}px) rotate(${dir * 16}deg)`;
+        }px, ${y}px) rotate(${dir * 30}deg)`;
         topCard.style.opacity = "0";
         topCard.addEventListener(
           "transitionend",
           () => {
             deck.appendChild(topCard); // send to back
             topCard.style.transition = "none";
-            topCard.style.transform = "";
-            topCard.style.opacity = "";
+            topCard.style.transform = "translate(0,0) rotate(0deg)";
+            topCard.style.opacity = "1";
             layoutDeck();
           },
           { once: true }
         );
       } else {
-        topCard.style.transform = "";
-        topCard.style.opacity = "";
+        topCard.style.transform = "translate(0,0) rotate(0deg)";
+        topCard.style.opacity = "1";
+        topCard.addEventListener(
+          "transitionend",
+          () => {
+            topCard.style.transition = "none";
+          },
+          { once: true }
+        );
       }
       dx = 0;
-      window.removeEventListener("pointermove", onPointerMove);
+      dy = 0;
+      document.removeEventListener("pointermove", onPointerMove);
+      document.removeEventListener("pointerup", onPointerUp);
+      document.removeEventListener("pointercancel", onPointerUp);
     }
     deck.addEventListener("pointerdown", onPointerDown);
   }
