@@ -44,7 +44,7 @@ p {
   --font-size-lg: 18px; /* slightly larger body */
   --font-size-xl: 24px; /* section intros */
   --font-size-section-title: 24px; /* base section title size */
-  --font-size-hero-name: 60px; /* large hero name */
+  --font-size-hero-name: 70px; /* large hero name */
   --font-size-hero-name-sm: 48px; /* hero name on mobile */
   --font-size-section-label: 16px; /* small uppercase labels */
   --font-size-role: 24px; /* experience role + year */
@@ -73,14 +73,22 @@ p {
   --rule-thickness: 1px;
   /* Global page gutter */
   --gutter: 300px;
+  /* Gallery image cap for uniform caption alignment */
+  --gallery-image-height: 200px;
+  /* Project-only section vertical padding */
+  --project-section-padding-y: 40px;
 }
 
 /* So wide gutters don’t over-constrain mid-size viewports */
 @media (max-width: 1200px) {
-  :root { --gutter: 8rem; }
+  :root {
+    --gutter: 8rem;
+  }
 }
 @media (max-width: 992px) {
-  :root { --gutter: 3rem; }
+  :root {
+    --gutter: 3rem;
+  }
 }
 
 .container {
@@ -100,6 +108,7 @@ p {
   border-bottom: none;
   z-index: 1000;
   padding: 20px 0;
+  transition: transform 0.3s ease;
 }
 
 .nav-container {
@@ -141,6 +150,22 @@ p {
   color: #333;
   font-size: var(--font-size-base);
   font-weight: 400;
+  position: relative;
+  padding-bottom: 8px;
+}
+
+/* Active nav state: consistent underline and color */
+.nav-links a.active {
+  color: #2563eb;
+}
+.nav-links a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #2563eb;
 }
 
 .btn-download {
@@ -192,7 +217,7 @@ p {
   padding: 3px; /* slightly thinner vertically */
   box-shadow: inset 0 0 0 1px #e5e7eb;
   width: fit-content; /* expand to fit labels */
-  min-width: 350px; /* ensure enough room for both labels */
+  min-width: 310px; /* ensure enough room for both labels */
 }
 
 .seg-item {
@@ -363,6 +388,9 @@ p {
   /* Prevent overflow of grid column on medium viewports */
   width: min(100%, clamp(300px, 40vw, 640px));
   height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center the deck and the Again button */
 }
 
 .cube-container {
@@ -421,11 +449,34 @@ section:not(.hero) {
   padding: 80px 0;
 }
 
+/* Shared section header with right-aligned More link */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+  position: relative; /* allow header-wide accent line */
+}
+.section-header .section-title {
+  margin: 0;
+}
+.section-header .more-link {
+  color: #6b7280; /* gray */
+  font-weight: 400; /* not bold */
+  text-decoration: none;
+}
+.section-header .more-link:hover {
+  text-decoration: underline;
+  color: #4b5563;
+}
+
 .section-title {
   font-size: var(--font-size-section-title);
+  padding-bottom: 16px;
   font-weight: 300;
   color: #333;
-  margin-bottom: 60px;
+  /* margin-bottom: 60px; */
   text-align: left;
 }
 
@@ -438,7 +489,7 @@ section:not(.hero) {
   font-size: var(--font-size-section-label);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   text-align: left;
 }
 
@@ -454,7 +505,9 @@ section:not(.hero) {
 
 /* Match Experience heading style for Skills and Contact */
 .skills .section-title,
-.contact .section-title {
+.contact .section-title,
+.projects .section-title,
+.posts .section-title {
   position: relative;
   padding-left: 0;
   color: var(--rule-color);
@@ -475,6 +528,178 @@ section:not(.hero) {
   top: -8px;
   height: var(--rule-thickness);
   background: var(--rule-color);
+}
+
+/* For Projects and Posts, attach the accent line to the full section header row */
+.projects .section-header::before,
+.posts .section-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -8px;
+  height: var(--rule-thickness);
+  background: var(--rule-color);
+}
+
+/* Projects Section */
+.projects {
+  background: #ffffff;
+}
+
+.project-grid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr; /* 1 per row by default */
+}
+@media (min-width: 768px) {
+  .project-grid {
+    grid-template-columns: repeat(
+      2,
+      minmax(260px, 1fr)
+    ); /* 2 per row on desktop */
+  }
+}
+
+.project-card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  opacity: 1;
+}
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+.project-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.project-media {
+  aspect-ratio: 16 / 9;
+  background: #f3f4f6;
+}
+.project-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.project-body {
+  padding: 16px;
+}
+.project-meta {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.project-tag {
+  font-size: 12px;
+  padding: 4px 8px;
+  background: #eef2ff;
+  color: #4a6cf7;
+  border-radius: 999px;
+}
+.project-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0 0 6px;
+}
+.project-desc {
+  margin: 0;
+  color: #444;
+  line-height: 1.6;
+}
+
+/* No featured span — keep a clean 2-column grid */
+
+/* Posts Section */
+.posts {
+  background: #ffffff;
+}
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0; /* join posts back-to-back */
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  overflow: hidden; /* rounds inner row corners */
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+}
+.post-card {
+  background: transparent;
+  border: 0;
+  border-top: 1px solid #e5e7eb; /* subtle divider like reference */
+  border-radius: 0;
+  padding: 18px 16px; /* compact but readable */
+  box-shadow: none;
+}
+.post-card:first-child {
+  border-top: 0;
+}
+.post-link {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+.post-header {
+  margin-bottom: 6px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.post-date {
+  font-size: 14px;
+  color: #6b7280;
+  display: inline-block;
+  margin: 0; /* inline with title */
+  white-space: nowrap;
+}
+.post-title {
+  font-size: 18px;
+  margin: 0 0 6px;
+  color: #111827;
+}
+.post-excerpt {
+  margin: 0 0 10px;
+  color: #374151;
+  line-height: 1.6;
+  max-width: 80vh;
+}
+.post-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.post-tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 999px;
+}
+
+/* Ensure no overflow into side margins */
+.projects .container,
+.posts .container {
+  max-width: none;
+}
+
+/* Responsive refinements */
+@media (max-width: 768px) {
+  .project-title {
+    font-size: 18px;
+  }
+  .post-title {
+    font-size: 16px;
+  }
 }
 
 /* Experience Section */
@@ -775,8 +1000,12 @@ section:not(.hero) {
 
 /* Respect reduced motion preferences */
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
     animation: none !important;
     transition: none !important;
   }
@@ -785,7 +1014,216 @@ section:not(.hero) {
 /* Footer */
 .site-footer {
   background: #ffffff;
-  padding: 16px 0 24px;
+  /* Increase vertical rhythm for a more breathable footer */
+  padding: 32px 0 48px;
+}
+
+/* Article (post/project) detail page */
+.article {
+  padding-top: 120px; /* account for fixed navbar */
+  padding-bottom: 40px;
+  background: #fff;
+}
+/* Use a smaller vertical section padding only on project pages */
+.article[data-type="project"] section {
+  padding-top: var(--project-section-padding-y);
+  padding-bottom: var(--project-section-padding-y);
+}
+.article-header {
+  margin-bottom: 24px;
+}
+.article-eyebrow {
+  color: var(--rule-color);
+  font-size: var(--font-size-section-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+.article-title {
+  font-size: clamp(28px, 4vw, 40px);
+  padding: 12px 0;
+  font-weight: 400;
+  color: #111827;
+  margin: 0 0 8px;
+  line-height: 1.15;
+}
+.article-meta {
+  color: #6b7280;
+  font-size: 14px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.article-tags {
+  display: inline-flex;
+  gap: 8px;
+}
+.article-hero {
+  margin: 18px 0;
+}
+.article-hero img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+}
+.article-subtitle {
+  font-size: clamp(18px, 2.4vw, 22px);
+  font-weight: 600;
+  color: #111827;
+  margin: 24px 0 12px;
+}
+.project-overview p {
+  color: #1f2937;
+  line-height: 1.7;
+}
+
+/* Project details (formerly gallery) */
+.project-gallery,
+.project-details {
+  margin-top: 0px;
+}
+.gallery-grid,
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.gallery-item,
+.details-item {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+.gallery-item img,
+.details-item img {
+  width: 100%;
+  height: var(--gallery-image-height);
+  object-fit: cover; /* crop to keep captions aligned */
+  display: block;
+}
+.gallery-item a,
+.details-item a {
+  display: block;
+}
+.gallery-item figcaption,
+.details-item figcaption {
+  padding: 20px 20px;
+  color: #4b5563;
+  font-size: 14px;
+}
+.gallery-item .gallery-title,
+.details-item .details-title {
+  color: #111827;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.gallery-item .gallery-caption,
+.details-item .details-caption {
+  color: #4b5563;
+}
+.project-writing {
+  margin-top: 8px;
+}
+.article-content {
+  max-width: 75ch;
+  color: #1f2937;
+  line-height: 1.75;
+}
+.article-content h2 {
+  font-size: clamp(22px, 3vw, 28px);
+  margin: 1.6em 0 0.6em;
+}
+.article-content h3 {
+  font-size: clamp(18px, 2.5vw, 22px);
+  margin: 1.4em 0 0.5em;
+}
+.article-content p {
+  margin: 1em 0;
+}
+.article-content ul,
+.article-content ol {
+  margin: 1em 0 1em 1.25em;
+}
+.article-content blockquote {
+  margin: 1.5em 0;
+  padding: 0.6em 1em;
+  background: #f9fafb;
+  border-left: 3px solid #e5e7eb;
+  color: #374151;
+}
+.article-content code {
+  background: #f3f4f6;
+  padding: 0.15em 0.35em;
+  border-radius: 4px;
+  font-size: 0.95em;
+}
+.article-content pre {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 16px;
+  border-radius: 8px;
+  overflow: auto;
+}
+.article-content pre code {
+  background: transparent;
+  padding: 0;
+}
+
+/* Compact spacing just for project detail pages */
+.article[data-type="project"] .article-header {
+  margin-bottom: 12px;
+}
+.article[data-type="project"] .article-hero {
+  margin: 0px 0;
+}
+.article[data-type="project"] .article-subtitle {
+  margin: 0px 0 12px;
+}
+.article[data-type="project"] .article-lede {
+  margin: 12px 0;
+  font-size: clamp(16px, 1.9vw, 19px);
+  color: #374151;
+}
+.article[data-type="project"] .project-overview p {
+  margin: 0 0 8px;
+}
+.article[data-type="project"] .project-writing,
+.article[data-type="project"] .project-details {
+  margin-top: 0px;
+}
+.article[data-type="project"] .gallery-grid,
+.article[data-type="project"] .details-grid {
+  gap: 12px;
+}
+.article[data-type="project"] .gallery-item figcaption,
+.article[data-type="project"] .details-item figcaption {
+  padding: 12px 12px;
+}
+.article[data-type="project"] .article-content p {
+  margin: 0.6em 0;
+}
+@media (max-width: 768px) {
+  .article {
+    padding-top: 96px;
+  }
+  .article-title {
+    font-size: clamp(24px, 6vw, 32px);
+  }
+  .article-content {
+    max-width: 100%;
+  }
+  /* Gallery image cap on small screens */
+  :root {
+    --gallery-image-height: 160px;
+  }
+  /* Slightly tighter footer on small screens while keeping breathing room */
+  .site-footer {
+    padding: 24px 0 32px;
+  }
 }
 
 .site-footer .container {
@@ -798,12 +1236,92 @@ section:not(.hero) {
   font-size: var(--font-size-sm);
 }
 
+/* Footer layout with right-aligned social icons */
+.site-footer .footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-social .social-icon {
+  color: #666;
+}
+.footer-social .social-icon:hover {
+  opacity: 0.8;
+}
+
+@media (max-width: 480px) {
+  .site-footer .footer-row {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+}
+
+/* Article navigation links and section "more" links */
+.article-topnav,
+.article-bottomnav {
+  margin: 8px 0 16px;
+}
+.article-bottomnav {
+  display: flex;
+  justify-content: flex-end; /* align More link to the right */
+}
+.article-back,
+.article-more,
+.section-more .more-link {
+  display: inline-block;
+  color: #4b5563;
+  text-decoration: none;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+  padding-bottom: 18px;
+}
+.article-back:hover,
+.article-more:hover,
+.section-more .more-link:hover {
+  text-decoration: underline;
+}
+.section-more {
+  margin-top: 16px;
+}
+
 /* Photo deck (stacked, draggable) */
 .photo-deck {
   position: relative;
   width: clamp(150px, 30vw, 280px);
   aspect-ratio: 3 / 4;
   /* margin-top: 100px; */
+}
+.btn-again {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  color: #111827;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  font-size: 14px;
+  cursor: pointer;
+}
+.photo-deck .btn-again {
+  position: absolute;
+  top: 50%;
+  right: 80px; /* moved 20px left from previous */
+  transform: translateY(-50%);
+  z-index: 0; /* below deck cards (z>=1), visible when all cards are gone */
+}
+.btn-again:hover {
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+.btn-again i {
+  font-size: 16px;
 }
 .photo-deck,
 .deck-card {
@@ -830,19 +1348,19 @@ section:not(.hero) {
   pointer-events: none; /* let parent handle pointer events for immediate drag */
 }
 .deck-card:nth-child(1) {
-  z-index: 3;
+  z-index: 4;
 }
 .deck-card:nth-child(2) {
   transform: translate(-14px, 12px) rotate(-4deg) scale(0.98);
-  z-index: 2;
+  z-index: 3;
 }
 .deck-card:nth-child(3) {
   transform: translate(16px, 24px) rotate(4deg) scale(0.96);
-  z-index: 1;
+  z-index: 2;
 }
 .deck-card:nth-child(n + 4) {
   transform: translate(0, 36px) scale(0.94);
-  z-index: 0;
+  z-index: 1;
   opacity: 0.9;
 }
 .deck-card.top {

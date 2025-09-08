@@ -1,0 +1,53 @@
+[
+  {
+    "title": "Visualizing Singapore Government Spending",
+    "slug": "visualise-spending",
+    "description": "Insights into the spending pattern of each Ministry and Agency of Singapore Government",
+    "image": "assets/Geviz_project_cover.png",
+    "alt": "Singapore government spending dashboard showing budget allocation across ministries with interactive charts",
+    "imageLink": "https://is428-ay1819-geviz.shinyapps.io/Group7_GeViz/",
+    "tags": ["Dashboard", "R Shiny"],
+    "writings": [
+      "As part of Singapore's Smart Nation Initiative, the nation's public data is made available on open data portals for decision makers to monitor and gain insights about Singapore’s social and economic trends.",
+      "Due to the lack of a proper tool to visualize these data, the public is unable to harness the value of these data. To address this issue, we created GeViz, an interactive visual analytics dashboard for the public and ministries of Singapore to uncover insights on Singapore government's procurement spending, with the aim to identify procurement needs of Singapore government, spending patterns, as well as, relationships between ministries and suppliers.",
+      "Tools Used: R (visualization & application development), Python (web scraping & category classification) and Adobe Photoshop"
+    ],
+    "gallery": [
+      {
+        "src": "assets/geviz/treemap.png",
+        "title": "An Overview of Agency Spending within Each Ministry",
+        "alt": "Overview",
+        "caption": "Treemap chart is used here to provide a birds-eye view of each each ministry's spending breakdown by agency and category. The size of the box represents number of procurement contracts of each procurement category while the colour intensity represents the total amount of good and services procured."
+      },
+      {
+        "src": "assets/geviz/network.jpeg",
+        "title": "Relationships Between Agencies and Suppliers",
+        "alt": "Breakdown",
+        "caption": "ITo best represent the interlinked relationship beteewen suppliers and agencies under a selected ministry, network diagram was used to shows the common suppliers between agencies. The triangle icon represents agencies while the circle icon represents suppliers."
+      },
+      {
+        "src": "assets/geviz/sangkey.jpeg",
+        "title": "Main Suppliers of an Agency by Spending Category",
+        "alt": "Sankey",
+        "caption": "This sankey diagram was created with R's NetworkD3 library, the chart shows the cash flow between a selected agency and its suppliers for a selected procurement category. The thickness of the path represents the total dollar amount of goods and services procured from a particular supplier."
+      },
+      {
+        "src": "assets/geviz/wordcloud.jpeg",
+        "title": "A Glimpse into Goods and Services Procured",
+        "alt": "Word cloud",
+        "caption": "This word cloud was created with R's Wordcloud2 library, it shows the top goods and services procured by a selected agency and a selected category. The size of the word within the word cloud corresponds to the frequency of the word in the procurement descriptions."
+      }
+    ]
+  },
+  {
+    "title": "Detecting Financial Statement Fraud with ML",
+    "slug": "detect-fs-fraud",
+    "description": "How machine learning can detect accounting fraud",
+    "image": "assets/fs-ml.jpg",
+    "alt": "An article on detecting financial statrment fraud with machine learning ",
+    "externalUrl": "https://medium.com/data-science/detecting-firms-with-intentional-misstatements-using-machine-learning-a943191f88cf",
+    "tags": ["Fraud detection", "Machine learning"],
+    "writings": [],
+    "gallery": []
+  }
+]

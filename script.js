@@ -6,19 +6,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
   navLinks.forEach((link) => {
     link.addEventListener("click", function (e) {
+      const href = this.getAttribute("href") || "";
+      // Only smooth-scroll for on-page hash links
+      if (!href.startsWith("#")) return;
       e.preventDefault();
-
-      const targetId = this.getAttribute("href");
-      const targetSection = document.querySelector(targetId);
-
+      const targetSection = document.querySelector(href);
       if (targetSection) {
         const navHeight = document.querySelector(".navbar").offsetHeight;
         const targetPosition = targetSection.offsetTop - navHeight - 20;
-
-        window.scrollTo({
-          top: targetPosition,
-          behavior: "smooth",
-        });
+        window.scrollTo({ top: targetPosition, behavior: "smooth" });
       }
     });
   });
@@ -122,6 +118,178 @@ document.addEventListener("DOMContentLoaded", function () {
     observer.observe(category);
   });
 
+  // Observe project and post cards for entrance animation
+  const projectCards = document.querySelectorAll(".project-card");
+  projectCards.forEach((card) => {
+    card.style.opacity = "0";
+    card.style.transform = "translateY(16px)";
+    card.style.transition = "all 0.5s ease";
+    observer.observe(card);
+  });
+
+  const postCards = document.querySelectorAll(".post-card");
+  postCards.forEach((card) => {
+    card.style.opacity = "0";
+    card.style.transform = "translateY(16px)";
+    card.style.transition = "all 0.5s ease";
+    observer.observe(card);
+  });
+
+  // Lightweight GitHub-based CMS: load content from JSON files stored in repo
+  async function fetchJSON(path) {
+    try {
+      const res = await fetch(path, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (e) {
+      console.warn("Failed to load", path, e);
+      return null;
+    }
+  }
+
+  function computeLink(item, type) {
+    const direct = item.link || item.externalUrl;
+    if (direct) {
+      return { href: direct, external: /^https?:\/\//.test(direct) };
+    }
+    const slug = item.slug || (item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    if (slug) return { href: `${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
+    const fallback = item.url || "";
+    if (fallback) return { href: fallback, external: /^https?:\/\//.test(fallback) };
+    return { href: "#", external: false };
+  }
+
+  function renderProjects(items) {
+    const grid = document.querySelector(".project-grid");
+    if (!grid || !Array.isArray(items)) return;
+    grid.innerHTML = "";
+    items.forEach((p) => {
+      const article = document.createElement("article");
+      article.className = "project-card";
+      const link = document.createElement("a");
+      link.className = "project-link";
+      const { href: projHref, external: projExternal } = computeLink(p, 'project');
+      link.href = projHref;
+      if (projExternal) {
+        link.target = "_blank";
+        link.rel = "noopener";
+      }
+      link.setAttribute("aria-label", `View project: ${p.title || "Project"}`);
+
+      const media = document.createElement("div");
+      media.className = "project-media";
+      if (p.image) {
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.alt = p.alt || p.title || "Project image";
+        img.src = p.image;
+        img.onerror = () => {
+          img.remove();
+        };
+        media.appendChild(img);
+      }
+
+      const body = document.createElement("div");
+      body.className = "project-body";
+      const meta = document.createElement("div");
+      meta.className = "project-meta";
+      (p.tags || []).forEach((t) => {
+        const span = document.createElement("span");
+        span.className = "project-tag";
+        span.textContent = t;
+        meta.appendChild(span);
+      });
+      const h3 = document.createElement("h3");
+      h3.className = "project-title";
+      h3.textContent = p.title || "Untitled";
+      const desc = document.createElement("p");
+      desc.className = "project-desc";
+      desc.textContent = p.description || "";
+
+      body.appendChild(meta);
+      body.appendChild(h3);
+      body.appendChild(desc);
+
+      link.appendChild(media);
+      link.appendChild(body);
+      article.appendChild(link);
+
+      // animate on scroll
+      article.style.opacity = "0";
+      article.style.transform = "translateY(16px)";
+      article.style.transition = "all 0.5s ease";
+      observer.observe(article);
+
+      grid.appendChild(article);
+    });
+  }
+
+  function renderPosts(items) {
+    const list = document.querySelector(".post-list");
+    if (!list || !Array.isArray(items)) return;
+    list.innerHTML = "";
+    items.forEach((p) => {
+      const article = document.createElement("article");
+      article.className = "post-card";
+      const link = document.createElement("a");
+      link.className = "post-link";
+      const { href: postHref, external: postExternal } = computeLink(p, 'post');
+      link.href = postHref;
+      if (postExternal) {
+        link.target = "_blank";
+        link.rel = "noopener";
+      }
+
+      const header = document.createElement("header");
+      header.className = "post-header";
+      const h3 = document.createElement("h3");
+      h3.className = "post-title";
+      h3.textContent = p.title || "Untitled";
+      const time = document.createElement("time");
+      time.className = "post-date";
+      if (p.date) time.setAttribute("datetime", p.date);
+      time.textContent = p.datePretty || p.date || "";
+      header.appendChild(h3);
+      header.appendChild(time);
+
+      const excerpt = document.createElement("p");
+      excerpt.className = "post-excerpt";
+      excerpt.textContent = p.excerpt || "";
+
+      const tags = document.createElement("div");
+      tags.className = "post-tags";
+      (p.tags || []).forEach((t) => {
+        const span = document.createElement("span");
+        span.className = "post-tag";
+        span.textContent = t;
+        tags.appendChild(span);
+      });
+
+      link.appendChild(header);
+      link.appendChild(excerpt);
+      link.appendChild(tags);
+      article.appendChild(link);
+
+      // animate on scroll
+      article.style.opacity = "0";
+      article.style.transform = "translateY(16px)";
+      article.style.transition = "all 0.5s ease";
+      observer.observe(article);
+
+      list.appendChild(article);
+    });
+  }
+
+  // Load content from JSON (edit these files in GitHub to update site)
+  (async () => {
+    const [projects, posts] = await Promise.all([
+      fetchJSON("data/projects.json"),
+      fetchJSON("data/posts.json"),
+    ]);
+    if (projects) renderProjects(projects);
+    if (posts) renderPosts(posts);
+  })();
+
   // Hero toggle: Data Analyst vs Risk Analytics
   const blurb = document.getElementById("hero-blurb");
   const seg = document.getElementById("profile-toggle");
@@ -205,6 +373,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Photo deck drag/swipe
   const deck = document.getElementById("photo-deck");
+  const againBtn = document.getElementById("deck-again");
+  let initialPhotos = [];
   function layoutDeck() {
     if (!deck) return;
     const cards = Array.from(deck.querySelectorAll(".deck-card"));
@@ -214,6 +384,39 @@ document.addEventListener("DOMContentLoaded", function () {
   layoutDeck();
 
   if (deck) {
+    // Capture initial images so we can restore the deck
+    initialPhotos = Array.from(deck.querySelectorAll("img")).map((img) => ({
+      src: img.getAttribute("src"),
+      alt: img.getAttribute("alt") || "Photo",
+    }));
+
+    function showAgainButtonIfEmpty() {
+      if (!deck.querySelector(".deck-card")) {
+        if (againBtn) againBtn.hidden = false;
+      }
+    }
+
+    function restoreDeck() {
+      if (!deck) return;
+      deck.innerHTML = "";
+      initialPhotos.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "deck-card";
+        const img = document.createElement("img");
+        img.src = p.src;
+        img.alt = p.alt;
+        img.loading = "lazy";
+        img.setAttribute("draggable", "false");
+        card.appendChild(img);
+        deck.appendChild(card);
+      });
+      // Keep Again button always present behind the deck
+      layoutDeck();
+    }
+
+    if (againBtn) {
+      againBtn.addEventListener("click", restoreDeck);
+    }
     let startX = 0,
       startY = 0,
       dx = 0,
@@ -291,9 +494,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             topCard = null;
             layoutDeck();
-            if (!deck.querySelector(".deck-card")) {
-              deck.style.display = "none";
-            }
+            showAgainButtonIfEmpty();
           },
           { once: true }
         );
@@ -317,27 +518,3 @@ document.addEventListener("DOMContentLoaded", function () {
     deck.addEventListener("pointerdown", onPointerDown);
   }
 });
-
-// Add CSS for active nav state
-const style = document.createElement("style");
-style.textContent = `
-    .nav-links a.active {
-        color: #2563eb;
-        position: relative;
-    }
-    
-    .nav-links a.active::after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #2563eb;
-    }
-    
-    .navbar {
-        transition: transform 0.3s ease;
-    }
-`;
-document.head.appendChild(style);
