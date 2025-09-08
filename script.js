@@ -12,13 +12,14 @@ document.addEventListener("DOMContentLoaded", function () {
       link.__boundScroll = true;
       link.addEventListener("click", function (e) {
         const href = this.getAttribute("href") || "";
-        // Support both "#id" and "index.html#id" when on the homepage
-        const onHome = /(?:^|\/)(index\.html)?$/.test(location.pathname);
+        // Support "#id", "index.html#id" and "/#id" when on the homepage
+        const onHome = /^(?:\/?|\/index\.html)$/.test(location.pathname);
         const hashOnly = href.startsWith("#");
-        const homeHash = onHome && href.startsWith("index.html#");
-        if (!hashOnly && !homeHash) return;
+        const homeHashIdx = onHome && href.startsWith("index.html#");
+        const homeHashRoot = onHome && href.startsWith("/#");
+        if (!hashOnly && !homeHashIdx && !homeHashRoot) return;
         e.preventDefault();
-        const targetSelector = hashOnly ? href : href.replace(/^index\.html/, "");
+        const targetSelector = hashOnly ? href : href.replace(/^(?:index\.html|\/)/, "");
         const targetSection = document.querySelector(targetSelector);
         if (targetSection) {
           const navHeight = (document.querySelector(".navbar")?.offsetHeight) || 0;
@@ -62,10 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
         // Remove active class from all links
         navLinks.forEach((link) => link.classList.remove("active"));
-        // Add active class to current link (match both href="#id" and href="index.html#id")
+        // Add active class to current link (match href="#id", "index.html#id" and "/#id")
         const idSel = `a[href="#${sectionId}"]`;
         const homeSel = `a[href="index.html#${sectionId}"]`;
-        const candidate = document.querySelector(idSel) || document.querySelector(homeSel);
+        const rootSel = `a[href="/#${sectionId}"]`;
+        const candidate = document.querySelector(idSel) || document.querySelector(homeSel) || document.querySelector(rootSel);
         if (candidate) candidate.classList.add("active");
       }
     });
@@ -172,7 +174,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return { href: direct, external: /^https?:\/\//.test(direct) };
     }
     const slug = item.slug || (item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    if (slug) return { href: `${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
+    if (slug) return { href: `/${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
     const fallback = item.url || "";
     if (fallback) return { href: fallback, external: /^https?:\/\//.test(fallback) };
     return { href: "#", external: false };
@@ -302,8 +304,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Load content from JSON (edit these files in GitHub to update site)
   (async () => {
     const [projects, posts] = await Promise.all([
-      fetchJSON("data/projects.json"),
-      fetchJSON("data/posts.json"),
+      fetchJSON("/data/projects.json"),
+      fetchJSON("/data/posts.json"),
     ]);
     if (projects) renderProjects(projects);
     if (posts) renderPosts(posts);

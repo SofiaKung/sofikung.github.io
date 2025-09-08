@@ -3,37 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Post – Sofia Kung</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" href="assets/icon-sk-badge.svg" type="image/svg+xml" />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-      rel="stylesheet"
-    />
+    <title>All Projects – Sofia Kung</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   </head>
   <body>
     <div id="site-nav"></div>
 
-    <main class="article" id="article-root" data-type="post">
+    <main class="article">
       <div class="container">
-        <nav class="article-topnav">
-          <a class="article-back" href="/blog/">← Back to blog</a>
-        </nav>
         <header class="article-header">
-          <p class="article-eyebrow">Post</p>
-          <h1 class="article-title" id="article-title">Loading…</h1>
-          <div class="article-meta">
-            <time id="article-date"></time>
-            <span id="article-tags" class="article-tags"></span>
-          </div>
+          <p class="article-eyebrow">Projects</p>
+          <h1 class="article-title">All Projects</h1>
         </header>
-        <figure class="article-hero" id="article-hero" hidden></figure>
-        <article class="article-content" id="article-content">
-          <p>Loading content…</p>
-        </article>
-        <nav class="article-bottomnav">
-          <a class="article-more" href="/blog/">→ More posts</a>
-        </nav>
+        <section class="projects">
+          <div class="project-grid" id="all-projects"></div>
+        </section>
       </div>
     </main>
 
@@ -69,7 +55,7 @@
       </div>
     </footer>
 
-    <script src="nav.js"></script>
-    <script src="detail.js"></script>
+    <script src="/nav.js"></script>
+    <script src="/list.js"></script>
   </body>
   </html>

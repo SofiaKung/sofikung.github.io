@@ -1,15 +1,18 @@
 // Listing renderer for all posts/projects pages
 document.addEventListener("DOMContentLoaded", () => {
-  function setActiveNavBasedOnPath() {
-    const path = (location.pathname || "").split("/").pop();
-    if (path === "posts.html") {
-      const link = document.querySelector('.nav-links a[href="posts.html"]');
-      if (link) link.classList.add("active");
-    } else if (path === "projects.html") {
-      const link = document.querySelector('.nav-links a[href="projects.html"]');
-      if (link) link.classList.add("active");
-    }
+function setActiveNavBasedOnPath() {
+  const p = location.pathname || "";
+  const isBlog = /(?:^|\/)blog(?:\/|$)/.test(p) || p.endsWith("posts.html");
+  const isProjects = /(?:^|\/)projects(?:\/|$)/.test(p) || p.endsWith("projects.html");
+  if (isBlog) {
+    const link = document.querySelector('.nav-links a[data-nav="blog"], .nav-links a[href$="/blog/"], .nav-links a[href="posts.html"]');
+    if (link) link.classList.add("active");
   }
+  if (isProjects) {
+    const link = document.querySelector('.nav-links a[data-nav="projects"], .nav-links a[href$="/projects/"], .nav-links a[href="projects.html"]');
+    if (link) link.classList.add("active");
+  }
+}
   function bindNavInteractions() {
     // Active highlight
     setActiveNavBasedOnPath();
@@ -182,11 +185,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   (async () => {
     if (document.getElementById("all-projects") || document.querySelector(".project-grid")) {
-      const projects = await fetchJSON("data/projects.json");
+      const projects = await fetchJSON("/data/projects.json");
       if (projects) renderProjects(projects, "#all-projects");
     }
     if (document.getElementById("all-posts") || document.querySelector(".post-list")) {
-      const posts = await fetchJSON("data/posts.json");
+      const posts = await fetchJSON("/data/posts.json");
       if (posts) renderPosts(posts, "#all-posts");
     }
   })();

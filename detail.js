@@ -59,10 +59,10 @@
 
   // Mark the appropriate nav item active
   function setActiveNav() {
-    const navPosts = qs('.nav-links a[href="posts.html"]');
-    const navProjects = qs('.nav-links a[href="projects.html"]');
-    if (type === 'post' && navPosts) navPosts.classList.add('active');
-    if (type === 'project' && navProjects) navProjects.classList.add('active');
+  const navPosts = qs('.nav-links a[data-nav="blog"], .nav-links a[href$="/blog/"], .nav-links a[href="posts.html"]');
+  const navProjects = qs('.nav-links a[data-nav="projects"], .nav-links a[href$="/projects/"], .nav-links a[href="projects.html"]');
+  if (type === 'post' && navPosts) navPosts.classList.add('active');
+  if (type === 'project' && navProjects) navProjects.classList.add('active');
   }
   setActiveNav();
   window.addEventListener('nav-injected', setActiveNav);
@@ -81,7 +81,7 @@
   const writingWrap = qs('#project-writing');
 
   (async () => {
-    const dataPath = type === "post" ? "data/posts.json" : "data/projects.json";
+    const dataPath = type === "post" ? "/data/posts.json" : "/data/projects.json";
     const items = await fetchJSON(dataPath);
     if (!Array.isArray(items)) {
       contentEl.innerHTML = "<p>Unable to load content.</p>";
