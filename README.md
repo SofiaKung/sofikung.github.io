@@ -1,15 +1,14 @@
 # Website Project
 
-A clean portfolio site with a lightweight, GitHub-based CMS. Homepage lists Projects and Posts; detail pages are rendered from JSON lists and optional HTML content files.
+A clean portfolio site with a lightweight, GitHub-based CMS. Homepage lists Projects and Posts; list pages render the same data; detail pages are rendered from JSON lists and optional HTML or JSON block content.
 
 ## Quick Start
 - Installation:
   - Clone: `git clone <your-fork-or-repo-url>` and open the folder.
-- Development setup:
-  - Serve locally (required for `fetch`):
-    - Python: `python3 -m http.server 8000`
-    - Node: `npx http-server -p 8000` or `npx serve .`
-    - VS Code: use the “Live Server” extension
+- Development setup (fetch requires HTTP):
+  - Python: `python3 -m http.server 8000`
+  - Node: `npx http-server -p 8000` or `npx serve .`
+  - VS Code: use the “Live Server” extension
   - Visit: `http://localhost:8000/`
 
 ## CMS System
@@ -19,77 +18,96 @@ Content is stored in the repo and loaded at runtime.
   - Posts: `data/posts.json`
   - Projects: `data/projects.json`
 - Detail pages (routing by slug):
-  - Post page: `post.html?slug=<post-slug>`
-  - Project page: `project.html?slug=<project-slug>`
-- Direct links (no detail page):
-  - Provide `link` (or `externalUrl`) in the JSON item to send cards directly to that URL.
-  - External URLs (`http(s)://…`) open in a new tab; internal paths can be used as well.
-- Content bodies (optional, HTML):
-  - Posts: `content/posts/<slug>.html`
-  - Projects: `content/projects/<slug>.html`
-- Homepage rendering: `script.js` fetches JSON and builds cards.
-- Detail rendering: `detail.js` loads JSON, then injects the HTML body if present.
+  - Post page: `/post.html?slug=<post-slug>`
+  - Project page: `/project.html?slug=<project-slug>`
+- Direct links (skip detail page):
+  - Provide `link` (or `externalUrl`) in the JSON item to link cards directly to that URL.
+  - External URLs (`http(s)://…`) open in a new tab; internal paths work too.
+- Content bodies (optional):
+  - HTML file: `content/posts/<slug>.html` or `content/projects/<slug>.html`
+  - JSON blocks: set `body` in your JSON item (see Flexible Content Blocks below)
+- Rendering entry points:
+  - Homepage: `script.js` fetches JSON and builds cards for Projects and Posts.
+  - List pages: `list.js` renders `/projects/` and `/blog/` from the same JSON data.
+  - Detail pages: `detail.js` loads JSON, then injects HTML or JSON blocks if present.
 
-### Project Pages (Overview, Gallery, Writing)
-- Sections on `project.html` are populated from `data/projects.json` and optional HTML files:
-  - Overview: uses `description` (short summary at top).
-  - Gallery: renders a responsive grid when `gallery` items are present.
-  - Writing: long-form case study. If `content/projects/<slug>.html` exists, it is used. Otherwise, if a `writings` array is provided, each string is rendered as a paragraph.
-- Auto-hide: Overview shows when `description` exists; Gallery shows only if `gallery` has items; Writing shows only if HTML exists or `writings` has at least one paragraph.
+### Clean URLs
+- List pages live at:
+  - Blog: `/blog/` (`blog/index.html`)
+  - Projects: `/projects/` (`projects/index.html`)
+- Nav and footer are injected from partials so paths work on nested routes:
+  - Navbar: `partials/nav.html` via `nav.js`
+  - Footer: `partials/footer.html` via `footer.js`
 
-Project JSON fields (in addition to `title`, `slug`, `tags`, `image`, `alt`):
-- `description`: string — short overview shown near the top of the page.
-- `writings`: string[] — optional multi-paragraph content used when there is no HTML file.
-- `gallery`: array of objects (optional) with the following keys:
-  - `src`: string — image path under `assets/...`
-  - `title`: string (optional) — small heading displayed above the caption
-  - `caption`: string (optional) — descriptive text under the title
-  - `alt`: string (optional) — accessible description for the image
+## Projects & Posts Data
 
-Example project entry:
+Shared core fields per item:
+- `title` (string)
+- `slug` (string) — used for detail page routing
+- `tags` (string[])
+- `description` (string) — short overview (used on projects detail page)
+- Cover image (all views): use one of
+  - `cover` (preferred)
+  - `coverImage`
+  - `image` (fallback)
+- Alt text (cover):
+  - `coverAlt` (preferred) → `alt` → `title`
+- Optional direct link:
+  - `link` or `externalUrl`
+
+Project-only extras:
+- `gallery`: array of images with optional captions (rendered as Project Details)
+  - Each item: `{ src, title?, caption?, alt?, link? }`
+
+Post-only extras:
+- `date` (ISO), `datePretty` (display string), `excerpt` (fallback snippet)
+
+### Flexible Content Blocks (JSON `body`)
+Use a `body` array for long-form writing (works for both Projects and Posts). If present, it takes precedence over HTML and `writings`/`excerpt`.
+
+Supported blocks:
+- heading: `{ "type": "heading", "level": 2, "text": "The Challenge" }` (level: 2–4)
+- paragraph: `{ "type": "paragraph", "text": "How do you make sense…" }`
+- list: `{ "type": "list", "ordered": false, "items": ["A", "B"] }`
+- quote: `{ "type": "quote", "text": "A key insight", "cite": "Someone" }`
+- image: `{ "type": "image", "src": "assets/foo.jpg", "alt": "desc", "caption": "optional" }`
+
+Example body for a project:
 
 ```json
 {
-  "title": "Fraud Detection Pipeline",
-  "slug": "fraud-detection-pipeline",
-  "description": "End-to-end pipeline for real-time risk decisions.",
-  "image": "assets/fraud-cover.jpg",
-  "alt": "Architecture diagram",
-  "tags": ["Risk", "Streaming"],
-  "link": "https://medium.com/your-article" ,
-  "writings": [
-    "Signals run on event streams for proactive prevention.",
-    "Feedback loops connect investigator actions to models and rules."
-  ],
-  "gallery": [
-    { "src": "assets/pipeline-overview.jpg", "title": "Overview", "caption": "Events → features → rules/models → decisions." },
-    { "src": "assets/feature-store.jpg", "title": "Feature Store", "caption": "Low-latency features available to rules and models." }
+  "title": "Visualizing Singapore Government Spending",
+  "slug": "visualise-spending",
+  "cover": "assets/Geviz_project_cover.png",
+  "tags": ["Dashboard", "R Shiny"],
+  "description": "Insights into the spending pattern...",
+  "body": [
+    { "type": "heading", "level": 2, "text": "The Challenge" },
+    { "type": "paragraph", "text": "How do you make sense of billions in government spending? Singapore's government budget data is publicly available, but buried in dense PDF reports and spreadsheets. Citizens deserve to understand where their tax dollars go—but who has time to parse through hundreds of pages of financial documents?" },
+    { "type": "heading", "level": 2, "text": "The Solution" },
+    { "type": "paragraph", "text": "I built an interactive dashboard that transforms Singapore's complex budget data into clear, explorable visualizations. Think of it as Google Analytics, but for government spending." }
   ]
 }
 ```
 
-### Posts & Listings
-- Posts are stacked into a rounded container with subtle dividers on the homepage and `posts.html`.
-- Each post’s date appears on the same line as the title.
-
-### Hero Photo Deck
-- The hero’s photo deck supports drag/swipe. When all cards are swiped away, an “Again” button anchored to the deck’s right-center restores the original stack.
-
-### Docs
-- [CMS Documentation](./docs/cms/)
-- [Update Instructions](./docs/cms/updating.md)
-- [Content Guidelines](./docs/cms/content-guidelines.md)
+Fallback behavior:
+- Projects: if no `body`, use `content/projects/<slug>.html`; else use `writings` (string array paragraphs) if provided.
+- Posts: if no `body`, use `content/posts/<slug>.html`; else show `excerpt`.
 
 ## Project Structure (high level)
 - `index.html` — Homepage (hero, Projects, Posts)
+- `blog/index.html`, `projects/index.html` — List pages
 - `post.html`, `project.html` — Detail templates (shared nav/footer)
+- `nav.js`, `footer.js` — Inject shared nav/footer from `partials/`
 - `script.js` — Homepage interaction + list rendering
+- `list.js` — List page rendering
 - `detail.js` — Detail page renderer
 - `styles.css` — Site styles (cards, article typography, responsive)
 - `data/` — JSON data for lists
-- `content/` — HTML bodies per slug
+- `content/` — Optional HTML bodies per slug
 - `assets/` — Images and icons
 
 ## Deployment
-- Any static host works (GitHub Pages, Netlify, Vercel). Ensure the site is served from the repo root or adjust fetch paths if deploying to a subpath.
+- Any static host works (GitHub Pages, Netlify, Vercel).
+- Paths are root-absolute (e.g., `/data/...`, `/partials/...`). Deploy at the domain root (recommended; e.g., with a CNAME) for these to work as-is. If deploying under a subpath, adjust the fetch/links to be relative.
 - After pushing content changes (JSON/HTML), pages update on next load (no build step required).

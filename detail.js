@@ -28,6 +28,60 @@
     }
   }
 
+  // Render a flexible JSON body: array of blocks
+  function renderBodyBlocks(blocks, container) {
+    if (!Array.isArray(blocks) || !container) return false;
+    container.innerHTML = "";
+    blocks.forEach((b) => {
+      const type = (b && b.type) || "paragraph";
+      if (type === "heading") {
+        const level = Math.min(4, Math.max(2, Number(b.level) || 2));
+        const h = document.createElement("h" + level);
+        h.textContent = String(b.text || b.content || "");
+        h.className = "article-subtitle";
+        container.appendChild(h);
+      } else if (type === "paragraph") {
+        const p = document.createElement("p");
+        p.textContent = String(b.text || b.content || "");
+        container.appendChild(p);
+      } else if (type === "list") {
+        const items = Array.isArray(b.items) ? b.items : [];
+        const ul = document.createElement(b.ordered ? "ol" : "ul");
+        items.forEach((t) => {
+          const li = document.createElement("li");
+          li.textContent = String(t || "");
+          ul.appendChild(li);
+        });
+        container.appendChild(ul);
+      } else if (type === "quote") {
+        const q = document.createElement("blockquote");
+        const p = document.createElement("p");
+        p.textContent = String(b.text || b.content || "");
+        q.appendChild(p);
+        if (b.cite) {
+          const c = document.createElement("cite");
+          c.textContent = String(b.cite);
+          q.appendChild(c);
+        }
+        container.appendChild(q);
+      } else if (type === "image") {
+        const fig = document.createElement("figure");
+        const img = document.createElement("img");
+        img.src = String(b.src || b.image || "");
+        img.alt = String(b.alt || "");
+        img.loading = "lazy";
+        fig.appendChild(img);
+        if (b.caption) {
+          const cap = document.createElement("figcaption");
+          cap.textContent = String(b.caption);
+          fig.appendChild(cap);
+        }
+        container.appendChild(fig);
+      }
+    });
+    return true;
+  }
+
   // Simple mobile nav toggle (keeps header consistent with index)
   function bindNavInteractions() {
     const navToggle = qs(".nav-toggle");
@@ -220,7 +274,10 @@
         attachLightbox(detailsGrid);
       }
       // Writing
-      if (html) {
+      if (Array.isArray(item.body) && item.body.length) {
+        renderBodyBlocks(item.body, contentEl);
+        if (writingWrap) writingWrap.hidden = false;
+      } else if (html) {
         contentEl.innerHTML = html;
         if (writingWrap) writingWrap.hidden = false;
       } else if (Array.isArray(item.writings) && item.writings.length) {
@@ -237,7 +294,9 @@
         if (writingWrap) writingWrap.hidden = true;
       }
     } else {
-      if (html) {
+      if (Array.isArray(item.body) && item.body.length) {
+        renderBodyBlocks(item.body, contentEl);
+      } else if (html) {
         contentEl.innerHTML = html;
       } else if (type === "post") {
         contentEl.innerHTML = `<p>${item.excerpt || ""}</p>`;
