@@ -1,5 +1,14 @@
 // Listing renderer for all posts/projects pages
 document.addEventListener("DOMContentLoaded", () => {
+  // Set active nav based on listing page
+  const path = (location.pathname || "").split("/").pop();
+  if (path === "posts.html") {
+    const link = document.querySelector('.nav-links a[href="posts.html"]');
+    if (link) link.classList.add("active");
+  } else if (path === "projects.html") {
+    const link = document.querySelector('.nav-links a[href="projects.html"]');
+    if (link) link.classList.add("active");
+  }
   // Mobile nav toggle (shared with other pages)
   const navToggle = document.querySelector(".nav-toggle");
   const navLinksEl = document.getElementById("primary-nav");
@@ -110,15 +119,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const header = document.createElement("header");
       header.className = "post-header";
+      const h3 = document.createElement("h3");
+      h3.className = "post-title";
+      h3.textContent = p.title || "Untitled";
       const time = document.createElement("time");
       time.className = "post-date";
       if (p.date) time.setAttribute("datetime", p.date);
       time.textContent = p.datePretty || p.date || "";
-      const h3 = document.createElement("h3");
-      h3.className = "post-title";
-      h3.textContent = p.title || "Untitled";
-      header.appendChild(time);
       header.appendChild(h3);
+      header.appendChild(time);
 
       const excerpt = document.createElement("p");
       excerpt.className = "post-excerpt";
@@ -158,4 +167,3 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })();
 });
-

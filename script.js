@@ -222,15 +222,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const header = document.createElement("header");
       header.className = "post-header";
+      const h3 = document.createElement("h3");
+      h3.className = "post-title";
+      h3.textContent = p.title || "Untitled";
       const time = document.createElement("time");
       time.className = "post-date";
       if (p.date) time.setAttribute("datetime", p.date);
       time.textContent = p.datePretty || p.date || "";
-      const h3 = document.createElement("h3");
-      h3.className = "post-title";
-      h3.textContent = p.title || "Untitled";
-      header.appendChild(time);
       header.appendChild(h3);
+      header.appendChild(time);
 
       const excerpt = document.createElement("p");
       excerpt.className = "post-excerpt";
@@ -353,6 +353,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Photo deck drag/swipe
   const deck = document.getElementById("photo-deck");
+  const againBtn = document.getElementById("deck-again");
+  let initialPhotos = [];
   function layoutDeck() {
     if (!deck) return;
     const cards = Array.from(deck.querySelectorAll(".deck-card"));
@@ -362,6 +364,39 @@ document.addEventListener("DOMContentLoaded", function () {
   layoutDeck();
 
   if (deck) {
+    // Capture initial images so we can restore the deck
+    initialPhotos = Array.from(deck.querySelectorAll("img")).map((img) => ({
+      src: img.getAttribute("src"),
+      alt: img.getAttribute("alt") || "Photo",
+    }));
+
+    function showAgainButtonIfEmpty() {
+      if (!deck.querySelector(".deck-card")) {
+        if (againBtn) againBtn.hidden = false;
+      }
+    }
+
+    function restoreDeck() {
+      if (!deck) return;
+      deck.innerHTML = "";
+      initialPhotos.forEach((p) => {
+        const card = document.createElement("div");
+        card.className = "deck-card";
+        const img = document.createElement("img");
+        img.src = p.src;
+        img.alt = p.alt;
+        img.loading = "lazy";
+        img.setAttribute("draggable", "false");
+        card.appendChild(img);
+        deck.appendChild(card);
+      });
+      // Keep Again button always present behind the deck
+      layoutDeck();
+    }
+
+    if (againBtn) {
+      againBtn.addEventListener("click", restoreDeck);
+    }
     let startX = 0,
       startY = 0,
       dx = 0,
@@ -439,9 +474,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             topCard = null;
             layoutDeck();
-            if (!deck.querySelector(".deck-card")) {
-              deck.style.display = "none";
-            }
+            showAgainButtonIfEmpty();
           },
           { once: true }
         );
@@ -465,27 +498,3 @@ document.addEventListener("DOMContentLoaded", function () {
     deck.addEventListener("pointerdown", onPointerDown);
   }
 });
-
-// Add CSS for active nav state
-const style = document.createElement("style");
-style.textContent = `
-    .nav-links a.active {
-        color: #2563eb;
-        position: relative;
-    }
-    
-    .nav-links a.active::after {
-        content: '';
-        position: absolute;
-        bottom: -8px;
-        left: 0;
-        right: 0;
-        height: 2px;
-        background: #2563eb;
-    }
-    
-    .navbar {
-        transition: transform 0.3s ease;
-    }
-`;
-document.head.appendChild(style);

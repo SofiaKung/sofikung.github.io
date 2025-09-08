@@ -27,6 +27,50 @@ Content is stored in the repo and loaded at runtime.
 - Homepage rendering: `script.js` fetches JSON and builds cards.
 - Detail rendering: `detail.js` loads JSON, then injects the HTML body if present.
 
+### Project Pages (Overview, Gallery, Writing)
+- Sections on `project.html` are populated from `data/projects.json` and optional HTML files:
+  - Overview: uses `description` (short summary at top).
+  - Gallery: renders a responsive grid when `gallery` items are present.
+  - Writing: long-form case study. If `content/projects/<slug>.html` exists, it is used. Otherwise, if a `writings` array is provided, each string is rendered as a paragraph.
+- Auto-hide: Overview shows when `description` exists; Gallery shows only if `gallery` has items; Writing shows only if HTML exists or `writings` has at least one paragraph.
+
+Project JSON fields (in addition to `title`, `slug`, `tags`, `image`, `alt`):
+- `description`: string — short overview shown near the top of the page.
+- `writings`: string[] — optional multi-paragraph content used when there is no HTML file.
+- `gallery`: array of objects (optional) with the following keys:
+  - `src`: string — image path under `assets/...`
+  - `title`: string (optional) — small heading displayed above the caption
+  - `caption`: string (optional) — descriptive text under the title
+  - `alt`: string (optional) — accessible description for the image
+
+Example project entry:
+
+```json
+{
+  "title": "Fraud Detection Pipeline",
+  "slug": "fraud-detection-pipeline",
+  "description": "End-to-end pipeline for real-time risk decisions.",
+  "image": "assets/fraud-cover.jpg",
+  "alt": "Architecture diagram",
+  "tags": ["Risk", "Streaming"],
+  "writings": [
+    "Signals run on event streams for proactive prevention.",
+    "Feedback loops connect investigator actions to models and rules."
+  ],
+  "gallery": [
+    { "src": "assets/pipeline-overview.jpg", "title": "Overview", "caption": "Events → features → rules/models → decisions." },
+    { "src": "assets/feature-store.jpg", "title": "Feature Store", "caption": "Low-latency features available to rules and models." }
+  ]
+}
+```
+
+### Posts & Listings
+- Posts are stacked into a rounded container with subtle dividers on the homepage and `posts.html`.
+- Each post’s date appears on the same line as the title.
+
+### Hero Photo Deck
+- The hero’s photo deck supports drag/swipe. When all cards are swiped away, an “Again” button anchored to the deck’s right-center restores the original stack.
+
 ### Docs
 - [CMS Documentation](./docs/cms/)
 - [Update Instructions](./docs/cms/updating.md)

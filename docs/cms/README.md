@@ -26,6 +26,12 @@ Posts also support:
 - `excerpt` (used on list and as fallback body)
 
 Projects also support:
-- `description` (used on list and as fallback body)
+- `description` (short overview shown on the detail page)
+- `writings` (string[], optional) — multi‑paragraph case‑study content rendered under “Writing” when no HTML content file is present
+- `gallery` (optional) — array of items:
+  - `src` (string): image path
+  - `title` (string, optional): small heading for the image
+  - `caption` (string, optional): description shown under the title
+  - `alt` (string, optional): alt text for accessibility
 
 See Update Instructions for how to add or edit content.

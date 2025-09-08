@@ -52,11 +52,24 @@
     return;
   }
 
+  // Mark the appropriate nav item active
+  const navPosts = qs('.nav-links a[href="posts.html"]');
+  const navProjects = qs('.nav-links a[href="projects.html"]');
+  if (type === 'post' && navPosts) navPosts.classList.add('active');
+  if (type === 'project' && navProjects) navProjects.classList.add('active');
+
   const titleEl = qs("#article-title");
   const dateEl = qs("#article-date");
   const tagsEl = qs("#article-tags");
   const heroEl = qs("#article-hero");
   const contentEl = qs("#article-content");
+  // Project-only sections
+  const ledeEl = qs('#project-lede');
+  const overviewWrap = qs('#project-overview');
+  const overviewText = qs('#project-overview-text');
+  const detailsWrap = qs('#project-details-wrapper');
+  const detailsGrid = qs('#project-details-grid');
+  const writingWrap = qs('#project-writing');
 
   (async () => {
     const dataPath = type === "post" ? "data/posts.json" : "data/projects.json";
@@ -92,16 +105,78 @@
       heroEl.hidden = false;
     }
 
-    // Body content: try content file first, else fall back to excerpt/description
+    // Body content: try content file first, else fall back to JSON fields
     const contentPath = `content/${type}s/${slug}.html`;
     const html = await fetchContentHTML(contentPath);
-    if (html) {
-      contentEl.innerHTML = html;
-    } else if (type === "post") {
-      contentEl.innerHTML = `<p>${item.excerpt || ""}</p>`;
+    if (type === 'project') {
+      // Description (lede) below the title
+      if (ledeEl && item.description) {
+        ledeEl.textContent = item.description;
+        ledeEl.hidden = false;
+      }
+      // Overview paragraphs (separate from description)
+      if (overviewWrap && overviewText && (Array.isArray(item.overview) ? item.overview.length : !!item.overview)) {
+        if (Array.isArray(item.overview)) {
+          overviewText.innerHTML = item.overview.map(p => `<p>${String(p)}</p>`).join('');
+        } else {
+          overviewText.innerHTML = `<p>${String(item.overview)}</p>`;
+        }
+        overviewWrap.hidden = false;
+      }
+      // Project Details (images + captions; previously Gallery)
+      if (detailsWrap && detailsGrid && Array.isArray(item.gallery) && item.gallery.length) {
+        detailsGrid.innerHTML = '';
+        item.gallery.forEach((g) => {
+          const fig = document.createElement('figure');
+          fig.className = 'details-item';
+          const img = document.createElement('img');
+          img.src = g.src || g.image || '';
+          img.alt = g.alt || g.caption || item.title || 'Project image';
+          img.loading = 'lazy';
+          const cap = document.createElement('figcaption');
+          const hasTitle = !!(g.title && String(g.title).trim());
+          const hasCaption = !!(g.caption && String(g.caption).trim());
+          if (hasTitle) {
+            const t = document.createElement('div');
+            t.className = 'details-title';
+            t.textContent = g.title;
+            cap.appendChild(t);
+          }
+          if (hasCaption || (!hasTitle && g.alt)) {
+            const c = document.createElement('div');
+            c.className = 'details-caption';
+            c.textContent = hasCaption ? g.caption : (g.alt || '');
+            cap.appendChild(c);
+          }
+          fig.appendChild(img);
+          if (cap.childNodes.length) fig.appendChild(cap);
+          detailsGrid.appendChild(fig);
+        });
+        detailsWrap.hidden = false;
+      }
+      // Writing
+      if (html) {
+        contentEl.innerHTML = html;
+        if (writingWrap) writingWrap.hidden = false;
+      } else if (Array.isArray(item.writings) && item.writings.length) {
+        // Render multi-paragraph writing from JSON array
+        contentEl.innerHTML = '';
+        item.writings.forEach((para) => {
+          const p = document.createElement('p');
+          p.textContent = String(para || '');
+          contentEl.appendChild(p);
+        });
+        if (writingWrap) writingWrap.hidden = false;
+      } else {
+        // No writing provided; keep section hidden
+        if (writingWrap) writingWrap.hidden = true;
+      }
     } else {
-      contentEl.innerHTML = `<p>${item.description || ""}</p>`;
+      if (html) {
+        contentEl.innerHTML = html;
+      } else if (type === "post") {
+        contentEl.innerHTML = `<p>${item.excerpt || ""}</p>`;
+      }
     }
   })();
 })();
-
