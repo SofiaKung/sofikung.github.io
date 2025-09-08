@@ -425,6 +425,22 @@ section:not(.hero) {
   padding: 80px 0;
 }
 
+/* Shared section header with right-aligned More link */
+.section-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+.section-header .section-title { margin: 0; }
+.section-header .more-link {
+  color: #6b7280; /* gray */
+  font-weight: 400; /* not bold */
+  text-decoration: none;
+}
+.section-header .more-link:hover { text-decoration: underline; color: #4b5563; }
+
 .section-title {
   font-size: var(--font-size-section-title);
   padding-bottom: 16px;
@@ -443,7 +459,7 @@ section:not(.hero) {
   font-size: var(--font-size-section-label);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   text-align: left;
 }
 
@@ -1062,6 +1078,27 @@ section:not(.hero) {
   color: #666;
   font-size: var(--font-size-sm);
 }
+
+/* Article navigation links and section "more" links */
+.article-topnav,
+.article-bottomnav {
+  margin: 8px 0 16px;
+}
+.article-back,
+.article-more,
+.section-more .more-link {
+  display: inline-block;
+  color: #4a6cf7;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+.article-back:hover,
+.article-more:hover,
+.section-more .more-link:hover {
+  text-decoration: underline;
+}
+.section-more { margin-top: 16px; }
 
 /* Photo deck (stacked, draggable) */
 .photo-deck {
