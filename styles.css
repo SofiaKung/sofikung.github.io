@@ -73,6 +73,8 @@ p {
   --rule-thickness: 1px;
   /* Global page gutter */
   --gutter: 300px;
+  /* Section vertical padding (non-hero) */
+  --section-padding-y: 48px;
   /* Gallery image cap for uniform caption alignment */
   --gallery-image-height: 200px;
   /* Project-only section vertical padding */
@@ -314,7 +316,7 @@ p {
 
 .social-icon {
   color: #333;
-  font-size: var(--font-size-lg);
+  font-size: 24px;
   text-decoration: none;
   transition: opacity 0.2s ease;
 }
@@ -441,7 +443,7 @@ p {
 
 /* Section Styles */
 section:not(.hero) {
-  padding: 80px 0;
+  padding: var(--section-padding-y) 0;
 }
 
 /* Shared section header with right-aligned More link */
@@ -451,6 +453,7 @@ section:not(.hero) {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 15px;
+  font-weight: 600;
   position: relative; /* allow header-wide accent line */
 }
 .section-header .section-title {
@@ -458,7 +461,7 @@ section:not(.hero) {
 }
 .section-header .more-link {
   color: #6b7280; /* gray */
-  font-weight: 400; /* not bold */
+  font-weight: 400;
   text-decoration: none;
 }
 .section-header .more-link:hover {
@@ -468,73 +471,43 @@ section:not(.hero) {
 
 .section-title {
   font-size: var(--font-size-section-title);
-  padding-bottom: 16px;
-  font-weight: 300;
-  color: #333;
-  /* margin-bottom: 60px; */
+  padding-bottom: 12px;
+  font-weight: var(--weight-medium); /* bolder for emphasis */
+  color: #111827;
+  letter-spacing: -0.5px;
+  line-height: 1.15;
   text-align: left;
 }
 
-/* Experience section title accent line */
-.experience .section-title {
-  position: relative;
-  padding-left: 0;
-  color: var(--rule-color);
-  font-weight: 700;
-  font-size: var(--font-size-section-label);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  /* margin-bottom: 15px; */
-  text-align: left;
-}
-
-.experience .section-title::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -8px; /* sits just above the label */
-  height: var(--rule-thickness);
-  background: var(--rule-color);
-}
-
-/* Match Experience heading style for Skills and Contact */
+/* Unified section title style (remove blue line and uppercase labels) */
+.experience .section-title,
 .skills .section-title,
 .contact .section-title,
 .projects .section-title,
 .posts .section-title {
-  position: relative;
+  color: #111827;
+  font-weight: var(--weight-medium);
+  font-size: var(--font-size-section-title);
+  text-transform: none;
+  letter-spacing: -0.5px;
   padding-left: 0;
-  color: var(--rule-color);
-  font-weight: 700;
-  font-size: var(--font-size-section-label);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 15px;
-  text-align: left;
 }
-
+.experience .section-title::before,
 .skills .section-title::before,
 .contact .section-title::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -8px;
-  height: var(--rule-thickness);
-  background: var(--rule-color);
+  content: none;
 }
 
-/* For Projects and Posts, attach the accent line to the full section header row */
+/* Remove accent lines from section headers */
+.skills .section-title::before,
+.contact .section-title::before {
+  content: none;
+}
+
+/* Remove blue accent line on Projects/Posts section rows */
 .projects .section-header::before,
 .posts .section-header::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -8px;
-  height: var(--rule-thickness);
-  background: var(--rule-color);
+  content: none;
 }
 
 /* Projects Section */
@@ -634,19 +607,6 @@ section:not(.hero) {
   border-radius: 0;
   padding: 18px 16px; /* compact but readable */
   box-shadow: none;
-}
-.post-media {
-  aspect-ratio: 16 / 9;
-  background: #f3f4f6;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-.post-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 .post-card:first-child {
   border-top: 0;
@@ -879,6 +839,7 @@ section:not(.hero) {
 @media (max-width: 768px) {
   :root {
     --gutter: 1rem;
+    --section-padding-y: 32px; /* tighter sections on mobile */
   }
   .container {
     padding: 0 var(--gutter);
@@ -1061,7 +1022,7 @@ section:not(.hero) {
   font-size: 14px;
   display: flex;
   gap: 12px;
-  flex-wrap: subtitle;
+  flex-wrap: wrap;
 }
 .article-tags {
   display: inline-flex;
@@ -1246,12 +1207,6 @@ section:not(.hero) {
   }
   .article-content {
     max-width: 100%;
-  }
-  /* Project Details: 1 item per row on mobile */
-  .gallery-grid,
-  .details-grid {
-    grid-template-columns: 1fr;
-    gap: 14px;
   }
   /* Gallery image cap on small screens */
   :root {
