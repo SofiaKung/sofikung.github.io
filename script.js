@@ -1,85 +1,104 @@
 // Simple portfolio script for smooth scrolling and interactivity
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Smooth scrolling for navigation links
-  const navLinks = document.querySelectorAll(".nav-links a");
-
-  navLinks.forEach((link) => {
-    link.addEventListener("click", function (e) {
-      const href = this.getAttribute("href") || "";
-      // Only smooth-scroll for on-page hash links
-      if (!href.startsWith("#")) return;
-      e.preventDefault();
-      const targetSection = document.querySelector(href);
-      if (targetSection) {
-        const navHeight = document.querySelector(".navbar").offsetHeight;
-        const targetPosition = targetSection.offsetTop - navHeight - 20;
-        window.scrollTo({ top: targetPosition, behavior: "smooth" });
-      }
+  // Helper to (re)bind nav interactions once nav exists
+  function bindNavInteractions() {
+    // Smooth scrolling for navigation links
+    const navLinks = document.querySelectorAll(".nav-links a");
+    navLinks.forEach((link) => {
+      // Avoid duplicate handlers
+      link.__boundScroll = link.__boundScroll || false;
+      if (link.__boundScroll) return;
+      link.__boundScroll = true;
+      link.addEventListener("click", function (e) {
+        const href = this.getAttribute("href") || "";
+        // Support both "#id" and "index.html#id" when on the homepage
+        const onHome = /(?:^|\/)(index\.html)?$/.test(location.pathname);
+        const hashOnly = href.startsWith("#");
+        const homeHash = onHome && href.startsWith("index.html#");
+        if (!hashOnly && !homeHash) return;
+        e.preventDefault();
+        const targetSelector = hashOnly ? href : href.replace(/^index\.html/, "");
+        const targetSection = document.querySelector(targetSelector);
+        if (targetSection) {
+          const navHeight = (document.querySelector(".navbar")?.offsetHeight) || 0;
+          const targetPosition = targetSection.offsetTop - navHeight - 20;
+          window.scrollTo({ top: targetPosition, behavior: "smooth" });
+        }
+      });
     });
-  });
+
+    // Mobile nav toggle
+    const navToggle = document.querySelector(".nav-toggle");
+    const navLinksEl = document.getElementById("primary-nav");
+    if (navToggle && navLinksEl && !navToggle.__boundToggle) {
+      navToggle.__boundToggle = true;
+      navToggle.addEventListener("click", () => {
+        const isOpen = document.body.classList.toggle("nav-open");
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      // Close menu when a nav link is clicked
+      navLinksEl.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => {
+          document.body.classList.remove("nav-open");
+          navToggle.setAttribute("aria-expanded", "false");
+        })
+      );
+    }
+  }
 
   // Add active state to navigation based on scroll position
   function updateActiveNavLink() {
     const sections = document.querySelectorAll("section");
-    const navHeight = document.querySelector(".navbar").offsetHeight;
+    const navHeight = (document.querySelector(".navbar")?.offsetHeight) || 0;
     const scrollPos = window.scrollY + navHeight + 50;
+    const navLinks = document.querySelectorAll(".nav-links a");
 
     sections.forEach((section) => {
       const sectionTop = section.offsetTop;
       const sectionBottom = sectionTop + section.offsetHeight;
       const sectionId = section.getAttribute("id");
-      const correspondingLink = document.querySelector(
-        `a[href="#${sectionId}"]`
-      );
 
       if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
         // Remove active class from all links
         navLinks.forEach((link) => link.classList.remove("active"));
-        // Add active class to current link
-        if (correspondingLink) {
-          correspondingLink.classList.add("active");
-        }
+        // Add active class to current link (match both href="#id" and href="index.html#id")
+        const idSel = `a[href="#${sectionId}"]`;
+        const homeSel = `a[href="index.html#${sectionId}"]`;
+        const candidate = document.querySelector(idSel) || document.querySelector(homeSel);
+        if (candidate) candidate.classList.add("active");
       }
     });
   }
 
   // Listen for scroll events
-  window.addEventListener("scroll", updateActiveNavLink);
+  window.addEventListener("scroll", updateActiveNavLink, { passive: true });
 
   // Initial call to set active state
   updateActiveNavLink();
 
-  // Mobile nav toggle
-  const navToggle = document.querySelector(".nav-toggle");
-  const navLinksEl = document.getElementById("primary-nav");
-  if (navToggle && navLinksEl) {
-    navToggle.addEventListener("click", () => {
-      const isOpen = document.body.classList.toggle("nav-open");
-      navToggle.setAttribute("aria-expanded", String(isOpen));
-    });
-    // Close menu when a nav link is clicked
-    navLinksEl.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => {
-        document.body.classList.remove("nav-open");
-        navToggle.setAttribute("aria-expanded", "false");
-      })
-    );
-  }
+  // Initial bind (in case nav is already present)
+  bindNavInteractions();
+  // Re-bind after nav partial is injected
+  window.addEventListener("nav-injected", () => {
+    bindNavInteractions();
+    updateActiveNavLink();
+  });
 
   // Add scroll effect to navbar
   let lastScrollTop = 0;
   const navbar = document.querySelector(".navbar");
 
   window.addEventListener("scroll", function () {
+    if (!navbar) return; // no nav yet
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 
     if (scrollTop > lastScrollTop && scrollTop > 100) {
       // Scrolling down & past hero
-      navbar.style.transform = "translateY(-100%)";
+      if (navbar) navbar.style.transform = "translateY(-100%)";
     } else {
       // Scrolling up
-      navbar.style.transform = "translateY(0)";
+      if (navbar) navbar.style.transform = "translateY(0)";
     }
 
     lastScrollTop = scrollTop;

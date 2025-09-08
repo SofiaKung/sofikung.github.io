@@ -1,29 +1,39 @@
 // Listing renderer for all posts/projects pages
 document.addEventListener("DOMContentLoaded", () => {
-  // Set active nav based on listing page
-  const path = (location.pathname || "").split("/").pop();
-  if (path === "posts.html") {
-    const link = document.querySelector('.nav-links a[href="posts.html"]');
-    if (link) link.classList.add("active");
-  } else if (path === "projects.html") {
-    const link = document.querySelector('.nav-links a[href="projects.html"]');
-    if (link) link.classList.add("active");
+  function setActiveNavBasedOnPath() {
+    const path = (location.pathname || "").split("/").pop();
+    if (path === "posts.html") {
+      const link = document.querySelector('.nav-links a[href="posts.html"]');
+      if (link) link.classList.add("active");
+    } else if (path === "projects.html") {
+      const link = document.querySelector('.nav-links a[href="projects.html"]');
+      if (link) link.classList.add("active");
+    }
   }
-  // Mobile nav toggle (shared with other pages)
-  const navToggle = document.querySelector(".nav-toggle");
-  const navLinksEl = document.getElementById("primary-nav");
-  if (navToggle && navLinksEl) {
-    navToggle.addEventListener("click", () => {
-      const isOpen = document.body.classList.toggle("nav-open");
-      navToggle.setAttribute("aria-expanded", String(isOpen));
-    });
-    navLinksEl.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => {
-        document.body.classList.remove("nav-open");
-        navToggle.setAttribute("aria-expanded", "false");
-      })
-    );
+  function bindNavInteractions() {
+    // Active highlight
+    setActiveNavBasedOnPath();
+    // Mobile menu
+    const navToggle = document.querySelector(".nav-toggle");
+    const navLinksEl = document.getElementById("primary-nav");
+    if (navToggle && navLinksEl && !navToggle.__boundToggle) {
+      navToggle.__boundToggle = true;
+      navToggle.addEventListener("click", () => {
+        const isOpen = document.body.classList.toggle("nav-open");
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      navLinksEl.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => {
+          document.body.classList.remove("nav-open");
+          navToggle.setAttribute("aria-expanded", "false");
+        })
+      );
+    }
   }
+  // Initial bind (in case nav already present)
+  bindNavInteractions();
+  // Rebind when nav partial is injected
+  window.addEventListener("nav-injected", bindNavInteractions);
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {

@@ -29,20 +29,25 @@
   }
 
   // Simple mobile nav toggle (keeps header consistent with index)
-  const navToggle = qs(".nav-toggle");
-  const navLinksEl = qs("#primary-nav");
-  if (navToggle && navLinksEl) {
-    navToggle.addEventListener("click", () => {
-      const isOpen = document.body.classList.toggle("nav-open");
-      navToggle.setAttribute("aria-expanded", String(isOpen));
-    });
-    navLinksEl.querySelectorAll("a").forEach((a) =>
-      a.addEventListener("click", () => {
-        document.body.classList.remove("nav-open");
-        navToggle.setAttribute("aria-expanded", "false");
-      })
-    );
+  function bindNavInteractions() {
+    const navToggle = qs(".nav-toggle");
+    const navLinksEl = qs("#primary-nav");
+    if (navToggle && navLinksEl && !navToggle.__boundToggle) {
+      navToggle.__boundToggle = true;
+      navToggle.addEventListener("click", () => {
+        const isOpen = document.body.classList.toggle("nav-open");
+        navToggle.setAttribute("aria-expanded", String(isOpen));
+      });
+      navLinksEl.querySelectorAll("a").forEach((a) =>
+        a.addEventListener("click", () => {
+          document.body.classList.remove("nav-open");
+          navToggle.setAttribute("aria-expanded", "false");
+        })
+      );
+    }
   }
+  bindNavInteractions();
+  window.addEventListener('nav-injected', bindNavInteractions);
 
   const root = qs("#article-root");
   const type = root ? root.getAttribute("data-type") : null;
@@ -53,10 +58,14 @@
   }
 
   // Mark the appropriate nav item active
-  const navPosts = qs('.nav-links a[href="posts.html"]');
-  const navProjects = qs('.nav-links a[href="projects.html"]');
-  if (type === 'post' && navPosts) navPosts.classList.add('active');
-  if (type === 'project' && navProjects) navProjects.classList.add('active');
+  function setActiveNav() {
+    const navPosts = qs('.nav-links a[href="posts.html"]');
+    const navProjects = qs('.nav-links a[href="projects.html"]');
+    if (type === 'post' && navPosts) navPosts.classList.add('active');
+    if (type === 'project' && navProjects) navProjects.classList.add('active');
+  }
+  setActiveNav();
+  window.addEventListener('nav-injected', setActiveNav);
 
   const titleEl = qs("#article-title");
   const dateEl = qs("#article-date");
