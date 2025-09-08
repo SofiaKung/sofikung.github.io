@@ -16,7 +16,7 @@
       { "type": "heading", "level": 3, "text": "The Solution" },
       {
         "type": "paragraph",
-        "text": "We built an interactive dashboard that transforms Singapore's complex budget data into clear, explorable visualizations. "
+        "text": "We built an interactive dashboard using R Shiny that transforms Singapore's complex budget data into clear, explorable visualizations. "
       }
     ],
     "gallery": [
