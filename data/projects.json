@@ -1,0 +1,20 @@
+[
+  {
+    "title": "Growth Metrics Suite",
+    "slug": "growth-metrics-suite",
+    "description": "Unified product KPIs and funnel analytics to align teams and accelerate decision making.",
+    "image": "assets/project-2.jpg",
+    "alt": "Growth Metrics Suite charts",
+    "url": "#",
+    "tags": ["Dashboard"]
+  },
+  {
+    "title": "Real-time Risk Signals",
+    "slug": "real-time-risk-signals",
+    "description": "Low-latency features and alerting pipelines powering risk decisions at scale.",
+    "image": "assets/project-3.jpg",
+    "alt": "Real-time risk signals architecture",
+    "url": "#",
+    "tags": ["Streaming", "Detection"]
+  }
+]
