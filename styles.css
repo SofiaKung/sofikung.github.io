@@ -39,15 +39,15 @@ p {
 /* Scales: spacing and typography */
 :root {
   /* Typography scale */
-  --font-size-base: 18px; /* general body text */
+  --font-size-base: 16px; /* general body text */
   --font-size-sm: 14px; /* small labels, tags */
-  --font-size-lg: 20px; /* slightly larger body */
+  --font-size-lg: 18px; /* slightly larger body */
   --font-size-xl: 24px; /* section intros */
-  --font-size-hero-name: 80px; /* large hero name */
+  --font-size-section-title: 24px; /* base section title size */
+  --font-size-hero-name: 60px; /* large hero name */
   --font-size-hero-name-sm: 48px; /* hero name on mobile */
-  --font-size-section-title: 36px; /* section headings */
   --font-size-section-label: 16px; /* small uppercase labels */
-  --font-size-role: 30px; /* experience role + year */
+  --font-size-role: 24px; /* experience role + year */
 
   /* Tracking (letter-spacing) */
   --tracking-body: 0.01em; /* default body & paragraph */
@@ -72,7 +72,15 @@ p {
   --rule-color: #4a6cf7;
   --rule-thickness: 1px;
   /* Global page gutter */
-  --gutter: 70px;
+  --gutter: 300px;
+}
+
+/* So wide gutters don’t over-constrain mid-size viewports */
+@media (max-width: 1200px) {
+  :root { --gutter: 8rem; }
+}
+@media (max-width: 992px) {
+  :root { --gutter: 3rem; }
 }
 
 .container {
@@ -311,7 +319,8 @@ p {
 }
 
 .hero-description p {
-  font-size: clamp(20px, 2.6vw, 22px);
+  /* Ensure min <= max for clamp to work as intended */
+  font-size: clamp(18px, 2.6vw, 22px);
   font-weight: 400;
   line-height: 1.4;
   color: rgb(44, 39, 39);
@@ -321,6 +330,13 @@ p {
   overflow-wrap: break-word;
   text-align: start;
   transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+/* Desktop: make hero description slightly smaller for web */
+@media (min-width: 1024px) {
+  .hero-description p {
+    font-size: 18px;
+  }
 }
 
 #hero-blurb.fade-out {
@@ -338,13 +354,14 @@ p {
   justify-content: center;
   align-items: center;
   height: 100%;
-  /* margin-bottom: auto; */
+  /* margin-bottom:18 auto; */
   position: relative;
 }
 
 .graphic-element {
   position: relative;
-  width: clamp(340px, 40vw, 640px);
+  /* Prevent overflow of grid column on medium viewports */
+  width: min(100%, clamp(300px, 40vw, 640px));
   height: auto;
 }
 
@@ -474,7 +491,8 @@ section:not(.hero) {
 
 .experience-item {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); /* each side uses half the width */
+  /* Make the left column wider while keeping date on the right */
+  grid-template-columns: minmax(0, 1.5fr) auto;
   gap: 24px;
   padding: 16px 0;
   border-bottom: none;
@@ -522,8 +540,8 @@ section:not(.hero) {
 }
 
 .experience-description {
-  list-style: disc inside;
-  padding-left: 0;
+  list-style: disc outside;
+  padding-left: 1.25rem;
   margin-left: 0;
 }
 
@@ -544,7 +562,8 @@ section:not(.hero) {
 
 .skills-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  /* Auto-fit columns to available width to avoid hugging side margins */
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
   max-width: none;
 }
@@ -686,6 +705,7 @@ section:not(.hero) {
   /* Add inner right padding so content doesn't touch the edge */
   .hero-description {
     padding-right: 1rem;
+    min-height: 0; /* avoid large blank space on small screens */
   }
   .hero-toggle {
     padding-right: 1rem;
@@ -696,8 +716,8 @@ section:not(.hero) {
   }
 
   .graphic-element {
-    width: 360px;
-    height: 360px;
+    width: min(100%, 360px);
+    height: auto;
   }
 
   .cube-1 {
@@ -753,6 +773,15 @@ section:not(.hero) {
   /* No special sizing needed for icon links */
 }
 
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 /* Footer */
 .site-footer {
   background: #ffffff;
@@ -772,11 +801,14 @@ section:not(.hero) {
 /* Photo deck (stacked, draggable) */
 .photo-deck {
   position: relative;
-  width: clamp(200px, 36vw, 300px);
+  width: clamp(150px, 30vw, 280px);
   aspect-ratio: 3 / 4;
   /* margin-top: 100px; */
 }
-.photo-deck, .deck-card { touch-action: none; }
+.photo-deck,
+.deck-card {
+  touch-action: none;
+}
 .deck-card {
   position: absolute;
   inset: 0;
@@ -785,7 +817,8 @@ section:not(.hero) {
   box-shadow: 0 24px 45px rgba(0, 0, 0, 0.15);
   transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
   will-change: transform, opacity;
-  user-select: none; -webkit-user-drag: none;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 .deck-card img {
   width: 100%;
