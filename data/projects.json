@@ -40,30 +40,14 @@
     ]
   },
   {
-    "title": "Real-time Risk Signals",
-    "slug": "real-time-risk-signals",
-    "description": "Low-latency features and alerting pipelines powering risk decisions at scale.",
-    "image": "assets/project-3.jpg",
-    "alt": "Real-time risk signals architecture",
-    "url": "#",
-    "tags": ["Streaming", "Detection"],
-    "writings": [
-      "Risk signals run on event streams to power proactive prevention.",
-      "Feedback loops connect investigator actions to model retraining and rules optimization."
-    ],
-    "gallery": [
-      {
-        "src": "assets/project-3.jpg",
-        "title": "Stream processing",
-        "alt": "Stream processing",
-        "caption": "Streaming features computed in near real-time."
-      },
-      {
-        "src": "assets/photo-1.JPG",
-        "title": "Alert review",
-        "alt": "Alert review",
-        "caption": "Investigator review UI with feedback loop to data and models."
-      }
-    ]
+    "title": "Detecting Financial Statement Fraud with ML",
+    "slug": "detect-fs-fraud",
+    "description": "How machine learning can detect accounting fraud",
+    "image": "assets/fs-ml.jpg",
+    "alt": "An article on detecting financial statrment fraud with machine learning ",
+    "url": "https://medium.com/data-science/detecting-firms-with-intentional-misstatements-using-machine-learning-a943191f88cf",
+    "tags": ["Fraud detection", "Machine learning"],
+    "writings": [],
+    "gallery": []
   }
 ]
