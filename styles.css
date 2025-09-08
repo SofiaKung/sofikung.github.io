@@ -196,7 +196,7 @@ p {
   padding: 3px; /* slightly thinner vertically */
   box-shadow: inset 0 0 0 1px #e5e7eb;
   width: fit-content; /* expand to fit labels */
-  min-width: 350px; /* ensure enough room for both labels */
+  min-width: 310px; /* ensure enough room for both labels */
 }
 
 .seg-item {
@@ -432,14 +432,20 @@ section:not(.hero) {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 15px;
+  position: relative; /* allow header-wide accent line */
 }
-.section-header .section-title { margin: 0; }
+.section-header .section-title {
+  margin: 0;
+}
 .section-header .more-link {
   color: #6b7280; /* gray */
   font-weight: 400; /* not bold */
   text-decoration: none;
 }
-.section-header .more-link:hover { text-decoration: underline; color: #4b5563; }
+.section-header .more-link:hover {
+  text-decoration: underline;
+  color: #4b5563;
+}
 
 .section-title {
   font-size: var(--font-size-section-title);
@@ -490,9 +496,19 @@ section:not(.hero) {
 }
 
 .skills .section-title::before,
-.contact .section-title::before,
-.projects .section-title::before,
-.posts .section-title::before {
+.contact .section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -8px;
+  height: var(--rule-thickness);
+  background: var(--rule-color);
+}
+
+/* For Projects and Posts, attach the accent line to the full section header row */
+.projects .section-header::before,
+.posts .section-header::before {
   content: "";
   position: absolute;
   left: 0;
@@ -965,7 +981,8 @@ section:not(.hero) {
 /* Footer */
 .site-footer {
   background: #ffffff;
-  padding: 16px 0 24px;
+  /* Increase vertical rhythm for a more breathable footer */
+  padding: 32px 0 48px;
 }
 
 /* Article (post/project) detail page */
@@ -1067,6 +1084,10 @@ section:not(.hero) {
   .article-content {
     max-width: 100%;
   }
+  /* Slightly tighter footer on small screens while keeping breathing room */
+  .site-footer {
+    padding: 24px 0 32px;
+  }
 }
 
 .site-footer .container {
@@ -1079,18 +1100,44 @@ section:not(.hero) {
   font-size: var(--font-size-sm);
 }
 
+/* Footer layout with right-aligned social icons */
+.site-footer .footer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.footer-social {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.footer-social .social-icon { color: #666; }
+.footer-social .social-icon:hover { opacity: 0.8; }
+
+@media (max-width: 480px) {
+  .site-footer .footer-row {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+}
+
 /* Article navigation links and section "more" links */
 .article-topnav,
 .article-bottomnav {
   margin: 8px 0 16px;
 }
+.article-bottomnav {
+  display: flex;
+  justify-content: flex-end; /* align More link to the right */
+}
 .article-back,
 .article-more,
 .section-more .more-link {
   display: inline-block;
-  color: #4a6cf7;
+  color: #4b5563;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 400;
   letter-spacing: 0.2px;
 }
 .article-back:hover,
@@ -1098,7 +1145,9 @@ section:not(.hero) {
 .section-more .more-link:hover {
   text-decoration: underline;
 }
-.section-more { margin-top: 16px; }
+.section-more {
+  margin-top: 16px;
+}
 
 /* Photo deck (stacked, draggable) */
 .photo-deck {
