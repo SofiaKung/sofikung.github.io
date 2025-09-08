@@ -307,6 +307,13 @@ p {
   font-size: var(--font-size-base);
   margin-left: 0;
 }
+.contact-value a {
+  color: inherit;
+  text-decoration: none;
+}
+.contact-value a:hover {
+  text-decoration: underline;
+}
 
 .hero-social {
   display: flex;
@@ -321,12 +328,12 @@ p {
   transition: opacity 0.2s ease;
 }
 
-/* Inline SVG icon sizing for Tableau */
+/* Inline SVG icon sizing for Tableau (match Font Awesome size) */
 .icon-tableau {
-  width: 1.25em;
-  height: 1.25em;
+  width: 1.5em; /* slightly larger than FA icons */
+  height: 1.4em;
   display: inline-block;
-  vertical-align: middle;
+  vertical-align: -0.15em; /* tweak baseline to stay centered */
 }
 
 .social-icon:hover {
@@ -1241,10 +1248,13 @@ section:not(.hero) {
 .footer-social {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 12px; /* tighter spacing between icons */
 }
 .footer-social .social-icon {
   color: #666;
+}
+.footer-social .social-icon--tableau {
+  margin-left: -4px; /* nudge closer to the GitHub icon only */
 }
 .footer-social .social-icon:hover {
   opacity: 0.8;
