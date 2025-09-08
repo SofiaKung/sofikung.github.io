@@ -94,10 +94,10 @@ p {
 }
 
 .container {
-  max-width: none;
+  max-width: 1280px;
   width: 100%;
-  margin-left: 0;
-  margin-right: 0;
+  margin-left: auto;
+  margin-right: auto;
   padding: 0 var(--gutter);
 }
 
@@ -117,9 +117,9 @@ p {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  max-width: none;
+  max-width: 1280px;
   width: 100%;
-  margin-left: 0;
+  margin-left: auto;
   margin-right: auto;
   padding: 0 var(--gutter);
   gap: 40px;
@@ -657,7 +657,7 @@ section:not(.hero) {
 /* Ensure no overflow into side margins */
 .projects .container,
 .posts .container {
-  max-width: none;
+  max-width: 1280px;
 }
 
 /* Responsive refinements */
@@ -755,21 +755,17 @@ section:not(.hero) {
 
 .skills-grid {
   display: grid;
-  /* Auto-fit columns to available width to avoid hugging side margins */
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 24px;
+  /* Fit three categories on one row on desktop */
+  grid-template-columns: repeat(3, minmax(200px, 1fr));
+  gap: 16px;
   max-width: none;
 }
 
-@media (max-width: 1280px) and (min-width: 901px) {
-  .skills-grid {
-    grid-template-columns: repeat(3, minmax(220px, 1fr));
-  }
-}
+/* Keep three columns on most desktops; downshift below ~900px */
 
 @media (max-width: 900px) and (min-width: 769px) {
   .skills-grid {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    grid-template-columns: repeat(2, minmax(200px, 1fr));
   }
 }
 
@@ -956,7 +952,7 @@ section:not(.hero) {
   /* Skills grid responsive downshift */
   .skills-grid {
     grid-template-columns: 1fr;
-    gap: 16px;
+    gap: 8px;
   }
 
   .contact-links {
