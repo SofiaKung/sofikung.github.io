@@ -147,6 +147,18 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function computeLink(item, type) {
+    const direct = item.link || item.externalUrl;
+    if (direct) {
+      return { href: direct, external: /^https?:\/\//.test(direct) };
+    }
+    const slug = item.slug || (item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+    if (slug) return { href: `${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
+    const fallback = item.url || "";
+    if (fallback) return { href: fallback, external: /^https?:\/\//.test(fallback) };
+    return { href: "#", external: false };
+  }
+
   function renderProjects(items) {
     const grid = document.querySelector(".project-grid");
     if (!grid || !Array.isArray(items)) return;
@@ -156,8 +168,12 @@ document.addEventListener("DOMContentLoaded", function () {
       article.className = "project-card";
       const link = document.createElement("a");
       link.className = "project-link";
-      const slug = p.slug || (p.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-      link.href = slug ? `project.html?slug=${encodeURIComponent(slug)}` : (p.url || "#");
+      const { href: projHref, external: projExternal } = computeLink(p, 'project');
+      link.href = projHref;
+      if (projExternal) {
+        link.target = "_blank";
+        link.rel = "noopener";
+      }
       link.setAttribute("aria-label", `View project: ${p.title || "Project"}`);
 
       const media = document.createElement("div");
@@ -217,8 +233,12 @@ document.addEventListener("DOMContentLoaded", function () {
       article.className = "post-card";
       const link = document.createElement("a");
       link.className = "post-link";
-      const slug = p.slug || (p.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-      link.href = slug ? `post.html?slug=${encodeURIComponent(slug)}` : (p.url || "#");
+      const { href: postHref, external: postExternal } = computeLink(p, 'post');
+      link.href = postHref;
+      if (postExternal) {
+        link.target = "_blank";
+        link.rel = "noopener";
+      }
 
       const header = document.createElement("header");
       header.className = "post-header";

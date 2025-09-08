@@ -1105,6 +1105,10 @@ section:not(.hero) {
   object-fit: cover; /* crop to keep captions aligned */
   display: block;
 }
+.gallery-item a,
+.details-item a {
+  display: block;
+}
 .gallery-item figcaption,
 .details-item figcaption {
   padding: 20px 20px;

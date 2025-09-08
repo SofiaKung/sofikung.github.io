@@ -95,13 +95,25 @@
       tagsEl.innerHTML = item.tags.map((t) => `<span class="post-tag">${t}</span>`).join("");
     }
 
-    // Hero image (if available)
+    // Hero image (if available). Allow optional link (imageLink or link)
     if (heroEl && item.image) {
       const img = document.createElement("img");
       img.src = item.image;
       img.alt = item.alt || item.title || "";
       img.loading = "lazy";
-      heroEl.appendChild(img);
+      const heroHref = item.imageLink || item.link || "";
+      if (heroHref) {
+        const a = document.createElement("a");
+        a.href = heroHref;
+        if (/^https?:\/\//.test(heroHref)) {
+          a.target = "_blank";
+          a.rel = "noopener";
+        }
+        a.appendChild(img);
+        heroEl.appendChild(a);
+      } else {
+        heroEl.appendChild(img);
+      }
       heroEl.hidden = false;
     }
 
@@ -133,6 +145,7 @@
           img.src = g.src || g.image || '';
           img.alt = g.alt || g.caption || item.title || 'Project image';
           img.loading = 'lazy';
+          const mediaLink = g.link || g.href || g.url;
           const cap = document.createElement('figcaption');
           const hasTitle = !!(g.title && String(g.title).trim());
           const hasCaption = !!(g.caption && String(g.caption).trim());
@@ -148,7 +161,15 @@
             c.textContent = hasCaption ? g.caption : (g.alt || '');
             cap.appendChild(c);
           }
-          fig.appendChild(img);
+          if (mediaLink) {
+            const a = document.createElement('a');
+            a.href = mediaLink;
+            if (/^https?:\/\//.test(mediaLink)) { a.target = '_blank'; a.rel = 'noopener'; }
+            a.appendChild(img);
+            fig.appendChild(a);
+          } else {
+            fig.appendChild(img);
+          }
           if (cap.childNodes.length) fig.appendChild(cap);
           detailsGrid.appendChild(fig);
         });

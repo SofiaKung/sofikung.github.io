@@ -19,6 +19,7 @@ Common fields across posts/projects:
 - `tags` (string[])
 - `image` (string, optional, path like `assets/your-image.jpg`)
 - `alt` (string, optional alt text for the image)
+- `link` (string, optional) — direct URL to open when clicking the card. If present, it overrides slug-based routing. External URLs open in a new tab.
 
 Posts also support:
 - `date` (YYYY-MM-DD)
@@ -33,5 +34,9 @@ Projects also support:
   - `title` (string, optional): small heading for the image
   - `caption` (string, optional): description shown under the title
   - `alt` (string, optional): alt text for accessibility
+  - `link` (string, optional): when provided, clicking the image opens this URL (external links open in a new tab)
+  
+Project-level optional:
+- `imageLink` (string, optional): makes the main hero image clickable on the project detail page; falls back to `link` if present.
 
 See Update Instructions for how to add or edit content.

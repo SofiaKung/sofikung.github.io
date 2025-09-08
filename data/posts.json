@@ -1,29 +1,11 @@
 [
   {
-    "title": "Designing KPIs that actually drive decisions",
-    "slug": "designing-kpis-that-actually-drive-decisions",
-    "date": "2025-03-01",
-    "datePretty": "Mar 1, 2025",
-    "excerpt": "A practical approach to choosing metrics that prompt action, avoid local maxima, and reflect the health of your product.",
+    "title": "Notes on prompt engineering",
+    "slug": "prompt-enginnering",
+    "date": "2025-09-08",
+    "datePretty": "Sep 8, 2025",
+    "excerpt": " My cheatsheet on prompt engineering after reading Google's whitepaper",
     "url": "#",
-    "tags": ["Metrics", "Product"]
-  },
-  {
-    "title": "Fraud analytics: balancing UX with safety",
-    "slug": "fraud-analytics-balancing-ux-with-safety",
-    "date": "2025-02-10",
-    "datePretty": "Feb 10, 2025",
-    "excerpt": "How to structure risk reviews and experiment responsibly without slowing down your product.",
-    "url": "#",
-    "tags": ["Risk", "Analytics"]
-  },
-  {
-    "title": "From dashboard to decision: closing the loop",
-    "slug": "from-dashboard-to-decision-closing-the-loop",
-    "date": "2025-01-22",
-    "datePretty": "Jan 22, 2025",
-    "excerpt": "Turning dashboards into feedback systems that change behavior across ops, product, and risk.",
-    "url": "#",
-    "tags": ["Dashboards", "Operations"]
+    "tags": ["Coming soon"]
   }
 ]

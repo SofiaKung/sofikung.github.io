@@ -21,6 +21,9 @@ Content is stored in the repo and loaded at runtime.
 - Detail pages (routing by slug):
   - Post page: `post.html?slug=<post-slug>`
   - Project page: `project.html?slug=<project-slug>`
+- Direct links (no detail page):
+  - Provide `link` (or `externalUrl`) in the JSON item to send cards directly to that URL.
+  - External URLs (`http(s)://…`) open in a new tab; internal paths can be used as well.
 - Content bodies (optional, HTML):
   - Posts: `content/posts/<slug>.html`
   - Projects: `content/projects/<slug>.html`
@@ -53,6 +56,7 @@ Example project entry:
   "image": "assets/fraud-cover.jpg",
   "alt": "Architecture diagram",
   "tags": ["Risk", "Streaming"],
+  "link": "https://medium.com/your-article" ,
   "writings": [
     "Signals run on event streams for proactive prevention.",
     "Feedback loops connect investigator actions to models and rules."

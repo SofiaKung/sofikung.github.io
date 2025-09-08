@@ -14,7 +14,8 @@ Follow these steps to add or edit content via GitHub.
      "excerpt": "One-sentence summary for the list.",
      "image": "assets/my-new-post.jpg",
      "alt": "Preview image description",
-     "tags": ["Analytics", "Product"]
+     "tags": ["Analytics", "Product"],
+     "link": "https://yourblog.com/my-new-post"  // optional: sends users directly to this URL
    }
    ```
 3. (Optional) Create a body file at `content/posts/my-new-post.html` with your article HTML.
@@ -27,13 +28,22 @@ Follow these steps to add or edit content via GitHub.
    {
      "title": "Fraud Detection Pipeline",
      "slug": "fraud-detection-pipeline",
-     "description": "Short description used on the card and as fallback body.",
+     "description": "Short overview used at the top of the detail page.",
      "image": "assets/fraud-pipeline.jpg",
      "alt": "Pipeline architecture diagram",
-     "tags": ["Risk", "Streaming"]
+     "tags": ["Risk", "Streaming"],
+     "link": "https://example.com/case-study" , // optional: direct URL override
+     "writings": [
+       "Paragraph one of the case study.",
+       "Paragraph two with more details."
+     ],
+     "gallery": [
+       { "src": "assets/pipeline-overview.jpg", "title": "Overview", "caption": "End-to-end flow from events to decisions." },
+       { "src": "assets/feature-store.jpg", "title": "Feature store", "caption": "Low-latency features powering rules and models." }
+     ]
    }
    ```
-3. (Optional) Add `content/projects/fraud-detection-pipeline.html` with more details.
+3. (Optional) Add `content/projects/fraud-detection-pipeline.html` for full custom writing. If present, it overrides `writings`.
 4. Commit and push. The homepage and `project.html?slug=fraud-detection-pipeline` will update.
 
 ## Edit Existing Items
