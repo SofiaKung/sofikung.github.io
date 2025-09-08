@@ -121,6 +121,39 @@
     const contentPath = `content/${type}s/${slug}.html`;
     const html = await fetchContentHTML(contentPath);
     if (type === 'project') {
+      // Ensure lightbox overlay exists
+      let overlay = document.querySelector('.lightbox-overlay');
+      let overlayImg = overlay ? overlay.querySelector('img') : null;
+      if (!overlay) {
+        overlay = document.createElement('div');
+        overlay.className = 'lightbox-overlay';
+        overlayImg = document.createElement('img');
+        overlay.appendChild(overlayImg);
+        overlay.addEventListener('click', () => {
+          overlay.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && overlay.classList.contains('open')) {
+            overlay.classList.remove('open');
+            document.body.style.overflow = '';
+          }
+        });
+        document.body.appendChild(overlay);
+      }
+      function attachLightbox(root) {
+        if (!root) return;
+        root.querySelectorAll('img').forEach((img) => {
+          // Skip if image is wrapped with a link (respect direct links)
+          if (img.closest('a')) return;
+          img.addEventListener('click', () => {
+            overlayImg.src = img.src;
+            overlayImg.alt = img.alt || '';
+            overlay.classList.add('open');
+            document.body.style.overflow = 'hidden';
+          });
+        });
+      }
       // Description (lede) below the title
       if (ledeEl && item.description) {
         ledeEl.textContent = item.description;
@@ -174,6 +207,7 @@
           detailsGrid.appendChild(fig);
         });
         detailsWrap.hidden = false;
+        attachLightbox(detailsGrid);
       }
       // Writing
       if (html) {

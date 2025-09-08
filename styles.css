@@ -1104,6 +1104,7 @@ section:not(.hero) {
   height: var(--gallery-image-height);
   object-fit: cover; /* crop to keep captions aligned */
   display: block;
+  cursor: zoom-in;
 }
 .gallery-item a,
 .details-item a {
@@ -1124,6 +1125,26 @@ section:not(.hero) {
 .gallery-item .gallery-caption,
 .details-item .details-caption {
   color: #4b5563;
+}
+
+/* Lightbox for project images */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.9);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+}
+.lightbox-overlay.open { display: flex; }
+.lightbox-overlay img {
+  max-width: 92vw;
+  max-height: 92vh;
+  border-radius: 8px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  cursor: zoom-out;
 }
 .project-writing {
   margin-top: 8px;
