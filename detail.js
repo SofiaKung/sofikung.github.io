@@ -105,10 +105,11 @@
     }
 
     // Hero image (if available). Allow optional link (imageLink or link)
-    if (heroEl && item.image) {
+    const cover = item.cover || item.coverImage || item.image;
+    if (heroEl && cover) {
       const img = document.createElement("img");
-      img.src = item.image;
-      img.alt = item.alt || item.title || "";
+      img.src = cover;
+      img.alt = item.coverAlt || item.alt || item.title || "";
       img.loading = "lazy";
       const heroHref = item.imageLink || item.link || "";
       if (heroHref) {

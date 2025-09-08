@@ -1,5 +1,12 @@
 // Listing renderer for all posts/projects pages
 document.addEventListener("DOMContentLoaded", () => {
+  // Normalize relative asset paths to root-absolute so they work on nested routes
+  function toAbs(path) {
+    if (!path) return path;
+    if (/^(?:https?:)?\/\//.test(path)) return path; // http(s) or protocol-relative
+    if (path.startsWith("/")) return path; // already absolute
+    return "/" + path.replace(/^\/+/, "");
+  }
 function setActiveNavBasedOnPath() {
   const p = location.pathname || "";
   const isBlog = /(?:^|\/)blog(?:\/|$)/.test(p) || p.endsWith("posts.html");
@@ -64,7 +71,7 @@ function setActiveNavBasedOnPath() {
       return { href: direct, external: /^https?:\/\//.test(direct) };
     }
     const slug = item.slug || (item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    if (slug) return { href: `${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
+    if (slug) return { href: `/${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
     const fallback = item.url || "";
     if (fallback) return { href: fallback, external: /^https?:\/\//.test(fallback) };
     return { href: "#", external: false };
@@ -89,11 +96,12 @@ function setActiveNavBasedOnPath() {
 
       const media = document.createElement("div");
       media.className = "project-media";
-      if (p.image) {
+      const cover = p.cover || p.coverImage || p.image;
+      if (cover) {
         const img = document.createElement("img");
         img.loading = "lazy";
-        img.alt = p.alt || p.title || "Project image";
-        img.src = p.image;
+        img.alt = p.coverAlt || p.alt || p.title || "Project image";
+        img.src = toAbs(cover);
         media.appendChild(img);
       }
 
@@ -143,6 +151,19 @@ function setActiveNavBasedOnPath() {
       const { href: postHref, external: postExternal } = computeLink(p, 'post');
       link.href = postHref;
       if (postExternal) { link.target = "_blank"; link.rel = "noopener"; }
+
+      // Optional cover image (match detail hero `image`)
+      if (p.image) {
+        const media = document.createElement("div");
+        media.className = "post-media";
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.alt = p.alt || p.title || "Post image";
+        img.src = toAbs(p.image);
+        img.onerror = () => img.remove();
+        media.appendChild(img);
+        link.appendChild(media);
+      }
 
       const header = document.createElement("header");
       header.className = "post-header";

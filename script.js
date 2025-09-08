@@ -1,6 +1,13 @@
 // Simple portfolio script for smooth scrolling and interactivity
 
 document.addEventListener("DOMContentLoaded", function () {
+  // Normalize relative asset paths to root-absolute so they work on nested routes
+  function toAbs(path) {
+    if (!path) return path;
+    if (/^(?:https?:)?\/\//.test(path)) return path; // http(s) or protocol-relative
+    if (path.startsWith("/")) return path; // already absolute
+    return "/" + path.replace(/^\/+/, "");
+  }
   // Helper to (re)bind nav interactions once nav exists
   function bindNavInteractions() {
     // Smooth scrolling for navigation links
@@ -199,11 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const media = document.createElement("div");
       media.className = "project-media";
-      if (p.image) {
+      const cover = p.cover || p.coverImage || p.image;
+      if (cover) {
         const img = document.createElement("img");
         img.loading = "lazy";
-        img.alt = p.alt || p.title || "Project image";
-        img.src = p.image;
+        img.alt = p.coverAlt || p.alt || p.title || "Project image";
+        img.src = toAbs(cover);
         img.onerror = () => {
           img.remove();
         };
@@ -259,6 +267,19 @@ document.addEventListener("DOMContentLoaded", function () {
       if (postExternal) {
         link.target = "_blank";
         link.rel = "noopener";
+      }
+
+      // Optional cover image (use same `image` field as detail hero)
+      if (p.image) {
+        const media = document.createElement("div");
+        media.className = "post-media";
+        const img = document.createElement("img");
+        img.loading = "lazy";
+        img.alt = p.alt || p.title || "Post image";
+        img.src = toAbs(p.image);
+        img.onerror = () => img.remove();
+        media.appendChild(img);
+        link.appendChild(media);
       }
 
       const header = document.createElement("header");
