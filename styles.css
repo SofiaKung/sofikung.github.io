@@ -73,8 +73,12 @@ p {
   --rule-thickness: 1px;
   /* Global page gutter */
   --gutter: 300px;
+  /* Global max content width */
+  --max-width: 1400px;
   /* Section vertical padding (non-hero) */
   --section-padding-y: 48px;
+  /* Uniform gap below section titles */
+  --section-title-gap: 16px;
   /* Gallery image cap for uniform caption alignment */
   --gallery-image-height: 200px;
   /* Project-only section vertical padding */
@@ -94,7 +98,7 @@ p {
 }
 
 .container {
-  max-width: 1400px;
+  max-width: var(--max-width);
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -117,7 +121,7 @@ p {
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  max-width: 1400px;
+  max-width: var(--max-width);
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -180,7 +184,7 @@ p {
 .hero {
   padding-top: 120px;
   padding-bottom: 32px;
-  min-height: 85vh;
+  min-height: 70vh;
   background: #ffffff;
 }
 
@@ -459,12 +463,12 @@ section:not(.hero) {
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 15px;
+  margin-bottom: var(--section-title-gap);
   font-weight: 600;
   position: relative; /* allow header-wide accent line */
 }
 .section-header .section-title {
-  margin: 0;
+  margin-bottom: 0;
 }
 .section-header .more-link {
   color: #6b7280; /* gray */
@@ -478,7 +482,7 @@ section:not(.hero) {
 
 .section-title {
   font-size: var(--font-size-section-title);
-  padding-bottom: 12px;
+  margin-bottom: var(--section-title-gap);
   font-weight: var(--weight-medium); /* bolder for emphasis */
   color: #111827;
   letter-spacing: -0.5px;
@@ -664,7 +668,7 @@ section:not(.hero) {
 /* Ensure no overflow into side margins */
 .projects .container,
 .posts .container {
-  max-width: 1400px;
+  max-width: var(--max-width);
 }
 
 /* Responsive refinements */
@@ -694,9 +698,13 @@ section:not(.hero) {
   /* Make the left column wider while keeping date on the right */
   grid-template-columns: minmax(0, 1.5fr) auto;
   gap: 24px;
-  padding: 16px 0;
+  padding: 8px 0;
   border-bottom: none;
   align-items: baseline;
+}
+
+.experience-item:first-child {
+  padding-top: 0;
 }
 
 .experience-item:last-child {
@@ -748,7 +756,7 @@ section:not(.hero) {
 .experience-description li {
   color: #333;
   margin-bottom: 16px;
-  line-height: 1.6;
+  line-height: 1.2;
 }
 
 .experience-description li::before {
