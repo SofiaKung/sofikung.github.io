@@ -6,7 +6,7 @@
     "image": "assets/Geviz_project_cover.png",
     "alt": "Singapore government spending dashboard showing budget allocation across ministries with interactive charts",
     "imageLink": "https://is428-ay1819-geviz.shinyapps.io/Group7_GeViz/",
-    "tags": ["Dashboard", "R Shiny"],
+    "tags": ["Dashboard", "R Shiny", "Working in progress"],
     "body": [
       { "type": "heading", "level": 3, "text": "The Challenge" },
       {

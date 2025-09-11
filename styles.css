@@ -76,7 +76,7 @@ p {
   /* Global max content width */
   --max-width: 1400px;
   /* Section vertical padding (non-hero) */
-  --section-padding-y: 48px;
+  --section-padding-y: 40px;
   /* Uniform gap below section titles */
   --section-title-gap: 16px;
   /* Gallery image cap for uniform caption alignment */
@@ -1073,6 +1073,7 @@ section:not(.hero) {
 }
 .gallery-grid,
 .details-grid {
+  padding-top: 12px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
