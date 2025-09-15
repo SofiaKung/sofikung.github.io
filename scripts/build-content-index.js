@@ -228,6 +228,9 @@ function buildItemFromFM(fm, kind) {
   if (hero.link) {
     if (t === 'post') common.url = hero.link; else common.imageLink = hero.link;
   }
+  // Explicit card-level direct link (optional)
+  if (fm.link) common.link = fm.link;
+  if (fm.externalUrl) common.externalUrl = fm.externalUrl;
   if (t === 'project') {
     const proj = fm.project || {};
     if (Array.isArray(proj.tags)) common.tags = proj.tags;

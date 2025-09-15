@@ -60,7 +60,8 @@ function setActiveNavBasedOnPath() {
   }
 
   function computeLink(item, type) {
-    const direct = item.link || item.externalUrl || item.imageLink; // allow hero.link as direct
+    // Only use explicit card-level links; hero.image link should not affect cards
+    const direct = item.link || item.externalUrl;
     if (direct) {
       return { href: direct, external: /^https?:\/\//.test(direct) };
     }

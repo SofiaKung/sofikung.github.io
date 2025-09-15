@@ -166,7 +166,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Content index comes from /content/manifest.js (global window.CONTENT_INDEX)
 
   function computeLink(item, type) {
-    const direct = item.link || item.externalUrl || item.imageLink; // allow hero.link as direct
+    // Only use explicit card-level links; hero.image link should not affect cards
+    const direct = item.link || item.externalUrl;
     if (direct) {
       return { href: direct, external: /^https?:\/\//.test(direct) };
     }

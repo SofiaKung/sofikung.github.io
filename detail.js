@@ -458,7 +458,7 @@
       img.src = cover;
       img.alt = item.coverAlt || item.alt || item.title || "";
       img.loading = "lazy";
-      const heroHref = item.imageLink || item.link || "";
+      const heroHref = item.imageLink || ""; // do not use card-level link here
       if (heroHref) {
         const a = document.createElement("a");
         a.href = heroHref;

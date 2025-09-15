@@ -10,6 +10,7 @@
     "description": "How machine learning can detect accounting fraud",
     "image": "assets/fs-ml.jpg",
     "alt": "An article on detecting financial statrment fraud with machine learning ",
+    "link": "https://medium.com/data-science/detecting-firms-with-intentional-misstatements-using-machine-learning-a943191f88cf",
     "tags": [
       "Fraud detection",
       "Machine learning"
@@ -34,7 +35,7 @@
         "src": "assets/geviz/treemap.png",
         "title": "An Overview of Agency Spending within Each Ministry",
         "alt": "Overview",
-        "caption": "adasdd here to provide a birds-eye view of each each ministry's spending breakdown by agency and category. The size of the box represents number of procurement contracts of each procurement category while the colour intensity represents the total amount of good and services procured."
+        "caption": "Treemap chart is used here to provide a birds-eye view of each each ministry's spending breakdown by agency and category. The size of the box represents number of procurement contracts of each procurement category while the colour intensity represents the total amount of good and services procured."
       },
       {
         "src": "assets/geviz/network.jpeg",
