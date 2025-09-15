@@ -48,19 +48,46 @@
   }
 
   function inlineFormat(text) {
-    // Escape HTML, then convert markdown-style links and autolink bare URLs
-    const esc = escapeHtml(String(text || ""));
-    const withMdLinks = esc.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, label, href) => {
-      const url = href.trim();
-      const external = /^(?:https?:)?\/\//.test(url);
-      const attrs = external ? ' target="_blank" rel="noopener"' : '';
-      return `<a href="${url}"${attrs}>${label}</a>`;
+    const raw = String(text || "");
+    const linkPlaceholders = [];
+    function safeAttr(s) {
+      return String(s || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+    // Replace explicit Markdown links with placeholders first, supporting optional title
+    const withMdLinks = raw.replace(/\[([^\]]+)\]\((\S+?)(?:\s+("[^"]*"|'[^']*'))?\)/g, (m, label, href, titleQuoted) => {
+      const urlRaw = href.trim();
+      const url = /^www\./i.test(urlRaw) ? `http://${urlRaw}` : urlRaw;
+      const title = titleQuoted ? titleQuoted.slice(1, -1) : "";
+      const isExternal = /^https?:\/\//i.test(url);
+      const attrs = [];
+      attrs.push(`href="${safeAttr(url)}"`);
+      if (title) attrs.push(`title="${safeAttr(title)}"`);
+      if (isExternal) attrs.push('target="_blank" rel="noopener"');
+      const html = `<a ${attrs.join(' ')}>${escapeHtml(label)}</a>`;
+      const idx = linkPlaceholders.push(html) - 1;
+      return `@@LINK_${idx}@@`;
     });
-    const withAuto = withMdLinks.replace(/(https?:\/\/[^\s<]+)|(www\.[^\s<]+\.[^\s<]+)/g, (m) => {
-      const url = m.startsWith('http') ? m : `http://${m}`;
-      return `<a href="${url}" target="_blank" rel="noopener">${m}</a>`;
+    // Escape everything else
+    let escaped = escapeHtml(withMdLinks);
+    // Auto-link bare URLs in the escaped text
+    escaped = escaped.replace(/(https?:\/\/[^\s<]+|www\.[^\s<]+\.[^\s<]+)/g, (m) => {
+      let display = m;
+      let url = m.startsWith('http') ? m : `http://${m}`;
+      let suffix = '';
+      while(/[.,);:!?]$/.test(url)) { suffix = url.slice(-1) + suffix; url = url.slice(0, -1); display = display.slice(0, -1); }
+      const openCount = (url.match(/\(/g) || []).length;
+      const closeCount = (url.match(/\)/g) || []).length;
+      while (closeCount > openCount && url.endsWith(')')) { url = url.slice(0, -1); display = display.slice(0, -1); }
+      return `<a href="${safeAttr(url)}" target=\"_blank\" rel=\"noopener\">${display}</a>${suffix}`;
     });
-    return withAuto;
+    // Inject placeholders back as anchors
+    escaped = escaped.replace(/@@LINK_(\d+)@@/g, (_, i) => linkPlaceholders[Number(i)] || '');
+    return escaped;
   }
 
   function mdToHtml(md) {

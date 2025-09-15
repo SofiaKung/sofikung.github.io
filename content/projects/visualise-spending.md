@@ -29,7 +29,7 @@ content_blocks:
   - type: "paragraph"
     text: "How do you make sense of billions in government spending? Singapore's government budget data is publicly available, but buried in dense spreadsheets. We built an interactive dashboard using R Shiny that transforms Singapore's complex budget data into clear, explorable visualizations."
   - type: "paragraph"
-    text: "Read the complete project here - https://wiki.smu.edu.sg/18191is428g1/GeViz"
+    text: "Read the complete project [here](https://wiki.smu.edu.sg/18191is428g1/GeViz)"
 
 # Gallery
 gallery:
