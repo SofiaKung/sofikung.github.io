@@ -1,0 +1,30 @@
+---
+# Basic metadata
+title: "Detecting Financial Statement Fraud with ML"
+slug: "detect-fs-fraud"
+date: "2020-05-01"
+date_pretty: "May 1, 2020"
+description: "How machine learning can detect accounting fraud"
+type: "project"
+
+# Hero/cover section
+hero:
+  image: "assets/fs-ml.jpg"
+  alt: "An article on detecting financial statrment fraud with machine learning "
+
+# Project metadata
+project:
+  tags:
+  - "Fraud detection"
+  - "Machine learning"
+
+# SEO and additional metadata
+seo:
+  keywords:
+  - "Fraud detection"
+  - "Machine learning"
+  og_image: "assets/fs-ml.jpg"
+
+---
+
+<!-- Optional markdown content can go here. -->

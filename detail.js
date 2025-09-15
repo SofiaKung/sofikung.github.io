@@ -151,8 +151,9 @@
     titleEl.textContent = item.title || "Untitled";
 
     // Meta (date + tags)
-    if (dateEl && item.datePretty) {
-      dateEl.textContent = item.datePretty;
+    if (dateEl && (item.datePretty || item.date)) {
+      if (item.date) dateEl.setAttribute('datetime', item.date);
+      dateEl.textContent = item.datePretty || item.date;
     }
     if (tagsEl && Array.isArray(item.tags)) {
       tagsEl.innerHTML = item.tags.map((t) => `<span class="post-tag">${t}</span>`).join("");

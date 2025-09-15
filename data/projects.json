@@ -2,6 +2,8 @@
   {
     "title": "Visualizing Singapore Government Spending",
     "slug": "visualise-spending",
+    "date": "2019-01-01",
+    "datePretty": "Jan 1, 2019",
     "description": "Insights into the spending pattern of each Ministry and Agency of Singapore Government",
     "image": "assets/Geviz_project_cover.png",
     "alt": "Singapore government spending dashboard showing budget allocation across ministries with interactive charts",
@@ -49,6 +51,8 @@
   {
     "title": "Detecting Financial Statement Fraud with ML",
     "slug": "detect-fs-fraud",
+    "date": "2020-05-01",
+    "datePretty": "May 1, 2020",
     "description": "How machine learning can detect accounting fraud",
     "image": "assets/fs-ml.jpg",
     "alt": "An article on detecting financial statrment fraud with machine learning ",

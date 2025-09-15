@@ -12,9 +12,9 @@ A clean portfolio site with a lightweight, GitHub-based CMS. Homepage lists Proj
   - Visit: `http://localhost:8000/`
 
 ## CMS System
-Content is stored in the repo and loaded at runtime.
+Content is stored in-repo and loaded at runtime.
 
-- Data lists:
+- Data lists (current runtime source of truth):
   - Posts: `data/posts.json`
   - Projects: `data/projects.json`
 - Detail pages (routing by slug):
@@ -30,6 +30,58 @@ Content is stored in the repo and loaded at runtime.
   - Homepage: `script.js` fetches JSON and builds cards for Projects and Posts.
   - List pages: `list.js` renders `/projects/` and `/blog/` from the same JSON data.
   - Detail pages: `detail.js` loads JSON, then injects HTML or JSON blocks if present.
+
+### Markdown + YAML Front Matter (new authoring format)
+You can author posts and projects as one Markdown file per item with a YAML front matter block. Files live in:
+
+- Projects: `content/projects/<slug>.md`
+- Posts: `content/posts/<slug>.md`
+
+These files follow a schema inspired by the existing JSON data:
+
+```yaml
+---
+title: "Example Title"
+slug: "example-slug"
+date: "2024-01-01"
+date_pretty: "Jan 1, 2024"
+description: "Short summary for cards and detail lede"
+type: "project" # or "post"
+
+hero:
+  image: "assets/cover.png"
+  alt: "Accessible alt text"
+  link: "https://example.com"
+  link_text: "View Live Project"
+
+project:
+  tags: ["Tag A", "Tag B"]
+
+content_blocks:
+  - type: "heading"
+    level: 3
+    text: "The Challenge"
+  - type: "paragraph"
+    text: "Body text…"
+
+gallery:
+  layout: "masonry"
+  columns: 2
+  items:
+    - src: "assets/example-1.png"
+      title: "Caption title"
+      alt: "Alt"
+      caption: "Longer caption text"
+
+seo:
+  keywords: ["keyword1", "keyword2"]
+  og_image: "assets/cover.png"
+---
+
+Optional markdown body can go here…
+```
+
+Note: the current site still renders from the JSON lists at runtime. To fully switch rendering to Markdown + YAML, either add a build step that converts front matter to JSON before deploy, or update the client JS to fetch and parse these files directly.
 
 ### Clean URLs
 - List pages live at:
@@ -105,7 +157,29 @@ Fallback behavior:
 - `styles.css` — Site styles (cards, article typography, responsive)
 - `data/` — JSON data for lists
 - `content/` — Optional HTML bodies per slug
+- `content/` — Optional HTML or Markdown (`.md` with YAML front matter) per slug
 - `assets/` — Images and icons
+
+## Scripts
+
+### Convert existing JSON to Markdown files
+Generate one Markdown-with-YAML file per Project/Post from the existing `data/*.json`:
+
+```
+node scripts/convert-to-yaml.js
+```
+
+Outputs:
+- `content/projects/<slug>.md`
+- `content/posts/<slug>.md`
+
+Notes:
+- Running the script is idempotent; it will overwrite existing generated `.md` files with the same slug.
+- Fields not present in JSON are omitted (e.g., `status`, `tech_stack`). You can add them manually after generation.
+
+### Add a new Project/Post (Markdown-first)
+1) Create `content/projects/<your-slug>.md` or `content/posts/<your-slug>.md` with front matter similar to the template above.
+2) Commit the file. If you rely on runtime JSON today, mirror the entry in `data/projects.json` or `data/posts.json` until the frontend is updated to read Markdown directly.
 
 ## Deployment
 - Any static host works (GitHub Pages, Netlify, Vercel).

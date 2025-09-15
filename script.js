@@ -220,6 +220,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const body = document.createElement("div");
       body.className = "project-body";
+      const h3 = document.createElement("h3");
+      h3.className = "project-title";
+      h3.textContent = p.title || "Untitled";
+      const desc = document.createElement("p");
+      desc.className = "project-desc";
+      desc.textContent = p.description || "";
+
+      // Tags (project-specific styling)
       const meta = document.createElement("div");
       meta.className = "project-meta";
       (p.tags || []).forEach((t) => {
@@ -228,13 +236,8 @@ document.addEventListener("DOMContentLoaded", function () {
         span.textContent = t;
         meta.appendChild(span);
       });
-      const h3 = document.createElement("h3");
-      h3.className = "project-title";
-      h3.textContent = p.title || "Untitled";
-      const desc = document.createElement("p");
-      desc.className = "project-desc";
-      desc.textContent = p.description || "";
 
+      // Keep tags first, then title, then description
       body.appendChild(meta);
       body.appendChild(h3);
       body.appendChild(desc);
