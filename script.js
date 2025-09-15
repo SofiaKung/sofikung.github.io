@@ -163,20 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
     observer.observe(card);
   });
 
-  // Lightweight GitHub-based CMS: load content from JSON files stored in repo
-  async function fetchJSON(path) {
-    try {
-      const res = await fetch(path, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (e) {
-      console.warn("Failed to load", path, e);
-      return null;
-    }
-  }
+  // Content index comes from /content/manifest.js (global window.CONTENT_INDEX)
 
   function computeLink(item, type) {
-    const direct = item.link || item.externalUrl;
+    const direct = item.link || item.externalUrl || item.imageLink; // allow hero.link as direct
     if (direct) {
       return { href: direct, external: /^https?:\/\//.test(direct) };
     }
@@ -325,14 +315,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Load content from JSON (edit these files in GitHub to update site)
-  (async () => {
-    const [projects, posts] = await Promise.all([
-      fetchJSON("/data/projects.json"),
-      fetchJSON("/data/posts.json"),
-    ]);
-    if (projects) renderProjects(projects);
-    if (posts) renderPosts(posts);
+  (function () {
+    const idx = (window.CONTENT_INDEX || {});
+    const projects = Array.isArray(idx.projects) ? idx.projects : [];
+    const posts = Array.isArray(idx.posts) ? idx.posts : [];
+    if (projects.length) renderProjects(projects);
+    if (posts.length) renderPosts(posts);
   })();
 
   // Hero toggle: Data Analyst vs Risk Analytics

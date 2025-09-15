@@ -1,6 +1,6 @@
 # Website Project
 
-A clean portfolio site with a lightweight, GitHub-based CMS. Homepage lists Projects and Posts; list pages render the same data; detail pages are rendered from JSON lists and optional HTML or JSON block content.
+A clean portfolio site with a lightweight, GitHub-based CMS. Homepage lists Projects and Posts; list pages render the same data; detail pages render from Markdown (YAML front matter + body) with no JSON dependency.
 
 ## Quick Start
 - Installation:
@@ -12,11 +12,10 @@ A clean portfolio site with a lightweight, GitHub-based CMS. Homepage lists Proj
   - Visit: `http://localhost:8000/`
 
 ## CMS System
-Content is stored in-repo and loaded at runtime.
+Content is stored in-repo and loaded at runtime from Markdown plus a small JS manifest.
 
-- Data lists (current runtime source of truth):
-  - Posts: `data/posts.json`
-  - Projects: `data/projects.json`
+- Manifest for lists (runtime source for cards):
+  - `content/manifest.js` defines `window.CONTENT_INDEX = { projects, posts }`
 - Detail pages (routing by slug):
   - Post page: `/post.html?slug=<post-slug>`
   - Project page: `/project.html?slug=<project-slug>`
@@ -25,13 +24,13 @@ Content is stored in-repo and loaded at runtime.
   - External URLs (`http(s)://…`) open in a new tab; internal paths work too.
 - Content bodies (optional):
   - HTML file: `content/posts/<slug>.html` or `content/projects/<slug>.html`
-  - JSON blocks: set `body` in your JSON item (see Flexible Content Blocks below)
+  - YAML content blocks in the `.md` front matter (see Flexible Content Blocks below)
 - Rendering entry points:
-  - Homepage: `script.js` fetches JSON and builds cards for Projects and Posts.
-  - List pages: `list.js` renders `/projects/` and `/blog/` from the same JSON data.
-  - Detail pages: `detail.js` loads JSON, then injects HTML or JSON blocks if present.
+  - Homepage: `script.js` reads `window.CONTENT_INDEX` and builds cards for Projects and Posts.
+  - List pages: `list.js` renders `/projects/` and `/blog/` from `window.CONTENT_INDEX`.
+  - Detail pages: `detail.js` parses each page’s Markdown front matter directly (no JSON).
 
-### Markdown + YAML Front Matter (new authoring format)
+### Markdown + YAML Front Matter
 You can author posts and projects as one Markdown file per item with a YAML front matter block. Files live in:
 
 - Projects: `content/projects/<slug>.md`
@@ -81,7 +80,7 @@ seo:
 Optional markdown body can go here…
 ```
 
-Note: the current site still renders from the JSON lists at runtime. To fully switch rendering to Markdown + YAML, either add a build step that converts front matter to JSON before deploy, or update the client JS to fetch and parse these files directly.
+Note: the site renders lists from a JS manifest and detail pages directly from Markdown + YAML front matter. No `data/*.json` files are used.
 
 ### Clean URLs
 - List pages live at:
@@ -114,37 +113,34 @@ Project-only extras:
 Post-only extras:
 - `date` (ISO), `datePretty` (display string), `excerpt` (fallback snippet)
 
-### Flexible Content Blocks (JSON `body`)
-Use a `body` array for long-form writing (works for both Projects and Posts). If present, it takes precedence over HTML and `writings`/`excerpt`.
+### Flexible Content Blocks (YAML `content_blocks`)
+For structured copy within the front matter, use `content_blocks`. If the Markdown body (below the front matter) is empty, the detail page renders these blocks.
 
 Supported blocks:
-- heading: `{ "type": "heading", "level": 2, "text": "The Challenge" }` (level: 2–4)
-- paragraph: `{ "type": "paragraph", "text": "How do you make sense…" }`
-- list: `{ "type": "list", "ordered": false, "items": ["A", "B"] }`
-- quote: `{ "type": "quote", "text": "A key insight", "cite": "Someone" }`
-- image: `{ "type": "image", "src": "assets/foo.jpg", "alt": "desc", "caption": "optional" }`
+- heading: `- type: "heading"`, with `level` and `text`
+- paragraph: `- type: "paragraph"`, with `text`
+- list: `- type: "list"`, with `items: [..]` and optional `ordered`
+- quote: `- type: "quote"`, with `text` and optional `cite`
+- image: `- type: "image"`, with `src`, `alt`, `caption`
 
-Example body for a project:
+Example content_blocks in YAML front matter:
 
-```json
-{
-  "title": "Visualizing Singapore Government Spending",
-  "slug": "visualise-spending",
-  "cover": "assets/Geviz_project_cover.png",
-  "tags": ["Dashboard", "R Shiny"],
-  "description": "Insights into the spending pattern...",
-  "body": [
-    { "type": "heading", "level": 2, "text": "The Challenge" },
-    { "type": "paragraph", "text": "How do you make sense of billions in government spending? Singapore's government budget data is publicly available, but buried in dense PDF reports and spreadsheets. Citizens deserve to understand where their tax dollars go—but who has time to parse through hundreds of pages of financial documents?" },
-    { "type": "heading", "level": 2, "text": "The Solution" },
-    { "type": "paragraph", "text": "I built an interactive dashboard that transforms Singapore's complex budget data into clear, explorable visualizations. Think of it as Google Analytics, but for government spending." }
-  ]
-}
+```yaml
+content_blocks:
+  - type: "heading"
+    level: 3
+    text: "The Challenge"
+  - type: "paragraph"
+    text: "How do you make sense of billions in government spending? …"
+  - type: "heading"
+    level: 3
+    text: "The Solution"
+  - type: "paragraph"
+    text: "We built an interactive dashboard using R Shiny …"
 ```
 
 Fallback behavior:
-- Projects: if no `body`, use `content/projects/<slug>.html`; else use `writings` (string array paragraphs) if provided.
-- Posts: if no `body`, use `content/posts/<slug>.html`; else show `excerpt`.
+- Projects and Posts: prefer Markdown body in the `.md` file. If absent, render `content_blocks` from YAML. If neither present, fall back to an HTML body at `content/<type>s/<slug>.html`. Posts finally fall back to `excerpt`.
 
 ## Project Structure (high level)
 - `index.html` — Homepage (hero, Projects, Posts)
@@ -155,33 +151,33 @@ Fallback behavior:
 - `list.js` — List page rendering
 - `detail.js` — Detail page renderer
 - `styles.css` — Site styles (cards, article typography, responsive)
-- `data/` — JSON data for lists
 - `content/` — Optional HTML bodies per slug
 - `content/` — Optional HTML or Markdown (`.md` with YAML front matter) per slug
+- `content/manifest.js` — Generated manifest for list pages (defines `window.CONTENT_INDEX`)
 - `assets/` — Images and icons
 
 ## Scripts
 
-### Convert existing JSON to Markdown files
-Generate one Markdown-with-YAML file per Project/Post from the existing `data/*.json`:
+### Build manifest from Markdown
+Generate `content/manifest.js` from the YAML front matter in your Markdown files (lists/cards use this manifest):
 
 ```
-node scripts/convert-to-yaml.js
+node scripts/build-content-index.js
 ```
 
 Outputs:
-- `content/projects/<slug>.md`
-- `content/posts/<slug>.md`
+- `content/manifest.js` (defines `window.CONTENT_INDEX = { projects, posts }`)
 
 Notes:
-- Running the script is idempotent; it will overwrite existing generated `.md` files with the same slug.
-- Fields not present in JSON are omitted (e.g., `status`, `tech_stack`). You can add them manually after generation.
+- Script reads `content/projects/*.md` and `content/posts/*.md`.
+- It extracts core fields (title, slug, dates, description, hero image/alt/link, tags, and gallery for projects).
+- Run this after adding or editing Markdown so list pages stay in sync.
 
 ### Add a new Project/Post (Markdown-first)
 1) Create `content/projects/<your-slug>.md` or `content/posts/<your-slug>.md` with front matter similar to the template above.
-2) Commit the file. If you rely on runtime JSON today, mirror the entry in `data/projects.json` or `data/posts.json` until the frontend is updated to read Markdown directly.
+2) Commit the file, then run `node scripts/build-content-index.js` to update `content/manifest.js`.
 
 ## Deployment
 - Any static host works (GitHub Pages, Netlify, Vercel).
-- Paths are root-absolute (e.g., `/data/...`, `/partials/...`). Deploy at the domain root (recommended; e.g., with a CNAME) for these to work as-is. If deploying under a subpath, adjust the fetch/links to be relative.
-- After pushing content changes (JSON/HTML), pages update on next load (no build step required).
+- Paths are root-absolute (e.g., `/content/...`, `/partials/...`). Deploy at the domain root (recommended; e.g., with a CNAME) for these to work as-is. If deploying under a subpath, adjust the fetch/links to be relative.
+- After pushing content changes (Markdown/HTML), rebuild the manifest (`node scripts/build-content-index.js`) and pages update on next load.

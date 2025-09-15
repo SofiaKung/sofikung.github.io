@@ -8,16 +8,7 @@
   function slugify(s) {
     return (s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
   }
-  async function fetchJSON(path) {
-    try {
-      const res = await fetch(path, { cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
-      return await res.json();
-    } catch (e) {
-      console.warn("Failed to load", path, e);
-      return null;
-    }
-  }
+  // No JSON data fetch; all metadata comes from Markdown front matter
   async function fetchContentHTML(path) {
     try {
       const res = await fetch(path, { cache: "no-store" });
@@ -26,6 +17,213 @@
     } catch (_) {
       return null;
     }
+  }
+
+  function extractFrontMatter(md) {
+    if (!md) return { frontmatter: null, body: "" };
+    const m = md.match(/^---\n([\s\S]*?)\n---\n?/);
+    if (!m) return { frontmatter: null, body: md };
+    return { frontmatter: m[1], body: md.slice(m[0].length) };
+  }
+
+  function stripFrontMatter(md) {
+    const { body } = extractFrontMatter(md);
+    return { body };
+  }
+
+  function bodyHasContent(mdBody) {
+    if (!mdBody) return false;
+    // Remove HTML comments and trim
+    const cleaned = mdBody.replace(/<!--[\s\S]*?-->/g, "").trim();
+    return cleaned.length > 0;
+  }
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/\"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  function inlineFormat(text) {
+    // Escape HTML, then convert markdown-style links and autolink bare URLs
+    const esc = escapeHtml(String(text || ""));
+    const withMdLinks = esc.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, label, href) => {
+      const url = href.trim();
+      const external = /^(?:https?:)?\/\//.test(url);
+      const attrs = external ? ' target="_blank" rel="noopener"' : '';
+      return `<a href="${url}"${attrs}>${label}</a>`;
+    });
+    const withAuto = withMdLinks.replace(/(https?:\/\/[^\s<]+)|(www\.[^\s<]+\.[^\s<]+)/g, (m) => {
+      const url = m.startsWith('http') ? m : `http://${m}`;
+      return `<a href="${url}" target="_blank" rel="noopener">${m}</a>`;
+    });
+    return withAuto;
+  }
+
+  function mdToHtml(md) {
+    if (!md) return "";
+    const { body } = stripFrontMatter(md);
+    if (!bodyHasContent(body)) return "";
+    let text = body.replace(/\r\n/g, "\n");
+
+    // Fenced code blocks ```
+    const codeBlocks = [];
+    text = text.replace(/```([\s\S]*?)```/g, (_, code) => {
+      const idx = codeBlocks.push(`<pre><code>${escapeHtml(code.trim())}</code></pre>`) - 1;
+      return `@@CODE_BLOCK_${idx}@@`;
+    });
+
+    // Images ![alt](src)
+    text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => `<figure><img src="${src}" alt="${alt}"> </figure>`);
+
+    // Headings
+    const lines = text.split(/\n/);
+    const out = [];
+    let listBuf = [];
+    function flushList() {
+      if (!listBuf.length) return;
+      out.push("<ul>" + listBuf.map(li => `<li>${inlineFormat(li)}</li>`).join("") + "</ul>");
+      listBuf = [];
+    }
+    for (let i = 0; i < lines.length; i++) {
+      const l = lines[i];
+      if (!l.trim()) { flushList(); continue; }
+      const h = l.match(/^(#{1,6})\s+(.*)$/);
+      if (h) {
+        flushList();
+        const level = Math.min(6, h[1].length);
+        out.push(`<h${level}>${inlineFormat(h[2].trim())}</h${level}>`);
+        continue;
+      }
+      const li = l.match(/^\s*[-*]\s+(.*)$/);
+      if (li) {
+        listBuf.push(li[1]);
+        continue;
+      }
+      // Paragraph
+      flushList();
+      out.push(`<p>${inlineFormat(l)}</p>`);
+    }
+    flushList();
+
+    let html = out.join("\n");
+    // Restore code blocks
+    html = html.replace(/@@CODE_BLOCK_(\d+)@@/g, (_, idx) => codeBlocks[Number(idx)] || "");
+    return html;
+  }
+
+  function parseContentBlocksFromFM(md) {
+    const { frontmatter } = extractFrontMatter(md || "");
+    if (!frontmatter) return [];
+    const lines = frontmatter.split(/\r?\n/);
+    let start = -1;
+    let baseIndent = 0;
+    for (let i = 0; i < lines.length; i++) {
+      const l = lines[i];
+      if (/^\s*content_blocks:\s*$/.test(l)) {
+        start = i; baseIndent = (l.match(/^\s*/)[0] || '').length; break;
+      }
+    }
+    if (start === -1) return [];
+    const blocks = [];
+    let i = start + 1;
+    while (i < lines.length) {
+      let l = lines[i];
+      const indent = (l.match(/^\s*/)[0] || '').length;
+      if (indent <= baseIndent && /\w/.test(l)) break; // end of section
+      const itemMatch = l.match(/^\s*-\s*(.*)$/);
+      if (!itemMatch) { i++; continue; }
+      // Parse one item block
+      const itemIndent = (l.match(/^\s*/)[0] || '').length;
+      const obj = {};
+      // Inline like: - type: "heading"
+      const inlineKV = itemMatch[1].match(/^([A-Za-z0-9_\-\.]+):\s*(.*)$/);
+      if (inlineKV) {
+        obj[inlineKV[1]] = inlineKV[2].replace(/^['\"]|['\"]$/g, '');
+      }
+      i++;
+      while (i < lines.length) {
+        l = lines[i];
+        const ind2 = (l.match(/^\s*/)[0] || '').length;
+        if (ind2 <= itemIndent) break; // next item or end
+        const mk = l.match(/^\s*([A-Za-z0-9_\-\.]+):\s*(.*)$/);
+        if (mk) {
+          const k = mk[1];
+          let v = mk[2].trim();
+          v = v.replace(/^['\"]|['\"]$/g, '');
+          if (k === 'level') {
+            const n = Number(v); obj[k] = isNaN(n) ? v : n;
+          } else {
+            obj[k] = v;
+          }
+        }
+        i++;
+      }
+      // Normalize keys (type/text)
+      if (obj.type && (obj.text || obj.content)) {
+        blocks.push({ type: obj.type, level: obj.level, text: obj.text || obj.content });
+      }
+    }
+    return blocks;
+  }
+
+  function parseGalleryFromFM(md) {
+    const { frontmatter } = extractFrontMatter(md || "");
+    if (!frontmatter) return [];
+    const lines = frontmatter.split(/\r?\n/);
+    // Locate 'gallery:'
+    let start = -1; let baseIndent = 0;
+    for (let i = 0; i < lines.length; i++) {
+      const l = lines[i];
+      if (/^\s*gallery:\s*$/.test(l)) { start = i; baseIndent = (l.match(/^\s*/)[0]||'').length; break; }
+    }
+    if (start === -1) return [];
+    // Locate 'items:' under gallery
+    let itemsLine = -1; let itemsIndent = 0;
+    for (let i = start + 1; i < lines.length; i++) {
+      const l = lines[i];
+      const ind = (l.match(/^\s*/)[0]||'').length;
+      if (ind <= baseIndent && /\w/.test(l)) break; // left gallery block
+      if (/^\s*items:\s*$/.test(l)) { itemsLine = i; itemsIndent = ind; break; }
+    }
+    if (itemsLine === -1) return [];
+    const items = [];
+    let i = itemsLine + 1;
+    while (i < lines.length) {
+      let l = lines[i];
+      const ind = (l.match(/^\s*/)[0]||'').length;
+      if (ind <= baseIndent && /\w/.test(l)) break; // left gallery block
+      const dash = l.match(/^\s*-\s*(.*)$/);
+      if (!dash) { i++; continue; }
+      const itemIndent = (l.match(/^\s*/)[0]||'').length;
+      const obj = {};
+      // Inline key on same line e.g. "- src: '..." (rare)
+      const inlineKV = dash[1].match(/^([A-Za-z0-9_\-\.]+):\s*(.*)$/);
+      if (inlineKV) {
+        let v = inlineKV[2].trim();
+        v = v.replace(/^['\"]|['\"]$/g, '');
+        obj[inlineKV[1]] = v;
+      }
+      i++;
+      while (i < lines.length) {
+        l = lines[i];
+        const ind2 = (l.match(/^\s*/)[0]||'').length;
+        if (ind2 <= itemIndent) break; // next item or end
+        const mk = l.match(/^\s*([A-Za-z0-9_\-\.]+):\s*(.*)$/);
+        if (mk) {
+          const k = mk[1];
+          let v = mk[2].trim();
+          v = v.replace(/^['\"]|['\"]$/g, '');
+          obj[k] = v;
+        }
+        i++;
+      }
+      if (obj.src) items.push({ src: obj.src, title: obj.title, alt: obj.alt, caption: obj.caption });
+    }
+    return items;
   }
 
   // Render a flexible JSON body: array of blocks
@@ -37,30 +235,30 @@
       if (type === "heading") {
         const level = Math.min(4, Math.max(2, Number(b.level) || 2));
         const h = document.createElement("h" + level);
-        h.textContent = String(b.text || b.content || "");
+        h.innerHTML = inlineFormat(String(b.text || b.content || ""));
         h.className = "article-subtitle";
         container.appendChild(h);
       } else if (type === "paragraph") {
         const p = document.createElement("p");
-        p.textContent = String(b.text || b.content || "");
+        p.innerHTML = inlineFormat(String(b.text || b.content || ""));
         container.appendChild(p);
       } else if (type === "list") {
         const items = Array.isArray(b.items) ? b.items : [];
         const ul = document.createElement(b.ordered ? "ol" : "ul");
         items.forEach((t) => {
           const li = document.createElement("li");
-          li.textContent = String(t || "");
+          li.innerHTML = inlineFormat(String(t || ""));
           ul.appendChild(li);
         });
         container.appendChild(ul);
       } else if (type === "quote") {
         const q = document.createElement("blockquote");
         const p = document.createElement("p");
-        p.textContent = String(b.text || b.content || "");
+        p.innerHTML = inlineFormat(String(b.text || b.content || ""));
         q.appendChild(p);
         if (b.cite) {
           const c = document.createElement("cite");
-          c.textContent = String(b.cite);
+          c.innerHTML = inlineFormat(String(b.cite));
           q.appendChild(c);
         }
         container.appendChild(q);
@@ -135,17 +333,84 @@
   const writingWrap = qs('#project-writing');
 
   (async () => {
-    const dataPath = type === "post" ? "/data/posts.json" : "/data/projects.json";
-    const items = await fetchJSON(dataPath);
-    if (!Array.isArray(items)) {
-      contentEl.innerHTML = "<p>Unable to load content.</p>";
+    // Read the Markdown file for this slug and parse metadata from front matter
+    const contentPathHtml = `content/${type}s/${slug}.html`;
+    const contentPathMd = `content/${type}s/${slug}.md`;
+    const html = await fetchContentHTML(contentPathHtml);
+    const md = await fetchContentHTML(contentPathMd);
+    if (!md && !html) {
+      if (contentEl) contentEl.innerHTML = "<p>Content not found.</p>";
       return;
     }
-    const item = items.find((x) => (x.slug || slugify(x.title)) === slug);
-    if (!item) {
-      contentEl.innerHTML = "<p>Content not found.</p>";
-      return;
+    // Minimal front matter parser for title/date/hero/tags/description
+    function parseMeta(md) {
+      const { frontmatter } = extractFrontMatter(md || "");
+      const meta = { title: '', slug, tags: [] };
+      if (!frontmatter) return meta;
+      const lines = frontmatter.split(/\r?\n/);
+      const stack = [{ name: 'root', indent: -1, obj: meta }];
+      function ctxFor(indent) {
+        while (stack.length && stack[stack.length - 1].indent >= indent) stack.pop();
+        return stack[stack.length - 1];
+      }
+      for (let raw of lines) {
+        const line = raw.replace(/\t/g, '  ');
+        if (!line.trim() || /^\s*#/.test(line)) continue;
+        const indent = (line.match(/^\s*/)[0] || '').length;
+        const ctx = ctxFor(indent);
+        const at = ctx.obj;
+        const arr = line.match(/^\s*-\s*(.*)$/);
+        if (arr) {
+          const parent = ctx.name;
+          if ((parent === 'tags' || parent === 'project.tags') && Array.isArray(at)) {
+            const v = arr[1].trim().replace(/^['\"]|['\"]$/g, '');
+            at.push(v);
+          }
+          continue;
+        }
+        const mk = line.match(/^\s*([A-Za-z0-9_\-\.]+):\s*(.*)$/);
+        if (!mk) continue;
+        const key = mk[1];
+        let val = mk[2].trim();
+        const deq = (s) => s.replace(/^['\"]|['\"]$/g, '');
+        if (val === '') {
+          if (key === 'hero' || key === 'project' || key === 'seo') {
+            const obj = at[key] = at[key] || {};
+            stack.push({ name: key, indent, obj });
+          } else if (key === 'tags') {
+            const arr = at[key] = at[key] || [];
+            stack.push({ name: ctx.name === 'project' ? 'project.tags' : 'tags', indent, obj: arr });
+          } else {
+            const obj = at[key] = at[key] || {};
+            stack.push({ name: key, indent, obj });
+          }
+          continue;
+        }
+        const v = deq(val);
+        if (ctx.name === 'root') {
+          if (key === 'title') meta.title = v;
+          else if (key === 'date') meta.date = v;
+          else if (key === 'date_pretty') meta.datePretty = v;
+          else if (key === 'description') meta.description = v;
+          else if (key === 'type') meta.type = v;
+        } else if (ctx.name === 'hero') {
+          if (key === 'image') meta.image = v;
+          else if (key === 'alt') meta.alt = v;
+          else if (key === 'link') meta.imageLink = v;
+        } else if (ctx.name === 'project') {
+          if (key === 'tags') { /* handled above */ }
+        } else if (ctx.name === 'tags' || ctx.name === 'project.tags') {
+          // handled above
+        }
+      }
+      // collect tags from project.tags or root tags
+      if (meta.project && Array.isArray(meta.project.tags)) meta.tags = meta.project.tags;
+      if (!Array.isArray(meta.tags) || !meta.tags.length) {
+        if (Array.isArray(meta.tags)) meta.tags = meta.tags; // already root tags
+      }
+      return meta;
     }
+    const item = md ? parseMeta(md) : { title: slug, slug };
 
     // Title
     titleEl.textContent = item.title || "Untitled";
@@ -182,9 +447,7 @@
       heroEl.hidden = false;
     }
 
-    // Body content: try content file first, else fall back to JSON fields
-    const contentPath = `content/${type}s/${slug}.html`;
-    const html = await fetchContentHTML(contentPath);
+    // Body content already loaded above (md/html)
     if (type === 'project') {
       // Ensure lightbox overlay exists
       let overlay = document.querySelector('.lightbox-overlay');
@@ -234,9 +497,17 @@
         overviewWrap.hidden = false;
       }
       // Project Details (images + captions; previously Gallery)
-      if (detailsWrap && detailsGrid && Array.isArray(item.gallery) && item.gallery.length) {
+      // Prefer gallery from Markdown front matter if available
+      let galleryItems = [];
+      if (md) {
+        try { galleryItems = parseGalleryFromFM(md); } catch (_) { /* ignore */ }
+      }
+      if (!Array.isArray(galleryItems) || galleryItems.length === 0) {
+        galleryItems = Array.isArray(item.gallery) ? item.gallery : [];
+      }
+      if (detailsWrap && detailsGrid && Array.isArray(galleryItems) && galleryItems.length) {
         detailsGrid.innerHTML = '';
-        item.gallery.forEach((g) => {
+        galleryItems.forEach((g) => {
           const fig = document.createElement('figure');
           fig.className = 'details-item';
           const img = document.createElement('img');
@@ -275,32 +546,45 @@
         attachLightbox(detailsGrid);
       }
       // Writing
-      if (Array.isArray(item.body) && item.body.length) {
-        renderBodyBlocks(item.body, contentEl);
+      const mdHtml = md ? mdToHtml(md) : "";
+      if (mdHtml) {
+        contentEl.innerHTML = mdHtml;
         if (writingWrap) writingWrap.hidden = false;
+      } else if (md) {
+        const blocks = parseContentBlocksFromFM(md);
+        if (blocks && blocks.length) {
+          renderBodyBlocks(blocks, contentEl);
+          if (writingWrap) writingWrap.hidden = false;
+        } else if (html) {
+          contentEl.innerHTML = html;
+          if (writingWrap) writingWrap.hidden = false;
+        } else if (writingWrap) {
+          writingWrap.hidden = true;
+        }
       } else if (html) {
         contentEl.innerHTML = html;
-        if (writingWrap) writingWrap.hidden = false;
-      } else if (Array.isArray(item.writings) && item.writings.length) {
-        // Render multi-paragraph writing from JSON array
-        contentEl.innerHTML = '';
-        item.writings.forEach((para) => {
-          const p = document.createElement('p');
-          p.textContent = String(para || '');
-          contentEl.appendChild(p);
-        });
         if (writingWrap) writingWrap.hidden = false;
       } else {
         // No writing provided; keep section hidden
         if (writingWrap) writingWrap.hidden = true;
       }
     } else {
-      if (Array.isArray(item.body) && item.body.length) {
-        renderBodyBlocks(item.body, contentEl);
+      const mdHtml = md ? mdToHtml(md) : "";
+      if (mdHtml) {
+        contentEl.innerHTML = mdHtml;
+      } else if (md) {
+        const blocks = parseContentBlocksFromFM(md);
+        if (blocks && blocks.length) {
+          renderBodyBlocks(blocks, contentEl);
+        } else if (html) {
+          contentEl.innerHTML = html;
+        } else if (type === "post") {
+          contentEl.innerHTML = `<p>${item.excerpt || item.description || ""}</p>`;
+        }
       } else if (html) {
         contentEl.innerHTML = html;
       } else if (type === "post") {
-        contentEl.innerHTML = `<p>${item.excerpt || ""}</p>`;
+        contentEl.innerHTML = `<p>${item.excerpt || item.description || ""}</p>`;
       }
     }
   })();

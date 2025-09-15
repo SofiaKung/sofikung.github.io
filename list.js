@@ -54,19 +54,13 @@ function setActiveNavBasedOnPath() {
     });
   }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
 
-  async function fetchJSON(path) {
-    try {
-      const res = await fetch(path, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return await res.json();
-    } catch (e) {
-      console.warn("Failed to load", path, e);
-      return null;
-    }
+  function getIndex(kind) {
+    const idx = (window.CONTENT_INDEX && (kind === 'projects' ? window.CONTENT_INDEX.projects : window.CONTENT_INDEX.posts)) || [];
+    return Array.isArray(idx) ? idx : [];
   }
 
   function computeLink(item, type) {
-    const direct = item.link || item.externalUrl;
+    const direct = item.link || item.externalUrl || item.imageLink; // allow hero.link as direct
     if (direct) {
       return { href: direct, external: /^https?:\/\//.test(direct) };
     }
@@ -207,13 +201,13 @@ function setActiveNavBasedOnPath() {
     });
   }
 
-  (async () => {
+  (function () {
     if (document.getElementById("all-projects") || document.querySelector(".project-grid")) {
-      const projects = await fetchJSON("/data/projects.json");
+      const projects = getIndex('projects');
       if (projects) renderProjects(projects, "#all-projects");
     }
     if (document.getElementById("all-posts") || document.querySelector(".post-list")) {
-      const posts = await fetchJSON("/data/posts.json");
+      const posts = getIndex('posts');
       if (posts) renderPosts(posts, "#all-posts");
     }
   })();
