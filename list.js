@@ -71,7 +71,7 @@ function setActiveNavBasedOnPath() {
       return { href, external };
     }
     const slug = item.slug || (item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    if (slug) return { href: `/${type}/${encodeURIComponent(slug)}`, external: false };
+    if (slug) return { href: `/${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
     const fallback = item.url || "";
     if (fallback) return { href: fallback, external: /^https?:\/\//.test(fallback) };
     return { href: "#", external: false };

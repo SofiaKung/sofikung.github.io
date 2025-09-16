@@ -177,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
       return { href, external };
     }
     const slug = item.slug || (item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    if (slug) return { href: `/${type}/${encodeURIComponent(slug)}`, external: false };
+    if (slug) return { href: `/${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
     const fallback = item.url || "";
     if (fallback) return { href: fallback, external: /^https?:\/\//.test(fallback) };
     return { href: "#", external: false };
@@ -323,8 +323,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   (function () {
     const idx = (window.CONTENT_INDEX || {});
-    const projects = Array.isArray(idx.projects) ? idx.projects : [];
+    const projectsAll = Array.isArray(idx.projects) ? idx.projects : [];
     const posts = Array.isArray(idx.posts) ? idx.posts : [];
+    // Homepage: show up to 2 featured projects (tag includes 'featured'), else fall back to first 2
+    const featured = projectsAll.filter(p => (p.tags || []).some(t => String(t).toLowerCase() === 'featured')).slice(0, 2);
+    const projects = featured.length ? featured : projectsAll.slice(0, 2);
     if (projects.length) renderProjects(projects);
     if (posts.length) renderPosts(posts);
   })();

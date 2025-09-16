@@ -16,6 +16,7 @@ hero:
 # Project metadata
 project:
   tags:
+    - "Featured"
     - "Fraud detection"
     - "Machine learning"
 

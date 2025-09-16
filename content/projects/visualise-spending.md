@@ -18,6 +18,7 @@ hero:
 # Project metadata
 project:
   tags:
+    - "Featured"
     - "Dashboard"
     - "R Shiny"
     - "Working in progress"
