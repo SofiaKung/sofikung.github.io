@@ -1,11 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-
-const hasDraftTag = (entry: any) => {
-  const tags = (entry?.data?.tags as string[] | undefined) ?? [];
-  return tags.some((tag) => String(tag).toLowerCase() === 'draft');
-};
+import { hasDraftTag } from '../../utils/content';
 
 export async function getStaticPaths() {
   const items = (await getCollection('posts')).filter((entry) => !hasDraftTag(entry));
