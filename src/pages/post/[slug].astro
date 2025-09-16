@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const hasDraftTag = (entry: any) => {
+  const tags = (entry?.data?.tags as string[] | undefined) ?? [];
+  return tags.some((tag) => String(tag).toLowerCase() === 'draft');
+};
+
+export async function getStaticPaths() {
+  const items = (await getCollection('posts')).filter((entry) => !hasDraftTag(entry));
+  return items.map((entry) => ({ params: { slug: entry.slug ?? entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props as any;
+const data = entry.data;
+const { Content } = await entry.render();
+---
+<BaseLayout title={data.title}>
+  <main class="article">
+    <div class="container">
+      <nav class="article-topnav"><a class="article-back" href="/blog/">← Back to blog</a></nav>
+      <header class="article-header">
+        <p class="article-eyebrow">Post</p>
+        <h1 class="article-title">{data.title}</h1>
+        <div class="article-meta">
+          {data.date && <time datetime={data.date}>{data.date_pretty ?? data.date}</time>}
+          {(data.tags ?? []).length ? <span class="article-tags">{(data.tags ?? []).map((t:string) => <span class="post-tag">{t}</span>)}</span> : null}
+        </div>
+      </header>
+      <figure class="article-hero" hidden></figure>
+      <article class="article-content"><Content /></article>
+      <nav class="article-bottomnav"><a class="article-more" href="/blog/">→ More posts</a></nav>
+    </div>
+  </main>
+</BaseLayout>

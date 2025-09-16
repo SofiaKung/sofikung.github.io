@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const hasDraftTag = (entry: any) => {
+  const tags = [
+    ...((entry?.data?.project?.tags as string[] | undefined) ?? []),
+    ...((entry?.data?.tags as string[] | undefined) ?? []),
+  ];
+  return tags.some((tag) => String(tag).toLowerCase() === 'draft');
+};
+
+export async function getStaticPaths() {
+  const items = (await getCollection('projects')).filter((entry) => !hasDraftTag(entry));
+  return items.map((entry) => ({ params: { slug: entry.slug ?? entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props as any;
+const data = entry.data;
+const tags = data.project?.tags ?? [];
+const heroImage = data.hero?.image;
+const heroAlt = data.hero?.alt ?? data.title;
+const heroLink = data.hero?.link;
+const { Content } = await entry.render();
+---
+<BaseLayout title={data.title}>
+  <main class="article">
+    <div class="container">
+      <nav class="article-topnav"><a class="article-back" href="/projects/">← Back to projects</a></nav>
+      <header class="article-header">
+        <p class="article-eyebrow">Project</p>
+        <h1 class="article-title">{data.title}</h1>
+        <div class="article-meta">
+          {tags.length ? <span class="article-tags">{tags.map((t:string) => <span class="post-tag">{t}</span>)}</span> : null}
+          {data.date && <time datetime={data.date}>{data.date_pretty ?? data.date}</time>}
+        </div>
+      </header>
+      {data.description && <p class="article-lede">{data.description}</p>}
+      {heroImage && (
+        <figure class="article-hero">
+          {heroLink ? (
+            <a href={heroLink} target="_blank" rel="noopener"><img src={`/${heroImage}`} alt={heroAlt} loading="lazy" /></a>
+          ) : (
+            <img src={`/${heroImage}`} alt={heroAlt} loading="lazy" />
+          )}
+        </figure>
+      )}
+
+      <section class="project-writing" id="project-writing">
+        <article class="article-content">
+          <Content />
+          {data.content_blocks && (
+            <>
+              {data.content_blocks.map((b:any) => {
+                if (b.type === 'heading') return (<h3 class="article-subtitle">{b.text}</h3>);
+                if (b.type === 'paragraph') return (<p>{b.text}</p>);
+                if (b.type === 'list') return (<ul>{(b.items||[]).map((i:string) => <li>{i}</li>)}</ul>);
+                if (b.type === 'quote') return (<blockquote><p>{b.text}</p>{b.cite && <cite>{b.cite}</cite>}</blockquote>);
+                if (b.type === 'image') return (<figure><img src={`/${b.src}`} alt={b.alt||''} loading="lazy" />{b.caption && <figcaption>{b.caption}</figcaption>}</figure>);
+                return null;
+              })}
+            </>
+          )}
+        </article>
+      </section>
+
+      {data.gallery?.items?.length && (
+        <section class="project-details">
+          <h2 class="article-subtitle">Project Details</h2>
+          <div class="details-grid">
+            {data.gallery.items!.map((g:any) => (
+              <figure class="details-item">
+                {g.link ? (
+                  <a href={g.link} target="_blank" rel="noopener"><img src={`/${g.src}`} alt={g.alt ?? data.title} loading="lazy" /></a>
+                ) : (
+                  <img src={`/${g.src}`} alt={g.alt ?? data.title} loading="lazy" />
+                )}
+                {(g.title || g.caption || g.alt) && (
+                  <figcaption>
+                    {g.title && <div class="details-title">{g.title}</div>}
+                    <div class="details-caption">{g.caption ?? g.alt}</div>
+                  </figcaption>
+                )}
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+      <nav class="article-bottomnav"><a class="article-more" href="/projects/">→ More projects</a></nav>
+    </div>
+  </main>
+</BaseLayout>

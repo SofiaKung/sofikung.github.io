@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const hasDraftTag = (entry: any) => {
+  const tags = [
+    ...((entry?.data?.project?.tags as string[] | undefined) ?? []),
+    ...((entry?.data?.tags as string[] | undefined) ?? []),
+  ];
+  return tags.some((tag) => String(tag).toLowerCase() === 'draft');
+};
+
+const projects = (await getCollection('projects')).filter((entry) => !hasDraftTag(entry));
+---
+<BaseLayout title="All Projects">
+  <main class="article">
+    <div class="container">
+      <header class="article-header">
+        <p class="article-eyebrow">Projects</p>
+        <h1 class="article-title">All Projects</h1>
+      </header>
+      <section class="projects">
+        <div class="project-grid">
+          {projects.map(({ slug, data }) => {
+            const tags = data.project?.tags ?? [];
+            const external = data.external_link;
+            const href = external ? external : `/project/${slug}`;
+            const externalAttrs = external ? { target: '_blank', rel: 'noopener' } : {};
+            const cover = data.hero?.image ?? data.image;
+            const alt = data.hero?.alt ?? data.alt ?? data.title;
+            return (
+              <article class="project-card">
+                <a class="project-link" href={href} {...externalAttrs}>
+                  <div class="project-media">{cover && <img src={`/${cover}`} alt={alt} loading="lazy" />}</div>
+                  <div class="project-body">
+                    <div class="project-meta">{tags.map(t => <span class="project-tag">{t}</span>)}</div>
+                    <h3 class="project-title">{data.title}</h3>
+                    {data.description && <p class="project-desc">{data.description}</p>}
+                  </div>
+                </a>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

@@ -1,11 +1,17 @@
 {
-  "name": "sofiakung-portfolio",
+  "name": "portfolio-astro",
   "private": true,
-  "version": "1.0.0",
-  "description": "Static portfolio site; content manifest generated from Markdown front matter",
+  "version": "0.1.0",
+  "type": "module",
   "scripts": {
-    "build:content": "node scripts/build-content-index.js",
-    "predeploy": "npm run build:content",
-    "deploy": "echo 'Deploy by pushing to GitHub (GitHub Pages). Manifest is auto-built via predeploy/CI.'"
+    "predev": "node scripts/copy-public.cjs",
+    "dev": "astro dev",
+    "prebuild": "node scripts/copy-public.cjs",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "astro": "^5.13.7",
+    "zod": "^3.23.8"
   }
 }

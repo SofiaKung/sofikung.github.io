@@ -1,0 +1,22 @@
+---
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+const { title } = Astro.props as { title?: string };
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} – Sofia Kung` : 'Sofia Kung'}</title>
+    <link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <Nav />
+    <slot />
+    <Footer />
+  </body>
+  </html>
+

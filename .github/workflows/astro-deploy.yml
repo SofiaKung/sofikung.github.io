@@ -1,0 +1,32 @@
+name: Deploy Astro site
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'astro/**'
+      - 'content/**'
+      - 'assets/**'
+      - 'styles.css'
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: npm ci || npm i
+      - name: Prebuild copy
+        run: node scripts/copy-public.js
+      - name: Build
+        run: npx astro build
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: dist
+          cname: sofikung.com
