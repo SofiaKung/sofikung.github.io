@@ -10,7 +10,7 @@
     "description": "How machine learning can detect accounting fraud",
     "image": "assets/fs-ml.jpg",
     "alt": "An article on detecting financial statrment fraud with machine learning ",
-    "link": "https://medium.com/data-science/detecting-firms-with-intentional-misstatements-using-machine-learning-a943191f88cf",
+    "externalLink": "https://medium.com/data-science/detecting-firms-with-intentional-misstatements-using-machine-learning-a943191f88cf",
     "tags": [
       "Fraud detection",
       "Machine learning"
@@ -25,6 +25,7 @@
     "image": "assets/Geviz_project_cover.png",
     "alt": "Singapore government spending dashboard showing budget allocation across ministries with interactive charts",
     "imageLink": "https://is428-ay1819-geviz.shinyapps.io/Group7_GeViz/",
+    "externalLink": "https://wiki.smu.edu.sg/18191is428g1/GeViz",
     "tags": [
       "Dashboard",
       "R Shiny",

@@ -1,0 +1,11 @@
+{
+  "name": "sofiakung-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static portfolio site; content manifest generated from Markdown front matter",
+  "scripts": {
+    "build:content": "node scripts/build-content-index.js",
+    "predeploy": "npm run build:content",
+    "deploy": "echo 'Deploy by pushing to GitHub (GitHub Pages). Manifest is auto-built via predeploy/CI.'"
+  }
+}

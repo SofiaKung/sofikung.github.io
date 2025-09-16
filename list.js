@@ -60,13 +60,18 @@ function setActiveNavBasedOnPath() {
   }
 
   function computeLink(item, type) {
-    // Only use explicit card-level links; hero.image link should not affect cards
-    const direct = item.link || item.externalUrl;
+    // Only use explicit external_link (front matter) to bypass detail pages
+    const direct = item.externalLink;
     if (direct) {
-      return { href: direct, external: /^https?:\/\//.test(direct) };
+      let href = direct;
+      let external = false;
+      if (/^https?:\/\//i.test(direct)) { external = true; }
+      else if (/^www\./i.test(direct)) { external = true; href = `http://${direct}`; }
+      else if (direct.startsWith('/')) { external = false; }
+      return { href, external };
     }
     const slug = item.slug || (item.title || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-    if (slug) return { href: `/${type}.html?slug=${encodeURIComponent(slug)}`, external: false };
+    if (slug) return { href: `/${type}/${encodeURIComponent(slug)}`, external: false };
     const fallback = item.url || "";
     if (fallback) return { href: fallback, external: /^https?:\/\//.test(fallback) };
     return { href: "#", external: false };

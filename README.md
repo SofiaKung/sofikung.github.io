@@ -177,6 +177,10 @@ Notes:
 1) Create `content/projects/<your-slug>.md` or `content/posts/<your-slug>.md` with front matter similar to the template above.
 2) Commit the file, then run `node scripts/build-content-index.js` to update `content/manifest.js`.
 
+### Auto-build on deploy (optional)
+- Local (npm): Running `npm run deploy` will auto-run the manifest build via the `predeploy` script defined in `package.json`.
+- CI (GitHub Actions): The workflow at `.github/workflows/build-manifest.yml` rebuilds and commits the manifest when you push changes to Markdown (`content/**/*.md`). This keeps the site in sync even when editing directly on GitHub.
+
 ## Deployment
 - Any static host works (GitHub Pages, Netlify, Vercel).
 - Paths are root-absolute (e.g., `/content/...`, `/partials/...`). Deploy at the domain root (recommended; e.g., with a CNAME) for these to work as-is. If deploying under a subpath, adjust the fetch/links to be relative.

@@ -5,8 +5,21 @@
     const u = new URL(location.href);
     return u.searchParams.get(param);
   }
+  function slugFromPath(type) {
+    const p = (location.pathname || '').replace(/\/+$/,'');
+    const re = type === 'post' ? /(?:^|\/)post\/([^/]+)$/ : /(?:^|\/)project\/([^/]+)$/;
+    const m = p.match(re);
+    return m ? decodeURIComponent(m[1]) : null;
+  }
   function slugify(s) {
     return (s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  }
+  // Normalize paths to root-absolute so nested routes resolve assets
+  function toAbs(p) {
+    if (!p) return p;
+    if (/^(?:https?:)?\/\//.test(p)) return p; // http(s) or protocol-relative
+    if (p.startsWith('/')) return p; // already absolute
+    return '/' + String(p).replace(/^\/+/, '');
   }
   // No JSON data fetch; all metadata comes from Markdown front matter
   async function fetchContentHTML(path) {
@@ -104,7 +117,7 @@
     });
 
     // Images ![alt](src)
-    text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => `<figure><img src="${src}" alt="${alt}"> </figure>`);
+    text = text.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (_, alt, src) => `<figure><img src="${toAbs(src)}" alt="${alt}"> </figure>`);
 
     // Headings
     const lines = text.split(/\n/);
@@ -292,7 +305,7 @@
       } else if (type === "image") {
         const fig = document.createElement("figure");
         const img = document.createElement("img");
-        img.src = String(b.src || b.image || "");
+        img.src = toAbs(String(b.src || b.image || ""));
         img.alt = String(b.alt || "");
         img.loading = "lazy";
         fig.appendChild(img);
@@ -330,10 +343,16 @@
 
   const root = qs("#article-root");
   const type = root ? root.getAttribute("data-type") : null;
-  const slug = qsp("slug");
+  let slug = qsp("slug");
+  const hadQuerySlug = !!slug;
+  if (!slug) slug = slugFromPath(type);
   if (!root || !type || !slug) {
     if (root) root.innerHTML = '<div class="container"><p>Content not found.</p></div>';
     return;
+  }
+  // Normalize old query URLs to clean path without reload
+  if (hadQuerySlug && /\/(post|project)\.html$/i.test(location.pathname)) {
+    try { history.replaceState(null, "", `/${type}/${encodeURIComponent(slug)}`); } catch (_) {}
   }
 
   // Mark the appropriate nav item active
@@ -361,8 +380,8 @@
 
   (async () => {
     // Read the Markdown file for this slug and parse metadata from front matter
-    const contentPathHtml = `content/${type}s/${slug}.html`;
-    const contentPathMd = `content/${type}s/${slug}.md`;
+    const contentPathHtml = `/content/${type}s/${slug}.html`;
+    const contentPathMd = `/content/${type}s/${slug}.md`;
     const html = await fetchContentHTML(contentPathHtml);
     const md = await fetchContentHTML(contentPathMd);
     if (!md && !html) {
@@ -455,7 +474,7 @@
     const cover = item.cover || item.coverImage || item.image;
     if (heroEl && cover) {
       const img = document.createElement("img");
-      img.src = cover;
+      img.src = toAbs(cover);
       img.alt = item.coverAlt || item.alt || item.title || "";
       img.loading = "lazy";
       const heroHref = item.imageLink || ""; // do not use card-level link here
@@ -538,7 +557,7 @@
           const fig = document.createElement('figure');
           fig.className = 'details-item';
           const img = document.createElement('img');
-          img.src = g.src || g.image || '';
+          img.src = toAbs(g.src || g.image || '');
           img.alt = g.alt || g.caption || item.title || 'Project image';
           img.loading = 'lazy';
           const mediaLink = g.link || g.href || g.url;

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="site-nav"></div>
+    <div id="app"></div>
+    <div id="site-footer"></div>
+
+    <script>
+      (function () {
+        var path = (location.pathname || '').replace(/\/+$/, '');
+        var matchProject = path.match(/(?:^|\/)project\/([^/]+)$/);
+        var matchPost = path.match(/(?:^|\/)post\/([^/]+)$/);
+        var app = document.getElementById('app');
+        function renderProject() {
+          app.innerHTML = '\n<main class="article" id="article-root" data-type="project">\n  <div class="container">\n    <nav class="article-topnav">\n      <a class="article-back" href="/projects/">← Back to projects</a>\n    </nav>\n    <header class="article-header">\n      <p class="article-eyebrow">Project</p>\n      <h1 class="article-title" id="article-title">Loading…</h1>\n      <div class="article-meta">\n        <span id="article-tags" class="article-tags"></span>\n        <time id="article-date"></time>\n      </div>\n    </header>\n    <p class="article-lede" id="project-lede" hidden></p>\n    <figure class="article-hero" id="article-hero" hidden></figure>\n    <section class="project-writing" id="project-writing" hidden>\n      <article class="article-content" id="article-content"><p>Loading content…</p></article>\n    </section>\n    <section class="project-details" id="project-details-wrapper" hidden>\n      <h2 class="article-subtitle">Project Details</h2>\n      <div class="details-grid" id="project-details-grid" aria-label="Project details"></div>\n    </section>\n    <nav class="article-bottomnav">\n      <a class="article-more" href="/projects/">→ More projects</a>\n    </nav>\n  </div>\n</main>\n';
+        }
+        function renderPost() {
+          app.innerHTML = '\n<main class="article" id="article-root" data-type="post">\n  <div class="container">\n    <nav class="article-topnav">\n      <a class="article-back" href="/blog/">← Back to blog</a>\n    </nav>\n    <header class="article-header">\n      <p class="article-eyebrow">Post</p>\n      <h1 class="article-title" id="article-title">Loading…</h1>\n      <div class="article-meta">\n        <time id="article-date"></time>\n        <span id="article-tags" class="article-tags"></span>\n      </div>\n    </header>\n    <figure class="article-hero" id="article-hero" hidden></figure>\n    <article class="article-content" id="article-content"><p>Loading content…</p></article>\n    <nav class="article-bottomnav">\n      <a class="article-more" href="/blog/">→ More posts</a>\n    </nav>\n  </div>\n</main>\n';
+        }
+        if (matchProject) renderProject();
+        else if (matchPost) renderPost();
+        else {
+          app.innerHTML = '<main class="article"><div class="container"><h1>Not found</h1><p>The page could not be found.</p></div></main>';
+        }
+      })();
+    </script>
+    <script src="/nav.js"></script>
+    <script src="/footer.js"></script>
+    <script src="/detail.js"></script>
+  </body>
+  </html>
+

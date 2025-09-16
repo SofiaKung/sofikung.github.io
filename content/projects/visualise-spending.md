@@ -6,6 +6,7 @@ date: "2019-01-01"
 date_pretty: "Jan 1, 2019"
 description: "Insights into the spending pattern of each Ministry and Agency of Singapore Government"
 type: "project"
+external_link: "https://wiki.smu.edu.sg/18191is428g1/GeViz"
 
 # Hero/cover section
 hero:
