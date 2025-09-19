@@ -4,7 +4,7 @@ title: "Visualizing Singapore Government Spending"
 slug: "visualise-spending"
 date: "2019-01-01"
 date_pretty: "Jan 1, 2019"
-description: "Insights into the spending pattern of each Ministry and Agency of Singapore Government"
+description: "Insights into how ministries and agencies spend, with visual analytics"
 type: "project"
 external_link: "https://wiki.smu.edu.sg/18191is428g1/GeViz"
 
@@ -65,4 +65,3 @@ seo:
 ---
 
 <!-- Optional markdown content can go here. -->
-

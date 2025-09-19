@@ -29,4 +29,3 @@ seo:
 ---
 
 <!-- Optional markdown content can go here. -->
-
