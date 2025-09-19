@@ -51,6 +51,7 @@ const projects = defineCollection({
   type: 'content',
   schema: z.object({
     ...baseFields,
+    importance: z.number().optional(),
     type: z.literal('project'),
     project: z.object({
       tags: z.array(z.string()).optional(),
@@ -68,4 +69,3 @@ const posts = defineCollection({
 });
 
 export const collections = { projects, posts };
-

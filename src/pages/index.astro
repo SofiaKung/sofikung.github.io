@@ -1,13 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { hasDraftTag } from '../utils/content';
+import { compareProjectImportance, hasDraftTag } from '../utils/content';
 
-const projectsSource = (await getCollection('projects')).filter((entry) => !hasDraftTag(entry));
-const featured = projectsSource
+const projectEntries = (await getCollection('projects')).filter((entry) => !hasDraftTag(entry));
+const sortedProjects = [...projectEntries].sort(compareProjectImportance);
+const featured = sortedProjects
   .filter((p) => (p.data.project?.tags || []).some((t) => String(t).toLowerCase() === 'featured'))
   .slice(0, 2);
-const projects = featured.length ? featured : projectsSource.slice(0, 2);
+const projects = featured.length ? featured : sortedProjects.slice(0, 2);
 
 const posts = (await getCollection('posts'))
   .filter((entry) => !hasDraftTag(entry))

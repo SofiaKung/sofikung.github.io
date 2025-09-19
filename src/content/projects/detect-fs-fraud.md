@@ -5,6 +5,7 @@ slug: "detect-fs-fraud"
 date: "2020-05-01"
 date_pretty: "May 1, 2020"
 description: "How machine learning can detect accounting fraud"
+importance: 2
 type: "project"
 external_link: "https://medium.com/data-science/detecting-firms-with-intentional-misstatements-using-machine-learning-a943191f88cf"
 

@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
-import { hasDraftTag } from '../../utils/content';
+import { compareProjectImportance, hasDraftTag } from '../../utils/content';
 
-const projects = (await getCollection('projects')).filter((entry) => !hasDraftTag(entry));
+const projects = (await getCollection('projects'))
+  .filter((entry) => !hasDraftTag(entry))
+  .sort(compareProjectImportance);
 ---
 <BaseLayout title="All Projects">
   <main class="article">

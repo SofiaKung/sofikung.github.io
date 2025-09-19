@@ -131,6 +131,9 @@
           "type": "object",
           "additionalProperties": {}
         },
+        "importance": {
+          "type": "number"
+        },
         "type": {
           "type": "string",
           "const": "project"
