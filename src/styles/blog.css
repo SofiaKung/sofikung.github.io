@@ -6,13 +6,11 @@
   /* padding-right: 50px; */
 }
 
-.article--post .article-content li {
+/* .article--post .article-content li {
   /* letter-spacing: -0.02em; */
-}
-
-.article--post .article-content p {
+*/ .article--post .article-content p {
   /* letter-spacing: -0.02em; */
-  text-align: justify;
+  text-align: left;
   text-justify: inter-word;
   /* hyphens: auto; */
 }
