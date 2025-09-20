@@ -32,9 +32,11 @@ When I realized that I needed markdown support for blog posts, I had to migrate 
 
 ## AI Can't Give You Taste (And That's Your Advantage)
 
-I built my entire first draft before seeking feedback. My software engineer friends delivered the verdict: "This looks like a resume. You might as well not build one."
+AI can only build what you ask for. Since I based my design on a resume-like template, my software engineer friends told me: "This looks like a resume. You might as well not build one."
 
-They followed up with portfolio references that worked—minimalistic, functional designs that matched my goals. After studying these examples, I wasted another day to rebuild the entire homepage.
+They followed up with portfolio references that worked—minimalistic, functional designs that matched my goals. After studying these examples, I spent another day to rebuild the entire homepage.
+
+That's when I realized I needed to define my taste, styling, and purpose clearly before starting, because the effort to rebuild is high.
 
 **Questions to ask on Design & Taste**
 
@@ -62,7 +64,7 @@ The VS Code plugin was easy to use—it allowed me to upload reference images ea
 I also discovered that:
 
 - **Screenshot-to-code translation**: Codex could convert UI screenshots into functional code with ~80% accuracy.
-- **Debugging specificity**: Basic HTML/CSS knowledge helped me give precise feedback.
+- **Debugging specificity**: Basic HTML/CSS knowledge helped me give precise feedback. Codex understands better when you say - “Move the experience-description into the first column of grid” than “ Move the experience-description to the left side of the box”.
 - **Planning vs. agent mode**: Define requirements in planning mode before implementing in agent mode to prevent unnecessary rework.
 
 ## The Main Purpose of the Website Shapes Your Technical Architecture
