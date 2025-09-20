@@ -150,7 +150,7 @@ Fallback behavior:
 - `script.js` — Homepage interaction + list rendering
 - `list.js` — List page rendering
 - `detail.js` — Detail page renderer
-- `styles.css` — Site styles (cards, article typography, responsive)
+- `src/styles/global.css` — Site styles (cards, article typography, responsive)
 - `content/` — Optional HTML bodies per slug
 - `content/` — Optional HTML or Markdown (`.md` with YAML front matter) per slug
 - `content/manifest.js` — Generated manifest for list pages (defines `window.CONTENT_INDEX`)

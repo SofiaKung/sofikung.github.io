@@ -1,0 +1,27 @@
+.article--post .article-content {
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+  font-size: clamp(18px, 1vw + 16px, 20px);
+  line-height: 1.4;
+  letter-spacing: 0;
+  /* padding-right: 50px; */
+}
+
+.article--post .article-content li {
+  letter-spacing: -0.01em;
+}
+
+.article--post .article-content p {
+  letter-spacing: -0.01em;
+  text-align: justify;
+  text-justify: inter-word;
+  /* hyphens: auto; */
+}
+
+.article--post .article-title,
+.article--post .article-subtitle,
+.article--post .article-content h1,
+.article--post .article-content h2,
+.article--post .article-content h3,
+.article--post .article-content h4 {
+  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
+}

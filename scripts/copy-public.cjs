@@ -20,15 +20,7 @@ fs.mkdirSync(pub, { recursive: true });
 
 copyDir(path.join(root, 'assets'), path.join(pub, 'assets'));
 
-const styles = path.join(root, 'public', 'styles.css');
-if (!fs.existsSync(styles)) {
-  // styles are already in public/styles.css in this repo, but ensure it exists.
-  const rootStyles = path.join(root, 'styles.css');
-  if (fs.existsSync(rootStyles)) fs.copyFileSync(rootStyles, styles);
-}
-
 const cname = path.join(root, 'CNAME');
 if (fs.existsSync(cname)) fs.copyFileSync(cname, path.join(pub, 'CNAME'));
 
 console.log('[copy-public] assets/styles copied to public/.');
-
