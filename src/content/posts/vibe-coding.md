@@ -115,7 +115,7 @@ Based on this experience, here are the essential questions to ask beforehand:
 
 ### Quality Standards
 
-- What are the key steps to ensure good code? (Fast loading, responsive, clean)
+- What are the key steps to ensure good code? (Fast loading, responsive, clean code)
 
 ## Reflection
 
