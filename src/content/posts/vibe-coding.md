@@ -11,7 +11,7 @@ tags:
   - "Vibe Coding"
   - "Prompting"
   # - "Portfolio"
-  # - "Learning"
+  - "Learning"
 
 # SEO and additional metadata
 seo:
@@ -24,50 +24,53 @@ seo:
 
 ## The Discovery Process: Learning What to Ask
 
-I started building with a Wix resume template as inspiration, asking LLM questions as I went. While this iterative approach worked, I only realized what I truly wanted to build after several rounds of implementation.
+I started building this portfolio website with a Wix resume template as inspiration, asking LLM questions as I went. While this iterative approach worked, I only realized what I truly wanted to build after several rounds of implementation.
 
 The process taught me something valuable: I should have first considered which framework, design principles and content management strategy to adopt.
 
-When I realized that I needed markdown support for blog posts, I had to migrate frameworks—not because I didn't plan, but because I didn't know the right questions to ask initially.
+When I realized that I needed markdown support for blog posts, I had to migrate to a new framework—not because I didn't plan, but because I didn't know the right questions to ask initially.
 
-## AI Can't Give You Taste (And That's Your Advantage)
+## AI Can't Give You Taste
 
 AI can only build what you ask for. Since I based my design on a resume-like template, my software engineer friends told me: "This looks like a resume. You might as well not build one."
 
-They followed up with portfolio references that worked—minimalistic, functional designs that matched my goals. After studying these examples, I spent another day to rebuild the entire homepage.
+They gave me a few portfolio references that worked—minimalistic, compact, and functional designs that matched my goals. After studying these examples, I spent another day rebuilding the entire homepage based on the new reference.
 
-That's when I realized I needed to define my taste, styling, and purpose clearly before starting, because the effort to rebuild is high.
+That's when I realized I needed to define my taste, styling, and purpose clearly before starting—because the effort to rebuild is high.
 
-**Questions to ask on Design & Taste**
+**To do this step over again, I would ask the following questions related to design & taste**
 
-- What 3 websites do I want mine to look and feel like?
-- What specific features do I love? (Navigation, color schemes, layout, animations)
+- What websites do I want mine to look and feel like? Pick 1 or 2 websites
+- What specific elements do I want to steal? (Screenshot specific elements: nav style, button design, color palette, typography)
 - What’s the main thing I want visitors to do? (Contact me, view my work, read my writing)
+- What's my content hierarchy? (What should visitors see first, second, third?)
 
-## Industrial Standards Require Explicit Specification
+## Building Production-Quality Code with AI
 
 LLMs build like enthusiastic juniors—functional but lacking production standards. They won't automatically include:
 
 - CSS variables for consistent styling
 - Mobile responsiveness
-- Clean code architecture
+- Automated code cleaning whenever you rebuild or migrate frameworks
 - Comprehensive README
+- Logical file organization based on your web framework
+- Creating reusable page templates and components to keep your styling consistent
 
-**Key learning:** Ask for all of the above explicitly.
+You have to ask for all of the above explicitly.
 
-## Prompting Tools and Techniques That Worked for Me
+## Trial and Error: What Works for AI-Assisted Coding
 
-I started with Claude, hit rate limits, then switched to Codex (ChatGPT Plus). But real progress came when I switched from terminal-based prompting to IDE plugin integration.
+I started with Claude, hit rate limits, then switched to Codex (ChatGPT Plus). But real progress came when I switched from terminal-based prompting to the Codex plugin in VS Code.
 
-The VS Code plugin was easy to use—it allowed me to upload reference images easily, reviewing conversation history was seamless, and iterating on code became efficient.
+The VS Code plugin was easy to use—it allowed me to upload reference images easily, made reviewing conversation history seamless, and made iterating on code efficient.
 
-I also discovered that:
+I discovered that:
 
-- **Screenshot-to-code translation**: Codex could convert UI screenshots into functional code with ~80% accuracy.
-- **Debugging specificity**: Basic HTML/CSS knowledge helped me give precise feedback. Codex understands better when you say - “Move the experience-description into the first column of grid” than “ Move the experience-description to the left side of the box”.
+- **Screenshot-to-code translation**: Codex could convert UI screenshots into functional code with ~80% accuracy. You can also paste website URLs into your prompt as reference.
+- **Debugging specificity**: Basic HTML/CSS knowledge helped me give precise feedback. Codex understands better when you say 'Move the experience-description into the first column of the grid' than 'Move the experience-description to the left side of the box.'
 - **Planning vs. agent mode**: Define requirements in planning mode before implementing in agent mode to prevent unnecessary rework.
 
-## The Main Purpose of the Website Shapes Your Technical Architecture
+## Your Website's Purpose Determines Your Tech Stack
 
 My portfolio's core function is showcasing projects and writing, hence my friend suggested GitHub markdown as it is easy to maintain and straightforward.
 
@@ -75,49 +78,48 @@ The issue was that my vanilla HTML/CSS architecture couldn't handle markdown gra
 
 I learned that the type of website you are building directly influences your technical stack. This should be among the first questions to ask at the beginning.
 
-This led me to discover Astro framework, which excels at markdown-based sites with native support, file-based routing, and optimized static generation. The framework choice should align with your content strategy, not the other way around.
+This led me to discover the Astro framework, which excels at markdown-based sites with native support, file-based routing, and optimized static generation. The framework choice should align with your content strategy.
 
 ## Additional Learnings
 
-Building this project taught me topics beyond my existing web development knowledge:
-
 - **Version control fluency**: Writing meaningful commit messages and revisiting Git workflows
-- **Deployment processes**: Learning Astro-specific deployment patterns and hosting considerations
-- **CMS ecosystem knowledge**: Understanding the spectrum from file-based to headless CMS solutions
+- **Deployment processes**: Learning Astro deployment and hosting options
+- **CMS ecosystem knowledge**: Understanding different types of CMS systems from file-based to headless CMS solutions
 
 ## The Questions I Wish I'd Asked First
 
-Based on this experience, here are the essential questions to ask beforehand:
+Ask these questions before building anything:
 
 ### Design & Vision
 
-- What 3 websites do I want mine to look and feel like?
-- What specific features do I love? (Navigation, color schemes, layout, animations)
-- What's the main thing I want visitors to do? (Contact me, view my work, read my writing)
+- What websites do I want mine to look and feel like? Pick 1 or 2 websites
+- What specific elements do I want to steal? (Screenshot specific elements: nav style, button design, color palette, typography)
+- What’s the main thing I want visitors to do? (Contact me, view my work, read my writing)
+- What's my content hierarchy? (What should visitors see first, second, third?)
 
-### Content Strategy
-
-- **Update frequency affects framework choice**:
-  - Daily/weekly → fast and simple (Astro with markdown)
-  - Monthly → static generation is fine
-- **Update method determines tech stack**:
-  - Markdown → Astro, Next.js
-  - JSON → Static generators
-  - CMS → Headless CMS + framework
-- **Visitor interaction needs shape hosting**:
-  - None → Static hosting (GitHub Pages, Netlify)
-  - Comments/forms → Backend services or integrations
-  - Accounts → Database + auth system
-
-### Technical Foundation
+### Tech Stack & Tools
 
 - Do I want a simple blog, a portfolio showcase, or something more complex?
 - Where will I host this? (GitHub, Vercel, etc.)
 - How will I handle version control? (GitHub Desktop, Git basics)
 
-### Quality Standards
+### Content Strategy
 
-- What are the key steps to ensure good code? (Fast loading, responsive, clean code)
+- How often you update affects framework choice:
+  - Daily/weekly → fast and simple (Astro with markdown)
+  - Monthly → static generation is fine
+- How you update determines tech stack:
+  - Markdown → Astro, Next.js
+  - JSON → Static generators
+  - CMS → Headless CMS + framework
+- Visitor interaction needs affect hosting decisions:
+  - None → Static hosting (GitHub Pages, Netlify)
+  - Comments/forms → Backend services or integrations
+  - Accounts → Database + auth system
+
+### Quality Code
+
+- What are the key steps to ensure my code is good? (Fast loading, responsive, clean code)
 
 ## Reflection
 
