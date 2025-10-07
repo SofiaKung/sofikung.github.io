@@ -8,13 +8,13 @@ description: " My cheatsheet on prompt engineering from Google's whitepaper"
 type: "post"
 
 tags:
-- "Coming soon"
+  - "Coming soon"
+  - "Draft"
 
 # SEO and additional metadata
 seo:
   keywords:
-  - "Coming soon"
-
+    - "Coming soon"
 ---
 
 <!-- Optional markdown content can go here. -->

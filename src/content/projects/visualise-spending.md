@@ -22,7 +22,6 @@ project:
     - "Featured"
     - "Dashboard"
     - "R Shiny"
-    - "Working in progress"
 
 # Content structure
 content_blocks:
