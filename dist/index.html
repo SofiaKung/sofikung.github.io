@@ -1,320 +1,874 @@
-<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Sofia Kung</title><link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="/_astro/index.DOT5F1HB.css"></head> <body> <nav class="navbar"> <div class="nav-container"> <div class="nav-brand"> <a href="/" style="text-decoration: none; color: inherit">Portfolio</a> </div> <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu"> <i class="fa-solid fa-bars"></i> </button> <div class="nav-links" id="primary-nav"> <a href="/#resume">Resume</a> <a href="/projects/" data-nav="projects">Projects</a> <a href="/blog/" data-nav="blog">Blog</a> <a href="/#contact">Contact</a> </div> </div> </nav> <script>
-  (function() {
-    const p = location.pathname || '';
-    const isBlog = /(?:^|\/)(blog|post)(?:\/|$)/.test(p);
-    const isProjects = /(?:^|\/)(projects|project)(?:\/|$)/.test(p);
-    const navbar = document.querySelector('.navbar');
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sofia Kung</title>
+    <link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/_astro/index.DOT5F1HB.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <a href="/" style="text-decoration: none; color: inherit"
+            >Portfolio</a
+          >
+        </div>
+        <button
+          class="nav-toggle"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+          aria-label="Open menu"
+        >
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="nav-links" id="primary-nav">
+          <a href="/#resume">Resume</a>
+          <a href="/projects/" data-nav="projects">Projects</a>
+          <a href="/blog/" data-nav="blog">Blog</a>
+          <a href="/#contact">Contact</a>
+        </div>
+      </div>
+    </nav>
+    <script>
+      (function () {
+        const p = location.pathname || "";
+        const isBlog = /(?:^|\/)(blog|post)(?:\/|$)/.test(p);
+        const isProjects = /(?:^|\/)(projects|project)(?:\/|$)/.test(p);
+        const navbar = document.querySelector(".navbar");
 
-    // Smooth scroll for in-page links
-    const navLinks = document.querySelectorAll('.nav-links a');
-    navLinks.forEach((link) => {
-      if (link.__boundScroll) return;
-      link.__boundScroll = true;
-      link.addEventListener('click', function (e) {
-        const href = this.getAttribute('href') || '';
-        const onHome = /^(?:\/?|\/index\.html)$/.test(location.pathname);
-        const hashOnly = href.startsWith('#');
-        const homeHashIdx = onHome && href.startsWith('index.html#');
-        const homeHashRoot = onHome && href.startsWith('/#');
-        if (!hashOnly && !homeHashIdx && !homeHashRoot) return;
-        e.preventDefault();
-        const targetSelector = hashOnly ? href : href.replace(/^(?:index\.html|\/)/, '');
-        const targetSection = document.querySelector(targetSelector);
-        if (targetSection) {
-          const navHeight = (document.querySelector('.navbar')?.offsetHeight) || 0;
-          const targetPosition = targetSection.offsetTop - navHeight - 20;
-          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-        }
-      });
-    });
-
-    // Update active link on scroll
-    function updateActiveNavLink() {
-      const sections = document.querySelectorAll('section');
-      const navHeight = (document.querySelector('.navbar')?.offsetHeight) || 0;
-      const scrollPos = window.scrollY + navHeight + 50;
-      const links = document.querySelectorAll('.nav-links a');
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop;
-        const sectionBottom = sectionTop + section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
-          links.forEach((l) => l.classList.remove('active'));
-          const idSel = `a[href="#${sectionId}"]`;
-          const homeSel = `a[href="index.html#${sectionId}"]`;
-          const rootSel = `a[href="/#${sectionId}"]`;
-          const candidate = document.querySelector(idSel) || document.querySelector(homeSel) || document.querySelector(rootSel);
-          if (candidate) candidate.classList.add('active');
-        }
-      });
-    }
-    window.addEventListener('scroll', updateActiveNavLink, { passive: true });
-    updateActiveNavLink();
-
-    // Initial highlight for current area
-    if (isBlog) {
-      const link = document.querySelector('.nav-links a[data-nav="blog"], .nav-links a[href$="/blog/"]');
-      if (link) link.classList.add('active');
-    }
-    if (isProjects) {
-      const link = document.querySelector('.nav-links a[data-nav="projects"], .nav-links a[href$="/projects/"]');
-      if (link) link.classList.add('active');
-    }
-  })();
-  (function(){
-    const navToggle = document.querySelector('.nav-toggle');
-    const navLinksEl = document.getElementById('primary-nav');
-    if (navToggle && navLinksEl && !navToggle.__boundToggle) {
-      navToggle.__boundToggle = true;
-      navToggle.addEventListener('click', () => {
-        const isOpen = document.body.classList.toggle('nav-open');
-        navToggle.setAttribute('aria-expanded', String(isOpen));
-      });
-      navLinksEl.querySelectorAll('a').forEach((a) =>
-        a.addEventListener('click', () => {
-          document.body.classList.remove('nav-open');
-          navToggle.setAttribute('aria-expanded', 'false');
-        })
-      );
-    }
-  })();
-
-  // Hide/show nav on scroll (keep it layered above deck)
-  (function(){
-    const navbar = document.querySelector('.navbar');
-    let lastScrollTop = 0;
-    window.addEventListener('scroll', function(){
-      if (!navbar) return;
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      if (scrollTop > lastScrollTop && scrollTop > 100) {
-        navbar.style.transform = 'translateY(-100%)';
-      } else {
-        navbar.style.transform = 'translateY(0)';
-      }
-      lastScrollTop = scrollTop;
-    }, { passive: true });
-  })();
-</script>  <main> <!-- Hero Section --> <section class="hero" id="home"> <div class="container"> <div class="hero-layout"> <div class="hero-content"> <h1 class="hero-name">Sofia Kung</h1> <div class="hero-toggle" role="tablist" aria-label="Profile focus"> <div class="segmented-toggle mode-data" id="profile-toggle"> <button class="seg-item active" role="tab" aria-selected="true" data-mode="data"> <i class="fa-solid fa-database" aria-hidden="true"></i> <span>Data Analyst</span> </button> <button class="seg-item" role="tab" aria-selected="false" data-mode="risk"> <i class="fa-solid fa-shield-halved" aria-hidden="true"></i> <span>Risk Strategist</span> </button> <span class="seg-thumb" aria-hidden="true"></span> </div> </div> <div class="hero-contact"> <div class="contact-row"> <span class="contact-label">Email:</span> <span class="contact-value"> <a href="mailto:sofiakung.ai@gmail.com" class="contact-email" aria-label="Email Sofia at sofiakung.ai@gmail.com">sofiakung5@gmail.com</a> </span> </div> </div> <div class="hero-description"> <p id="hero-blurb">
-I’m a senior data analyst with 6+ years across tech, crypto and e‑commerce. I turn complex data into dashboards, reports and clear insights that drive product and business decisions.
-</p> </div> </div> <div class="hero-graphic"> <!-- Optional: Add images to /assets/photo-*.JPG to enable deck --> <div class="graphic-element"> <div class="photo-deck" id="photo-deck" aria-label="Photo gallery"> <div class="deck-card"><img src="/assets/photo-1.JPG" alt="Photo 1" loading="lazy"></div> <div class="deck-card"><img src="/assets/photo-2.JPG" alt="Photo 2" loading="lazy"></div> <div class="deck-card"><img src="/assets/photo-3.JPG" alt="Photo 3" loading="lazy"></div> <div class="deck-card"><img src="/assets/photo-4.JPG" alt="Photo 4" loading="lazy"></div> <button id="deck-again" class="btn-again" type="button"> <i class="fa-solid fa-rotate-right" aria-hidden="true"></i> <span>Again</span> </button> </div> </div> </div> </div> </div> </section> <section class="projects" id="projects"> <div class="container"> <div class="section-header"> <h2 class="section-title">Featured Projects</h2> <a class="more-link" href="/projects/" aria-label="View all projects">More projects →</a> </div> <div class="project-grid"> <article class="project-card"> <a class="project-link" href="https://wiki.smu.edu.sg/18191is428g1/GeViz" target="_blank" rel="noopener"> <div class="project-media"> <img src="/assets/Geviz_project_cover.png" alt="Singapore government spending dashboard showing budget allocation across ministries with interactive charts" loading="lazy"> </div> <div class="project-body"> <div class="project-meta"> <span class="project-tag">Featured</span><span class="project-tag">Dashboard</span><span class="project-tag">R Shiny</span><span class="project-tag">Working in progress</span> </div> <h3 class="project-title">Visualizing Singapore Government Spending</h3> <p class="project-desc">Insights into how ministries and agencies spend, with visual analytics</p> </div> </a> </article><article class="project-card"> <a class="project-link" href="https://medium.com/data-science/detecting-firms-with-intentional-misstatements-using-machine-learning-a943191f88cf" target="_blank" rel="noopener"> <div class="project-media"> <img src="/assets/fs-ml.jpg" alt="An article on detecting financial statrment fraud with machine learning " loading="lazy"> </div> <div class="project-body"> <div class="project-meta"> <span class="project-tag">Featured</span><span class="project-tag">Fraud detection</span><span class="project-tag">Machine learning</span> </div> <h3 class="project-title">Detecting Financial Statement Fraud with ML</h3> <p class="project-desc">How machine learning can detect accounting fraud</p> </div> </a> </article> </div> </div> </section> <section class="posts" id="posts"> <div class="container"> <div class="section-header"> <h2 class="section-title">Recent Posts</h2> <a class="more-link" href="/blog/" aria-label="View all posts">More posts →</a> </div> <div class="post-list"> <article class="post-card"> <a class="post-link" href="/post/vibe-coding-portfolio"> <header class="post-header"> <h3 class="post-title">What I Learned Vibe Coding My Portfolio in 4 Days</h3> <time class="post-date" datetime="2025-09-20">Sep 20, 2025</time> </header> <p class="post-excerpt">Lessons on taste, prompting, frameworks, and building a portfolio website with Codex</p> <div class="post-tags"> <span class="post-tag">Vibe Coding</span><span class="post-tag">Prompting</span> </div> </a> </article><article class="post-card"> <a class="post-link" href="/post/prompt-engineering"> <header class="post-header"> <h3 class="post-title">Notes on prompt engineering</h3> <time class="post-date" datetime="2025-09-08">Sep 8, 2025</time> </header> <p class="post-excerpt"> My cheatsheet on prompt engineering from Google&#39;s whitepaper</p> <div class="post-tags"> <span class="post-tag">Coming soon</span> </div> </a> </article> </div> </div> </section> <!-- Experience Section --> <section class="experience" id="resume"> <div class="container"> <h2 class="section-title">Professional Experience</h2> <div class="experience-list"> <div class="experience-item"> <div class="experience-period">2022 - 2024</div> <div class="experience-details"> <h3 class="experience-title">Senior Risk Data Analyst</h3> <div class="experience-company"> <a href="https://www.binance.com/" target="_blank" rel="noopener">Binance</a> </div> <ul class="experience-description"> <li>
-Spearheaded end-to-end risk strategy - doubled risk coverage
-                  across sub-fraud domains and increased prevention rates by 15%
-</li> <li>
-Built fraud analytics infrastructure, including batch and
-                  real-time feature pipelines, a centralized fraud case
-                  database, reporting dashboards, and key fraud metrics.
-</li> <li>
-Partnered with Data Science teams to develop ML solutions for
-                  fraud detection, including association models, sequential
-                  models, OCR models, and video-based detection algorithms.
-</li> </ul> </div> </div> <div class="experience-item"> <div class="experience-period">2021 - 2022</div> <div class="experience-details"> <h3 class="experience-title">Senior Risk Data Analyst</h3> <div class="experience-company"> <a href="https://www.gojek.com/" target="_blank" rel="noopener">Gojek</a> </div> <ul class="experience-description"> <li>
-Uncovered risk and feature abuse through statistical analysis,
-                  exploratory data analysis (EDA), and monitoring dashboards —
-                  resulting in $240K in annual cost savings.
-</li> <li>
-Worked closely with Operations teams to design and deploy
-                  fraud detection rules targeting feature abuse, shared devices,
-                  promo abuse, and fictitious rides.
-</li> </ul> </div> </div> <div class="experience-item"> <div class="experience-period">2021</div> <div class="experience-details"> <h3 class="experience-title">Product Data Analyst</h3> <div class="experience-company"> <a href="https://www.atome.sg/" target="_blank" rel="noopener">Atome</a> </div> <ul class="experience-description"> <li>
-Analyzed user behavior through event logs to optimize in-app
-                  flows and improve conversion rates.
-</li> <li>
-Developed Tableau dashboards for app-related data analysis,
-                  including funnel analysis and app performance monitoring.
-</li> </ul> </div> </div> <div class="experience-item"> <div class="experience-period">2019 - 2021</div> <div class="experience-details"> <h3 class="experience-title">Data Analyst Consultant</h3> <div class="experience-company"> <a href="https://www.pwc.com/" target="_blank" rel="noopener">PwC</a> </div> <ul class="experience-description"> <li>
-Automated payment transactions for a healthcare group using
-                  SQL and SSIS; independently handled requirements gathering,
-                  product development, SIT/UAT testing, and deployment.
-</li> <li>
-Designed Power BI dashboards for financial performance
-                  monitoring.
-</li> </ul> </div> </div> <div class="experience-item"> <div class="experience-period">2018 - 2021</div> <div class="experience-details"> <h3 class="experience-title">Python Teaching Assistant</h3> <div class="experience-company"> <a href="https://www.hackwagon.com/" target="_blank" rel="noopener">Hackwagon Academy</a> </div> <ul class="experience-description"> <!-- <li>Python visualization and data manipulation</li>
-                <li>Machine learning instruction</li> --> </ul> </div> </div> <div class="experience-item"> <div class="experience-period">2018</div> <div class="experience-details"> <h3 class="experience-title">Data Analyst Intern</h3> <div class="experience-company"> <a href="https://www.lazada.com/" target="_blank" rel="noopener">Lazada</a>
-/
-<a href="https://www.alibabagroup.com/en-US/" target="_blank" rel="noopener">Alibaba</a> </div> <ul class="experience-description"> <!-- <li>Dashboard development</li> --> </ul> </div> </div> </div> </div> </section> <!-- Skills & Technologies --> <section class="skills" id="skills"> <div class="container"> <h2 class="section-title">Skills & Technologies</h2> <div class="skills-grid"> <div class="skill-category"> <h3>Technical Skills</h3> <div class="skill-tags"> <span class="skill-tag">Statistical Analysis</span> <span class="skill-tag">Dashboard Development</span> <span class="skill-tag">ETL Development</span> <span class="skill-tag">Machine Learning</span> </div> </div> <div class="skill-category"> <h3>Programming</h3> <div class="skill-tags"> <span class="skill-tag">Python</span> <span class="skill-tag">PySpark</span> <span class="skill-tag">SQL</span> <span class="skill-tag">R</span> <span class="skill-tag">JavaScript</span> </div> </div> <div class="skill-category"> <h3>Risk Strategy</h3> <div class="skill-tags"> <span class="skill-tag">Fraud Analytics</span> <span class="skill-tag">Anomaly Detection</span> <span class="skill-tag">Feature Abuse Detection</span> <span class="skill-tag">KYC/POA Fraud Detection</span> <span class="skill-tag">Risk Framework Design</span> <span class="skill-tag">Fraud Rules Development</span> </div> </div> </div> </div> </section> <!-- Let’s Connect --> <section class="contact" id="contact"> <div class="container"> <h2 class="section-title">Let’s Connect</h2> <p style="margin: 8px 0 16px; max-width: 60ch;">
-Open to new ideas, opportunities, and conversations.
-</p> </div> </section> </main> <script>
-    (function(){
-      const blurb = document.getElementById('hero-blurb');
-      const seg = document.getElementById('profile-toggle');
-      if (!blurb || !seg) return;
-      const copy = {
-        data: [
-      "I’m a senior data analyst with 6+ years of experience across crypto, tech, e-commerce and consulting.",
-      //   "I specialize in dashboard development, statistical analysis, and metrics design—helping teams make smarter, faster, and more impactful decisions.",
-      "Proven track record in designing intuitive, visually compelling dashboards, building scalable fraud prevention systems, streamlining operational workflows, and driving data-informed decisions that deliver measurable business impact.",
-    ],
-        risk: [
-      "I specialize in connecting data analytics with risk strategy to help companies fight fraud at scale.",
-      "At Binance, Gojek, and Lazada, I’ve designed fraud detection systems, developed dashboards that reveal hidden fraud patterns, and created risk frameworks that saved six figures annually.",
-      "I’m driven by leading teams to strike the right balance between growth and trust & safety—delivering solutions where user experience, risk, and innovation align.",
-    ],
-      };
-      function applyModeClass(newMode) {
-        seg.classList.remove('mode-data', 'mode-risk');
-        seg.classList.add(`mode-${newMode}`);
-      }
-      let mode = 'data';
-      let idx = 0;
-      let timerId = null;
-      function render() {
-        blurb.classList.add('fade-out');
-        setTimeout(() => {
-          blurb.textContent = (copy[mode] && copy[mode][idx]) || copy.data[0];
-          blurb.classList.remove('fade-out');
-          blurb.classList.add('fade-in');
-          setTimeout(() => blurb.classList.remove('fade-in'), 220);
-        }, 180);
-      }
-      function nextSentence() {
-        const list = copy[mode] || copy.data;
-        idx = (idx + 1) % list.length;
-        render();
-      }
-      function startTimer() {
-        stopTimer();
-        timerId = setInterval(nextSentence, 6000);
-      }
-      function stopTimer() { if (timerId) clearInterval(timerId); timerId = null; }
-      seg.querySelectorAll('.seg-item').forEach(btn => {
-        btn.addEventListener('click', () => {
-          seg.querySelectorAll('.seg-item').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          mode = btn.getAttribute('data-mode') || 'data';
-          applyModeClass(mode);
-          idx = 0; render(); startTimer();
-        });
-      });
-      // Initialize
-      applyModeClass(mode);
-      render(); startTimer();
-
-      // Photo deck (swipe through 4 photos + Again button)
-      const deck = document.getElementById('photo-deck');
-      const againBtn = document.getElementById('deck-again');
-      if (deck) {
-        const initialPhotos = Array.from(deck.querySelectorAll('.deck-card img')).map((img) => ({
-          src: img.getAttribute('src'),
-          alt: img.getAttribute('alt') || 'Photo',
-        }));
-        let startX=0, startY=0, dx=0, dy=0, dragging=false, topCard=null, activePointerId=null;
-
-        function cards() { return Array.from(deck.querySelectorAll('.deck-card')); }
-
-        function createCard(photo) {
-          const card = document.createElement('div');
-          card.className = 'deck-card';
-          const img = document.createElement('img');
-          img.src = photo.src || '';
-          img.alt = photo.alt || 'Photo';
-          img.loading = 'lazy';
-          img.setAttribute('draggable', 'false');
-          card.appendChild(img);
-          return card;
-        }
-
-        function setDeckHeight() {
-          const firstImg = deck.querySelector('.deck-card img');
-          if (!firstImg) return;
-          const h = firstImg.complete ? firstImg.clientHeight : 0;
-          if (h) deck.style.height = `${h}px`;
-          else firstImg.addEventListener('load', () => { deck.style.height = `${firstImg.clientHeight}px`; }, { once: true });
-        }
-
-        function layoutDeck() {
-          const cs = cards();
-          cs.forEach((c, i) => {
-            c.classList.toggle('top', i === 0);
-            const angle = i === 0 ? 0 : (i % 2 === 0 ? 3 : -3);
-            c.style.transform = `translateY(${i * 8}px) scale(${1 - i * 0.03}) rotate(${angle}deg)`;
-            c.style.zIndex = String(1000 - i);
-            c.style.transition = 'transform .25s ease, opacity .25s ease';
+        // Smooth scroll for in-page links
+        const navLinks = document.querySelectorAll(".nav-links a");
+        navLinks.forEach((link) => {
+          if (link.__boundScroll) return;
+          link.__boundScroll = true;
+          link.addEventListener("click", function (e) {
+            const href = this.getAttribute("href") || "";
+            const onHome = /^(?:\/?|\/index\.html)$/.test(location.pathname);
+            const hashOnly = href.startsWith("#");
+            const homeHashIdx = onHome && href.startsWith("index.html#");
+            const homeHashRoot = onHome && href.startsWith("/#");
+            if (!hashOnly && !homeHashIdx && !homeHashRoot) return;
+            e.preventDefault();
+            const targetSelector = hashOnly
+              ? href
+              : href.replace(/^(?:index\.html|\/)/, "");
+            const targetSection = document.querySelector(targetSelector);
+            if (targetSection) {
+              const navHeight =
+                document.querySelector(".navbar")?.offsetHeight || 0;
+              const targetPosition = targetSection.offsetTop - navHeight - 20;
+              window.scrollTo({ top: targetPosition, behavior: "smooth" });
+            }
           });
-          setDeckHeight();
-          if (againBtn) againBtn.hidden = cs.length !== 0; // show when empty
-        }
+        });
 
-        function restoreDeck() {
-          const button = againBtn && againBtn.parentElement === deck ? againBtn : null;
-          deck.querySelectorAll('.deck-card').forEach((card) => card.remove());
-          initialPhotos.forEach((photo) => {
-            const card = createCard(photo);
-            if (button) deck.insertBefore(card, button);
-            else deck.appendChild(card);
+        // Update active link on scroll
+        function updateActiveNavLink() {
+          const sections = document.querySelectorAll("section");
+          const navHeight =
+            document.querySelector(".navbar")?.offsetHeight || 0;
+          const scrollPos = window.scrollY + navHeight + 50;
+          const links = document.querySelectorAll(".nav-links a");
+          sections.forEach((section) => {
+            const sectionTop = section.offsetTop;
+            const sectionBottom = sectionTop + section.offsetHeight;
+            const sectionId = section.getAttribute("id");
+            if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+              links.forEach((l) => l.classList.remove("active"));
+              const idSel = `a[href="#${sectionId}"]`;
+              const homeSel = `a[href="index.html#${sectionId}"]`;
+              const rootSel = `a[href="/#${sectionId}"]`;
+              const candidate =
+                document.querySelector(idSel) ||
+                document.querySelector(homeSel) ||
+                document.querySelector(rootSel);
+              if (candidate) candidate.classList.add("active");
+            }
+          });
+        }
+        window.addEventListener("scroll", updateActiveNavLink, {
+          passive: true,
+        });
+        updateActiveNavLink();
+
+        // Initial highlight for current area
+        if (isBlog) {
+          const link = document.querySelector(
+            '.nav-links a[data-nav="blog"], .nav-links a[href$="/blog/"]'
+          );
+          if (link) link.classList.add("active");
+        }
+        if (isProjects) {
+          const link = document.querySelector(
+            '.nav-links a[data-nav="projects"], .nav-links a[href$="/projects/"]'
+          );
+          if (link) link.classList.add("active");
+        }
+      })();
+      (function () {
+        const navToggle = document.querySelector(".nav-toggle");
+        const navLinksEl = document.getElementById("primary-nav");
+        if (navToggle && navLinksEl && !navToggle.__boundToggle) {
+          navToggle.__boundToggle = true;
+          navToggle.addEventListener("click", () => {
+            const isOpen = document.body.classList.toggle("nav-open");
+            navToggle.setAttribute("aria-expanded", String(isOpen));
+          });
+          navLinksEl.querySelectorAll("a").forEach((a) =>
+            a.addEventListener("click", () => {
+              document.body.classList.remove("nav-open");
+              navToggle.setAttribute("aria-expanded", "false");
+            })
+          );
+        }
+      })();
+
+      // Hide/show nav on scroll (keep it layered above deck)
+      (function () {
+        const navbar = document.querySelector(".navbar");
+        let lastScrollTop = 0;
+        window.addEventListener(
+          "scroll",
+          function () {
+            if (!navbar) return;
+            const scrollTop =
+              window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > lastScrollTop && scrollTop > 100) {
+              navbar.style.transform = "translateY(-100%)";
+            } else {
+              navbar.style.transform = "translateY(0)";
+            }
+            lastScrollTop = scrollTop;
+          },
+          { passive: true }
+        );
+      })();
+    </script>
+    <main>
+      <!-- Hero Section -->
+      <section class="hero" id="home">
+        <div class="container">
+          <div class="hero-layout">
+            <div class="hero-content">
+              <h1 class="hero-name">Sofia Kung</h1>
+              <div
+                class="hero-toggle"
+                role="tablist"
+                aria-label="Profile focus"
+              >
+                <div class="segmented-toggle mode-data" id="profile-toggle">
+                  <button
+                    class="seg-item active"
+                    role="tab"
+                    aria-selected="true"
+                    data-mode="data"
+                  >
+                    <i class="fa-solid fa-database" aria-hidden="true"></i>
+                    <span>Data Analyst</span>
+                  </button>
+                  <button
+                    class="seg-item"
+                    role="tab"
+                    aria-selected="false"
+                    data-mode="risk"
+                  >
+                    <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
+                    <span>Risk Strategist</span>
+                  </button>
+                  <span class="seg-thumb" aria-hidden="true"></span>
+                </div>
+              </div>
+              <div class="hero-contact">
+                <div class="contact-row">
+                  <span class="contact-label">Email:</span>
+                  <span class="contact-value">
+                    <a
+                      href="mailto:sofiakung.ai@gmail.com"
+                      class="contact-email"
+                      aria-label="Email Sofia at sofiakung.ai@gmail.com"
+                      >sofiakung.ai@gmail.com</a
+                    >
+                  </span>
+                </div>
+              </div>
+              <div class="hero-description">
+                <p id="hero-blurb">
+                  I’m a senior data analyst with 6+ years across tech, crypto
+                  and e‑commerce. I turn complex data into dashboards, reports
+                  and clear insights that drive product and business decisions.
+                </p>
+              </div>
+            </div>
+            <div class="hero-graphic">
+              <!-- Optional: Add images to /assets/photo-*.JPG to enable deck -->
+              <div class="graphic-element">
+                <div
+                  class="photo-deck"
+                  id="photo-deck"
+                  aria-label="Photo gallery"
+                >
+                  <div class="deck-card">
+                    <img
+                      src="/assets/photo-1.JPG"
+                      alt="Photo 1"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="deck-card">
+                    <img
+                      src="/assets/photo-2.JPG"
+                      alt="Photo 2"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="deck-card">
+                    <img
+                      src="/assets/photo-3.JPG"
+                      alt="Photo 3"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div class="deck-card">
+                    <img
+                      src="/assets/photo-4.JPG"
+                      alt="Photo 4"
+                      loading="lazy"
+                    />
+                  </div>
+                  <button id="deck-again" class="btn-again" type="button">
+                    <i class="fa-solid fa-rotate-right" aria-hidden="true"></i>
+                    <span>Again</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="projects" id="projects">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Featured Projects</h2>
+            <a
+              class="more-link"
+              href="/projects/"
+              aria-label="View all projects"
+              >More projects →</a
+            >
+          </div>
+          <div class="project-grid">
+            <article class="project-card">
+              <a
+                class="project-link"
+                href="https://wiki.smu.edu.sg/18191is428g1/GeViz"
+                target="_blank"
+                rel="noopener"
+              >
+                <div class="project-media">
+                  <img
+                    src="/assets/Geviz_project_cover.png"
+                    alt="Singapore government spending dashboard showing budget allocation across ministries with interactive charts"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="project-body">
+                  <div class="project-meta">
+                    <span class="project-tag">Featured</span
+                    ><span class="project-tag">Dashboard</span
+                    ><span class="project-tag">R Shiny</span
+                    ><span class="project-tag">Working in progress</span>
+                  </div>
+                  <h3 class="project-title">
+                    Visualizing Singapore Government Spending
+                  </h3>
+                  <p class="project-desc">
+                    Insights into how ministries and agencies spend, with visual
+                    analytics
+                  </p>
+                </div>
+              </a>
+            </article>
+            <article class="project-card">
+              <a
+                class="project-link"
+                href="https://medium.com/data-science/detecting-firms-with-intentional-misstatements-using-machine-learning-a943191f88cf"
+                target="_blank"
+                rel="noopener"
+              >
+                <div class="project-media">
+                  <img
+                    src="/assets/fs-ml.jpg"
+                    alt="An article on detecting financial statrment fraud with machine learning "
+                    loading="lazy"
+                  />
+                </div>
+                <div class="project-body">
+                  <div class="project-meta">
+                    <span class="project-tag">Featured</span
+                    ><span class="project-tag">Fraud detection</span
+                    ><span class="project-tag">Machine learning</span>
+                  </div>
+                  <h3 class="project-title">
+                    Detecting Financial Statement Fraud with ML
+                  </h3>
+                  <p class="project-desc">
+                    How machine learning can detect accounting fraud
+                  </p>
+                </div>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="posts" id="posts">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Recent Posts</h2>
+            <a class="more-link" href="/blog/" aria-label="View all posts"
+              >More posts →</a
+            >
+          </div>
+          <div class="post-list">
+            <article class="post-card">
+              <a class="post-link" href="/post/vibe-coding-portfolio">
+                <header class="post-header">
+                  <h3 class="post-title">
+                    What I Learned Vibe Coding My Portfolio in 4 Days
+                  </h3>
+                  <time class="post-date" datetime="2025-09-20"
+                    >Sep 20, 2025</time
+                  >
+                </header>
+                <p class="post-excerpt">
+                  Lessons on taste, prompting, frameworks, and building a
+                  portfolio website with Codex
+                </p>
+                <div class="post-tags">
+                  <span class="post-tag">Vibe Coding</span
+                  ><span class="post-tag">Prompting</span>
+                </div>
+              </a>
+            </article>
+            <article class="post-card">
+              <a class="post-link" href="/post/prompt-engineering">
+                <header class="post-header">
+                  <h3 class="post-title">Notes on prompt engineering</h3>
+                  <time class="post-date" datetime="2025-09-08"
+                    >Sep 8, 2025</time
+                  >
+                </header>
+                <p class="post-excerpt">
+                  My cheatsheet on prompt engineering from Google&#39;s
+                  whitepaper
+                </p>
+                <div class="post-tags">
+                  <span class="post-tag">Coming soon</span>
+                </div>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+      <!-- Experience Section -->
+      <section class="experience" id="resume">
+        <div class="container">
+          <h2 class="section-title">Professional Experience</h2>
+          <div class="experience-list">
+            <div class="experience-item">
+              <div class="experience-period">2022 - 2024</div>
+              <div class="experience-details">
+                <h3 class="experience-title">Senior Risk Data Analyst</h3>
+                <div class="experience-company">
+                  <a
+                    href="https://www.binance.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >Binance</a
+                  >
+                </div>
+                <ul class="experience-description">
+                  <li>
+                    Spearheaded end-to-end risk strategy - doubled risk coverage
+                    across sub-fraud domains and increased prevention rates by
+                    15%
+                  </li>
+                  <li>
+                    Built fraud analytics infrastructure, including batch and
+                    real-time feature pipelines, a centralized fraud case
+                    database, reporting dashboards, and key fraud metrics.
+                  </li>
+                  <li>
+                    Partnered with Data Science teams to develop ML solutions
+                    for fraud detection, including association models,
+                    sequential models, OCR models, and video-based detection
+                    algorithms.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="experience-item">
+              <div class="experience-period">2021 - 2022</div>
+              <div class="experience-details">
+                <h3 class="experience-title">Senior Risk Data Analyst</h3>
+                <div class="experience-company">
+                  <a
+                    href="https://www.gojek.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >Gojek</a
+                  >
+                </div>
+                <ul class="experience-description">
+                  <li>
+                    Uncovered risk and feature abuse through statistical
+                    analysis, exploratory data analysis (EDA), and monitoring
+                    dashboards — resulting in $240K in annual cost savings.
+                  </li>
+                  <li>
+                    Worked closely with Operations teams to design and deploy
+                    fraud detection rules targeting feature abuse, shared
+                    devices, promo abuse, and fictitious rides.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="experience-item">
+              <div class="experience-period">2021</div>
+              <div class="experience-details">
+                <h3 class="experience-title">Product Data Analyst</h3>
+                <div class="experience-company">
+                  <a href="https://www.atome.sg/" target="_blank" rel="noopener"
+                    >Atome</a
+                  >
+                </div>
+                <ul class="experience-description">
+                  <li>
+                    Analyzed user behavior through event logs to optimize in-app
+                    flows and improve conversion rates.
+                  </li>
+                  <li>
+                    Developed Tableau dashboards for app-related data analysis,
+                    including funnel analysis and app performance monitoring.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="experience-item">
+              <div class="experience-period">2019 - 2021</div>
+              <div class="experience-details">
+                <h3 class="experience-title">Data Analyst Consultant</h3>
+                <div class="experience-company">
+                  <a href="https://www.pwc.com/" target="_blank" rel="noopener"
+                    >PwC</a
+                  >
+                </div>
+                <ul class="experience-description">
+                  <li>
+                    Automated payment transactions for a healthcare group using
+                    SQL and SSIS; independently handled requirements gathering,
+                    product development, SIT/UAT testing, and deployment.
+                  </li>
+                  <li>
+                    Designed Power BI dashboards for financial performance
+                    monitoring.
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="experience-item">
+              <div class="experience-period">2018 - 2021</div>
+              <div class="experience-details">
+                <h3 class="experience-title">Python Teaching Assistant</h3>
+                <div class="experience-company">
+                  <a
+                    href="https://www.hackwagon.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >Hackwagon Academy</a
+                  >
+                </div>
+                <ul class="experience-description">
+                  <!-- <li>Python visualization and data manipulation</li>
+                <li>Machine learning instruction</li> -->
+                </ul>
+              </div>
+            </div>
+            <div class="experience-item">
+              <div class="experience-period">2018</div>
+              <div class="experience-details">
+                <h3 class="experience-title">Data Analyst Intern</h3>
+                <div class="experience-company">
+                  <a
+                    href="https://www.lazada.com/"
+                    target="_blank"
+                    rel="noopener"
+                    >Lazada</a
+                  >
+                  /
+                  <a
+                    href="https://www.alibabagroup.com/en-US/"
+                    target="_blank"
+                    rel="noopener"
+                    >Alibaba</a
+                  >
+                </div>
+                <ul class="experience-description">
+                  <!-- <li>Dashboard development</li> -->
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Skills & Technologies -->
+      <section class="skills" id="skills">
+        <div class="container">
+          <h2 class="section-title">Skills & Technologies</h2>
+          <div class="skills-grid">
+            <div class="skill-category">
+              <h3>Technical Skills</h3>
+              <div class="skill-tags">
+                <span class="skill-tag">Statistical Analysis</span>
+                <span class="skill-tag">Dashboard Development</span>
+                <span class="skill-tag">ETL Development</span>
+                <span class="skill-tag">Machine Learning</span>
+              </div>
+            </div>
+            <div class="skill-category">
+              <h3>Programming</h3>
+              <div class="skill-tags">
+                <span class="skill-tag">Python</span>
+                <span class="skill-tag">PySpark</span>
+                <span class="skill-tag">SQL</span>
+                <span class="skill-tag">R</span>
+                <span class="skill-tag">JavaScript</span>
+              </div>
+            </div>
+            <div class="skill-category">
+              <h3>Risk Strategy</h3>
+              <div class="skill-tags">
+                <span class="skill-tag">Fraud Analytics</span>
+                <span class="skill-tag">Anomaly Detection</span>
+                <span class="skill-tag">Feature Abuse Detection</span>
+                <span class="skill-tag">KYC/POA Fraud Detection</span>
+                <span class="skill-tag">Risk Framework Design</span>
+                <span class="skill-tag">Fraud Rules Development</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Let’s Connect -->
+      <section class="contact" id="contact">
+        <div class="container">
+          <h2 class="section-title">Let’s Connect</h2>
+          <p style="margin: 8px 0 16px; max-width: 60ch">
+            Open to new ideas, opportunities, and conversations.
+          </p>
+        </div>
+      </section>
+    </main>
+    <script>
+      (function () {
+        const blurb = document.getElementById("hero-blurb");
+        const seg = document.getElementById("profile-toggle");
+        if (!blurb || !seg) return;
+        const copy = {
+          data: [
+            "I’m a senior data analyst with 6+ years of experience across crypto, tech, e-commerce and consulting.",
+            //   "I specialize in dashboard development, statistical analysis, and metrics design—helping teams make smarter, faster, and more impactful decisions.",
+            "Proven track record in designing intuitive, visually compelling dashboards, building scalable fraud prevention systems, streamlining operational workflows, and driving data-informed decisions that deliver measurable business impact.",
+          ],
+          risk: [
+            "I specialize in connecting data analytics with risk strategy to help companies fight fraud at scale.",
+            "At Binance, Gojek, and Lazada, I’ve designed fraud detection systems, developed dashboards that reveal hidden fraud patterns, and created risk frameworks that saved six figures annually.",
+            "I’m driven by leading teams to strike the right balance between growth and trust & safety—delivering solutions where user experience, risk, and innovation align.",
+          ],
+        };
+        function applyModeClass(newMode) {
+          seg.classList.remove("mode-data", "mode-risk");
+          seg.classList.add(`mode-${newMode}`);
+        }
+        let mode = "data";
+        let idx = 0;
+        let timerId = null;
+        function render() {
+          blurb.classList.add("fade-out");
+          setTimeout(() => {
+            blurb.textContent = (copy[mode] && copy[mode][idx]) || copy.data[0];
+            blurb.classList.remove("fade-out");
+            blurb.classList.add("fade-in");
+            setTimeout(() => blurb.classList.remove("fade-in"), 220);
+          }, 180);
+        }
+        function nextSentence() {
+          const list = copy[mode] || copy.data;
+          idx = (idx + 1) % list.length;
+          render();
+        }
+        function startTimer() {
+          stopTimer();
+          timerId = setInterval(nextSentence, 6000);
+        }
+        function stopTimer() {
+          if (timerId) clearInterval(timerId);
+          timerId = null;
+        }
+        seg.querySelectorAll(".seg-item").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            seg
+              .querySelectorAll(".seg-item")
+              .forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            mode = btn.getAttribute("data-mode") || "data";
+            applyModeClass(mode);
+            idx = 0;
+            render();
+            startTimer();
+          });
+        });
+        // Initialize
+        applyModeClass(mode);
+        render();
+        startTimer();
+
+        // Photo deck (swipe through 4 photos + Again button)
+        const deck = document.getElementById("photo-deck");
+        const againBtn = document.getElementById("deck-again");
+        if (deck) {
+          const initialPhotos = Array.from(
+            deck.querySelectorAll(".deck-card img")
+          ).map((img) => ({
+            src: img.getAttribute("src"),
+            alt: img.getAttribute("alt") || "Photo",
+          }));
+          let startX = 0,
+            startY = 0,
+            dx = 0,
+            dy = 0,
+            dragging = false,
+            topCard = null,
+            activePointerId = null;
+
+          function cards() {
+            return Array.from(deck.querySelectorAll(".deck-card"));
+          }
+
+          function createCard(photo) {
+            const card = document.createElement("div");
+            card.className = "deck-card";
+            const img = document.createElement("img");
+            img.src = photo.src || "";
+            img.alt = photo.alt || "Photo";
+            img.loading = "lazy";
+            img.setAttribute("draggable", "false");
+            card.appendChild(img);
+            return card;
+          }
+
+          function setDeckHeight() {
+            const firstImg = deck.querySelector(".deck-card img");
+            if (!firstImg) return;
+            const h = firstImg.complete ? firstImg.clientHeight : 0;
+            if (h) deck.style.height = `${h}px`;
+            else
+              firstImg.addEventListener(
+                "load",
+                () => {
+                  deck.style.height = `${firstImg.clientHeight}px`;
+                },
+                { once: true }
+              );
+          }
+
+          function layoutDeck() {
+            const cs = cards();
+            cs.forEach((c, i) => {
+              c.classList.toggle("top", i === 0);
+              const angle = i === 0 ? 0 : i % 2 === 0 ? 3 : -3;
+              c.style.transform = `translateY(${i * 8}px) scale(${
+                1 - i * 0.03
+              }) rotate(${angle}deg)`;
+              c.style.zIndex = String(1000 - i);
+              c.style.transition = "transform .25s ease, opacity .25s ease";
+            });
+            setDeckHeight();
+            if (againBtn) againBtn.hidden = cs.length !== 0; // show when empty
+          }
+
+          function restoreDeck() {
+            const button =
+              againBtn && againBtn.parentElement === deck ? againBtn : null;
+            deck
+              .querySelectorAll(".deck-card")
+              .forEach((card) => card.remove());
+            initialPhotos.forEach((photo) => {
+              const card = createCard(photo);
+              if (button) deck.insertBefore(card, button);
+              else deck.appendChild(card);
+            });
+            layoutDeck();
+            dragging = false;
+            activePointerId = null;
+            dx = dy = 0;
+            topCard = null;
+            deck.classList.remove("dragging");
+          }
+
+          function onPointerDown(e) {
+            topCard = deck.querySelector(".deck-card.top");
+            if (!topCard) return;
+            e.preventDefault();
+            dragging = true;
+            dx = 0;
+            dy = 0;
+            startX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
+            startY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
+            activePointerId = e.pointerId != null ? e.pointerId : null;
+            try {
+              if (activePointerId != null && topCard.setPointerCapture)
+                topCard.setPointerCapture(activePointerId);
+            } catch {}
+            topCard.style.transition = "none";
+            document.addEventListener("pointermove", onPointerMove, {
+              passive: true,
+            });
+            document.addEventListener("pointerup", onPointerUp, { once: true });
+            document.addEventListener("pointercancel", onPointerUp, {
+              once: true,
+            });
+          }
+          function onPointerMove(e) {
+            if (!dragging || !topCard) return;
+            const x =
+              e.clientX || (e.touches && e.touches[0]?.clientX) || startX;
+            const y =
+              e.clientY || (e.touches && e.touches[0]?.clientY) || startY;
+            dx = x - startX;
+            dy = (y - startY) * 0.3;
+            const w =
+              deck.clientWidth || topCard.getBoundingClientRect().width || 300;
+            const p = Math.max(-1, Math.min(1, dx / (w * 0.6)));
+            const rot = p * 12;
+            const opacity = 1 - Math.min(1, Math.abs(p)) * 0.7;
+            topCard.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+            topCard.style.opacity = String(opacity);
+          }
+          function onPointerUp() {
+            if (!topCard) return;
+            const currentCard = topCard;
+            dragging = false;
+            try {
+              if (activePointerId != null && currentCard.releasePointerCapture)
+                currentCard.releasePointerCapture(activePointerId);
+            } catch {}
+            const rect = currentCard.getBoundingClientRect();
+            const w = deck.clientWidth || rect.width;
+            const threshold = Math.min(120, rect.width * 0.25);
+            const shouldDismiss = Math.abs(dx) > threshold;
+            const spring = "cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+            currentCard.style.transition = `transform .25s ${spring}, opacity .25s ease`;
+            if (shouldDismiss) {
+              const dir = Math.sign(dx) || 1;
+              const y = dy;
+              currentCard.style.transform = `translate(${
+                dir * w * 1.2
+              }px, ${y}px) rotate(${dir * 30}deg)`;
+              currentCard.style.opacity = "0";
+              currentCard.addEventListener(
+                "transitionend",
+                () => {
+                  if (currentCard.parentElement === deck) currentCard.remove();
+                  layoutDeck();
+                },
+                { once: true }
+              );
+            } else {
+              currentCard.style.transform = "translate(0,0) rotate(0deg)";
+              currentCard.style.opacity = "1";
+              currentCard.addEventListener(
+                "transitionend",
+                () => {
+                  currentCard.style.transition = "none";
+                },
+                { once: true }
+              );
+            }
+            dx = dy = 0;
+            topCard = null;
+            deck.classList.remove("dragging");
+            document.removeEventListener("pointermove", onPointerMove);
+            document.removeEventListener("pointercancel", onPointerUp);
+          }
+          deck
+            .querySelectorAll(".deck-card img")
+            .forEach((img) => img.setAttribute("draggable", "false"));
+          deck.addEventListener("pointerdown", (e) => {
+            if (!(e.target && e.target.closest(".deck-card"))) return;
+            deck.classList.add("dragging");
+            onPointerDown(e);
           });
           layoutDeck();
-          dragging = false;
-          activePointerId = null;
-          dx = dy = 0;
-          topCard = null;
-          deck.classList.remove('dragging');
+          if (againBtn) againBtn.addEventListener("click", restoreDeck);
         }
-
-        function onPointerDown(e) {
-          topCard = deck.querySelector('.deck-card.top');
-          if (!topCard) return;
-          e.preventDefault();
-          dragging = true; dx = 0; dy = 0;
-          startX = e.clientX || (e.touches && e.touches[0]?.clientX) || 0;
-          startY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0;
-          activePointerId = e.pointerId != null ? e.pointerId : null;
-          try { if (activePointerId != null && topCard.setPointerCapture) topCard.setPointerCapture(activePointerId); } catch{}
-          topCard.style.transition = 'none';
-          document.addEventListener('pointermove', onPointerMove, { passive: true });
-          document.addEventListener('pointerup', onPointerUp, { once: true });
-          document.addEventListener('pointercancel', onPointerUp, { once: true });
-        }
-        function onPointerMove(e) {
-          if (!dragging || !topCard) return;
-          const x = e.clientX || (e.touches && e.touches[0]?.clientX) || startX;
-          const y = e.clientY || (e.touches && e.touches[0]?.clientY) || startY;
-          dx = x - startX; dy = (y - startY) * 0.3;
-          const w = deck.clientWidth || (topCard.getBoundingClientRect().width || 300);
-          const p = Math.max(-1, Math.min(1, dx / (w * 0.6)));
-          const rot = p * 12;
-          const opacity = 1 - Math.min(1, Math.abs(p)) * 0.7;
-          topCard.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
-          topCard.style.opacity = String(opacity);
-        }
-        function onPointerUp() {
-          if (!topCard) return;
-          const currentCard = topCard;
-          dragging = false;
-          try { if (activePointerId != null && currentCard.releasePointerCapture) currentCard.releasePointerCapture(activePointerId); } catch{}
-          const rect = currentCard.getBoundingClientRect();
-          const w = deck.clientWidth || rect.width;
-          const threshold = Math.min(120, rect.width * 0.25);
-          const shouldDismiss = Math.abs(dx) > threshold;
-          const spring = 'cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-          currentCard.style.transition = `transform .25s ${spring}, opacity .25s ease`;
-          if (shouldDismiss) {
-            const dir = Math.sign(dx) || 1;
-            const y = dy;
-            currentCard.style.transform = `translate(${dir * w * 1.2}px, ${y}px) rotate(${dir * 30}deg)`;
-            currentCard.style.opacity = '0';
-            currentCard.addEventListener('transitionend', () => {
-              if (currentCard.parentElement === deck) currentCard.remove();
-              layoutDeck();
-            }, { once: true });
-          } else {
-            currentCard.style.transform = 'translate(0,0) rotate(0deg)';
-            currentCard.style.opacity = '1';
-            currentCard.addEventListener('transitionend', () => {
-              currentCard.style.transition = 'none';
-            }, { once: true });
-          }
-          dx = dy = 0; topCard = null; deck.classList.remove('dragging');
-          document.removeEventListener('pointermove', onPointerMove);
-          document.removeEventListener('pointercancel', onPointerUp);
-        }
-        deck.querySelectorAll('.deck-card img').forEach((img) => img.setAttribute('draggable', 'false'));
-        deck.addEventListener('pointerdown', (e) => {
-          if (!(e.target && e.target.closest('.deck-card'))) return;
-          deck.classList.add('dragging');
-          onPointerDown(e);
-        });
-        layoutDeck();
-        if (againBtn) againBtn.addEventListener('click', restoreDeck);
-      }
-    })();
-  </script>  <footer class="site-footer"> <div class="container"> <div class="footer-row"> <p class="footer-copy">© 2025 Sofia Kung. All rights reserved.</p> <div class="footer-social"> <a href="https://linkedin.com/in/sofiakung" target="_blank" class="social-icon" aria-label="LinkedIn"> <i class="fab fa-linkedin"></i> </a> <a href="https://github.com/SofiaKung" target="_blank" class="social-icon" aria-label="GitHub"> <i class="fab fa-github"></i> </a> <a href="https://public.tableau.com/app/profile/sofiakung" target="_blank" class="social-icon social-icon--tableau" aria-label="Tableau" title="Tableau"> <svg class="icon-tableau" viewBox="0 0 24 24" aria-hidden="true"> <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <line x1="12" y1="5" x2="12" y2="9"></line> <line x1="10" y1="7" x2="14" y2="7"></line> <line x1="6" y1="10" x2="6" y2="13"></line> <line x1="4.5" y1="11.5" x2="7.5" y2="11.5"></line> <line x1="18" y1="10" x2="18" y2="13"></line> <line x1="16.5" y1="11.5" x2="19.5" y2="11.5"></line> <line x1="8" y1="15" x2="8" y2="18"></line> <line x1="6.5" y1="16.5" x2="9.5" y2="16.5"></line> <line x1="16" y1="15" x2="16" y2="18"></line> <line x1="14.5" y1="16.5" x2="17.5" y2="16.5"></line> </g> </svg> </a> </div> </div> </div> </footer> </body></html>
+      })();
+    </script>
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer-row">
+          <p class="footer-copy">© 2025 Sofia Kung. All rights reserved.</p>
+          <div class="footer-social">
+            <a
+              href="https://linkedin.com/in/sofiakung"
+              target="_blank"
+              class="social-icon"
+              aria-label="LinkedIn"
+            >
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a
+              href="https://github.com/SofiaKung"
+              target="_blank"
+              class="social-icon"
+              aria-label="GitHub"
+            >
+              <i class="fab fa-github"></i>
+            </a>
+            <a
+              href="https://public.tableau.com/app/profile/sofiakung"
+              target="_blank"
+              class="social-icon social-icon--tableau"
+              aria-label="Tableau"
+              title="Tableau"
+            >
+              <svg class="icon-tableau" viewBox="0 0 24 24" aria-hidden="true">
+                <g
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  stroke-linecap="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="9"></line>
+                  <line x1="10" y1="7" x2="14" y2="7"></line>
+                  <line x1="6" y1="10" x2="6" y2="13"></line>
+                  <line x1="4.5" y1="11.5" x2="7.5" y2="11.5"></line>
+                  <line x1="18" y1="10" x2="18" y2="13"></line>
+                  <line x1="16.5" y1="11.5" x2="19.5" y2="11.5"></line>
+                  <line x1="8" y1="15" x2="8" y2="18"></line>
+                  <line x1="6.5" y1="16.5" x2="9.5" y2="16.5"></line>
+                  <line x1="16" y1="15" x2="16" y2="18"></line>
+                  <line x1="14.5" y1="16.5" x2="17.5" y2="16.5"></line>
+                </g>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
