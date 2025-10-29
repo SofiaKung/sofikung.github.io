@@ -27,23 +27,9 @@ const posts = (await getCollection('posts'))
         <div class="hero-layout">
           <div class="hero-content">
             <h1 class="hero-name">Sofia Kung</h1>
-            <div class="hero-toggle" role="tablist" aria-label="Profile focus">
-              <div class="segmented-toggle mode-data" id="profile-toggle">
-                <button class="seg-item active" role="tab" aria-selected="true" data-mode="data">
-                  <i class="fa-solid fa-database" aria-hidden="true"></i>
-                  <span>Data Analyst</span>
-                </button>
-                <button class="seg-item" role="tab" aria-selected="false" data-mode="risk">
-                  <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
-                  <span>Risk Strategist</span>
-                </button>
-                <span class="seg-thumb" aria-hidden="true"></span>
-              </div>
-            </div>
-
-            <div class="hero-contact">
-          
-            </div>
+            <p class="hero-typing">
+              I am a <span id="typed-text"></span>
+            </p>
 
             <div class="hero-description">
               <p id="hero-blurb">
@@ -136,11 +122,11 @@ const posts = (await getCollection('posts'))
       <div class="container">
         <h2 class="section-title">Professional Experience</h2>
         <div class="experience-list">
-          <div class="experience-item">
-            <div class="experience-period">2022 - 2024</div>
-            <div class="experience-details">
-              <h3 class="experience-title">Senior Risk Data Analyst</h3>
-              <div class="experience-company">
+          <details class="experience-item">
+            <summary class="experience-summary">
+              <span class="experience-summary-main">
+                <span class="experience-title">Senior Risk Data Analyst</span>
+                 <div class="experience-company">
                 <a
                   href="https://www.binance.com/"
                   target="_blank"
@@ -148,6 +134,12 @@ const posts = (await getCollection('posts'))
                   >Binance</a
                 >
               </div>
+              </span>
+              <span class="experience-period">2022 - 2024</span>
+              <span class="experience-indicator" aria-hidden="true"></span>
+            </summary>
+            <div class="experience-body">
+             
               <ul class="experience-description">
                 <li>
                   Spearheaded end-to-end risk strategy - doubled risk coverage
@@ -165,17 +157,23 @@ const posts = (await getCollection('posts'))
                 </li>
               </ul>
             </div>
-          </div>
+          </details>
 
-          <div class="experience-item">
-            <div class="experience-period">2021 - 2022</div>
-            <div class="experience-details">
-              <h3 class="experience-title">Senior Risk Data Analyst</h3>
-              <div class="experience-company">
+          <details class="experience-item">
+            <summary class="experience-summary">
+              <span class="experience-summary-main">
+                <span class="experience-title">Senior Risk Data Analyst</span>
+                   <div class="experience-company">
                 <a href="https://www.gojek.com/" target="_blank" rel="noopener"
                   >Gojek</a
                 >
               </div>
+              </span>
+              <span class="experience-period">2021 - 2022</span>
+              <span class="experience-indicator" aria-hidden="true"></span>
+            </summary>
+            <div class="experience-body">
+          
               <ul class="experience-description">
                 <li>
                   Uncovered risk and feature abuse through statistical analysis,
@@ -189,17 +187,23 @@ const posts = (await getCollection('posts'))
                 </li>
               </ul>
             </div>
-          </div>
+          </details>
 
-          <div class="experience-item">
-            <div class="experience-period">2021</div>
-            <div class="experience-details">
-              <h3 class="experience-title">Product Data Analyst</h3>
-              <div class="experience-company">
+          <details class="experience-item">
+            <summary class="experience-summary">
+              <span class="experience-summary-main">
+                <span class="experience-title">Product Data Analyst</span>
+                  <div class="experience-company">
                 <a href="https://www.atome.sg/" target="_blank" rel="noopener"
                   >Atome</a
                 >
               </div>
+              </span>
+              <span class="experience-period">2021</span>
+              <span class="experience-indicator" aria-hidden="true"></span>
+            </summary>
+            <div class="experience-body">
+            
               <ul class="experience-description">
                 <li>
                   Analyzed user behavior through event logs to optimize in-app
@@ -211,17 +215,23 @@ const posts = (await getCollection('posts'))
                 </li>
               </ul>
             </div>
-          </div>
+          </details>
 
-          <div class="experience-item">
-            <div class="experience-period">2019 - 2021</div>
-            <div class="experience-details">
-              <h3 class="experience-title">Data Analyst Consultant</h3>
-              <div class="experience-company">
+          <details class="experience-item">
+            <summary class="experience-summary">
+              <span class="experience-summary-main">
+                <span class="experience-title">Data Analyst Consultant</span>
+                 <div class="experience-company">
                 <a href="https://www.pwc.com/" target="_blank" rel="noopener"
                   >PwC</a
                 >
               </div>
+              </span>
+              <span class="experience-period">2019 - 2021</span>
+              <span class="experience-indicator" aria-hidden="true"></span>
+            </summary>
+            <div class="experience-body">
+             
               <ul class="experience-description">
                 <li>
                   Automated payment transactions for a healthcare group using
@@ -234,13 +244,13 @@ const posts = (await getCollection('posts'))
                 </li>
               </ul>
             </div>
-          </div>
+          </details>
 
-          <div class="experience-item">
-            <div class="experience-period">2018 - 2021</div>
-            <div class="experience-details">
-              <h3 class="experience-title">Python Teaching Assistant</h3>
-              <div class="experience-company">
+          <details class="experience-item">
+            <summary class="experience-summary">
+              <span class="experience-summary-main">
+                <span class="experience-title">Python Teaching Assistant</span>
+                 <div class="experience-company">
                 <a
                   href="https://www.hackwagon.com/"
                   target="_blank"
@@ -248,18 +258,24 @@ const posts = (await getCollection('posts'))
                   >Hackwagon Academy</a
                 >
               </div>
+              </span>
+              <span class="experience-period">2018 - 2021</span>
+              <span class="experience-indicator" aria-hidden="true"></span>
+            </summary>
+            <div class="experience-body">
+             
               <ul class="experience-description">
                 <!-- <li>Python visualization and data manipulation</li>
                 <li>Machine learning instruction</li> -->
               </ul>
             </div>
-          </div>
+          </details>
 
-          <div class="experience-item">
-            <div class="experience-period">2018</div>
-            <div class="experience-details">
-              <h3 class="experience-title">Data Analyst Intern</h3>
-              <div class="experience-company">
+          <details class="experience-item">
+            <summary class="experience-summary">
+              <span class="experience-summary-main">
+                <span class="experience-title">Data Analyst Intern</span>
+                  <div class="experience-company">
                 <a href="https://www.lazada.com/" target="_blank" rel="noopener"
                   >Lazada</a
                 >
@@ -271,11 +287,17 @@ const posts = (await getCollection('posts'))
                   >Alibaba</a
                 >
               </div>
+              </span>
+              <span class="experience-period">2018</span>
+              <span class="experience-indicator" aria-hidden="true"></span>
+            </summary>
+            <div class="experience-body">
+            
               <ul class="experience-description">
                 <!-- <li>Dashboard development</li> -->
               </ul>
             </div>
-          </div>
+          </details>
         </div>
       </div>
     </section>
@@ -336,58 +358,67 @@ const posts = (await getCollection('posts'))
   <script is:inline>
     (function(){
       const blurb = document.getElementById('hero-blurb');
-      const seg = document.getElementById('profile-toggle');
-      if (!blurb || !seg) return;
-      const copy = {
-        data: [
+      const typedTextSpan = document.getElementById('typed-text');
+      const textArray = ['data analyst.', 'risk strategist.', 'AI builder.'];
+      const blurbs = [
       "I’m a senior data analyst with 6+ years of experience across crypto, tech, e-commerce and consulting.",
-      //   "I specialize in dashboard development, statistical analysis, and metrics design—helping teams make smarter, faster, and more impactful decisions.",
+      "I specialize in dashboard development, statistical analysis, and metrics design—helping teams make smarter, faster, and more impactful decisions.",
       "Proven track record in designing intuitive, visually compelling dashboards, building scalable fraud prevention systems, streamlining operational workflows, and driving data-informed decisions that deliver measurable business impact.",
-    ],
-        risk: [
-      "I specialize in connecting data analytics with risk strategy to help companies fight fraud at scale.",
       "At Binance, Gojek, and Lazada, I’ve designed fraud detection systems, developed dashboards that reveal hidden fraud patterns, and created risk frameworks that saved six figures annually.",
       "I’m driven by leading teams to strike the right balance between growth and trust & safety—delivering solutions where user experience, risk, and innovation align.",
-    ],
-      };
-      function applyModeClass(newMode) {
-        seg.classList.remove('mode-data', 'mode-risk');
-        seg.classList.add(`mode-${newMode}`);
+      ];
+
+      if (typedTextSpan && textArray.length) {
+        let textArrayIndex = 0;
+        let charIndex = 0;
+        const typingDelay = 100;
+        const erasingDelay = 50;
+        const newTextDelay = 2000;
+
+        function type() {
+          if (charIndex < textArray[textArrayIndex].length) {
+            typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+            charIndex++;
+            setTimeout(type, typingDelay);
+          } else {
+            setTimeout(erase, newTextDelay);
+          }
+        }
+
+        function erase() {
+          if (charIndex > 0) {
+            typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+            charIndex--;
+            setTimeout(erase, erasingDelay);
+          } else {
+            textArrayIndex++;
+            if (textArrayIndex >= textArray.length) textArrayIndex = 0;
+            setTimeout(type, typingDelay + 100);
+          }
+        }
+
+        setTimeout(type, newTextDelay);
       }
-      let mode = 'data';
-      let idx = 0;
-      let timerId = null;
-      function render() {
-        blurb.classList.add('fade-out');
-        setTimeout(() => {
-          blurb.textContent = (copy[mode] && copy[mode][idx]) || copy.data[0];
-          blurb.classList.remove('fade-out');
-          blurb.classList.add('fade-in');
-          setTimeout(() => blurb.classList.remove('fade-in'), 220);
-        }, 180);
+
+      if (blurb && blurbs.length) {
+        let blurbIndex = 0;
+        blurb.textContent = blurbs[0];
+
+        function showNextBlurb() {
+          blurb.classList.add('fade-out');
+          setTimeout(() => {
+            blurbIndex = (blurbIndex + 1) % blurbs.length;
+            blurb.textContent = blurbs[blurbIndex];
+            blurb.classList.remove('fade-out');
+            blurb.classList.add('fade-in');
+            setTimeout(() => blurb.classList.remove('fade-in'), 220);
+          }, 180);
+        }
+
+        if (blurbs.length > 1) {
+          setInterval(showNextBlurb, 6000);
+        }
       }
-      function nextSentence() {
-        const list = copy[mode] || copy.data;
-        idx = (idx + 1) % list.length;
-        render();
-      }
-      function startTimer() {
-        stopTimer();
-        timerId = setInterval(nextSentence, 6000);
-      }
-      function stopTimer() { if (timerId) clearInterval(timerId); timerId = null; }
-      seg.querySelectorAll('.seg-item').forEach(btn => {
-        btn.addEventListener('click', () => {
-          seg.querySelectorAll('.seg-item').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          mode = btn.getAttribute('data-mode') || 'data';
-          applyModeClass(mode);
-          idx = 0; render(); startTimer();
-        });
-      });
-      // Initialize
-      applyModeClass(mode);
-      render(); startTimer();
 
       // Photo deck (swipe through 4 photos + Again button)
       const deck = document.getElementById('photo-deck');

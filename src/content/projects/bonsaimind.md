@@ -18,10 +18,9 @@ hero:
 project:
   tags:
     - "Featured"
-    - "Web App"
-    - "AI Summarization"
-    - "Books"
-    - "Productivity"
+    - "Productivity app"
+    - "Supabase"
+    - "Nextjs"
 
 # SEO and additional metadata
 seo:

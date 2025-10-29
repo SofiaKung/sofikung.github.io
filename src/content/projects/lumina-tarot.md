@@ -18,9 +18,9 @@ hero:
 project:
   tags:
     - "Featured"
-    - "Web App"
     - "AI Tarot"
-    - "Cursor Hackathon"
+    - "Elevanlabs"
+    - "Image generation"
     - "Generative AI"
 
 # SEO and additional metadata
