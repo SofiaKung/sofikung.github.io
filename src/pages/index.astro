@@ -28,7 +28,7 @@ const posts = (await getCollection('posts'))
           <div class="hero-content">
             <h1 class="hero-name">Sofia Kung</h1>
             <p class="hero-typing">
-              I am a <span id="typed-text"></span>
+              I am <span id="typed-text"></span>
             </p>
 
             <div class="hero-description">
@@ -359,13 +359,11 @@ const posts = (await getCollection('posts'))
     (function(){
       const blurb = document.getElementById('hero-blurb');
       const typedTextSpan = document.getElementById('typed-text');
-      const textArray = ['data analyst.', 'risk strategist.', 'AI builder.'];
+      const textArray = ['a data analyst.', 'a risk strategist.', 'an AI builder.'];
       const blurbs = [
       "I’m a senior data analyst with 6+ years of experience across crypto, tech, e-commerce and consulting.",
-      "I specialize in dashboard development, statistical analysis, and metrics design—helping teams make smarter, faster, and more impactful decisions.",
-      "Proven track record in designing intuitive, visually compelling dashboards, building scalable fraud prevention systems, streamlining operational workflows, and driving data-informed decisions that deliver measurable business impact.",
-      "At Binance, Gojek, I’ve designed fraud detection systems, developed dashboards that reveal hidden fraud patterns, and created risk frameworks that saved six figures annually.",
-      "I’m driven by leading teams to strike the right balance between growth and trust & safety—delivering solutions where user experience, risk, and scalability align.",
+      "I specialize in dashboard development, experiement design, and metrics design — helping teams make more optimised and data-driven decisions.",
+      "I’m driven to develop analytics solutions that strike the balance user experience, risk impact, and scalability.",
       ];
 
       if (typedTextSpan && textArray.length) {

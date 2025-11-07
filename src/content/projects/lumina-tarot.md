@@ -20,7 +20,6 @@ project:
     - "Featured"
     - "AI Tarot"
     - "Elevanlabs"
-    - "Image generation"
     - "Generative AI"
 
 # SEO and additional metadata

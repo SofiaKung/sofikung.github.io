@@ -17,7 +17,7 @@ hero:
 # Project metadata
 project:
   tags:
-    - "Featured"
+    - "Under revamp"
     - "Productivity app"
     - "Supabase"
     - "Nextjs"
