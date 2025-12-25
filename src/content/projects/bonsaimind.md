@@ -17,10 +17,10 @@ hero:
 # Project metadata
 project:
   tags:
-    - "Under revamp"
-    - "Productivity app"
-    - "Supabase"
-    - "Nextjs"
+    - "web"
+    - "productivity app"
+    - "supabase"
+    - "nextjs"
 
 # SEO and additional metadata
 seo:

@@ -117,13 +117,6 @@ const projects = (await getCollection('projects'))
     const filterBtns = document.querySelectorAll('.filter-btn');
     const projectCards = document.querySelectorAll('.project-card');
 
-    // Define category mappings
-    const categoryMappings = {
-      'data': ['visualization', 'tableau', 'dashboard', 'r shiny'],
-      'ml': ['machine learning', 'fraud detection', 'generative ai', 'ai tarot'],
-      'web': ['productivity app', 'nextjs', 'supabase', 'ai tarot', 'generative ai']
-    };
-
     filterBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         // Update active state
@@ -139,8 +132,8 @@ const projects = (await getCollection('projects'))
           if (filter === 'all') {
             card.classList.remove('hidden');
           } else {
-            const matchingTags = categoryMappings[filter] || [];
-            const hasMatch = matchingTags.some(tag => tags.includes(tag));
+            // Check if the filter category exists in the project's tags
+            const hasMatch = tags.toLowerCase().includes(filter.toLowerCase());
 
             if (hasMatch) {
               card.classList.remove('hidden');

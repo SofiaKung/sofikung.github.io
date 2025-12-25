@@ -19,9 +19,11 @@ hero:
 # Project metadata
 project:
   tags:
+    - "data"
     - "Featured"
     - "Dashboard"
     - "R Shiny"
+    - "ml"
 
 # Content structure
 content_blocks:

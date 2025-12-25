@@ -18,6 +18,7 @@ hero:
 # Project metadata
 project:
   tags:
+    - "data"
     - "Dashboard"
     - "R Shiny"
     - "Draft"

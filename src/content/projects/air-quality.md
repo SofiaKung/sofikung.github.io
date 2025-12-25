@@ -17,6 +17,7 @@ hero:
 # Project metadata
 project:
   tags:
+    - "data"
     - "Visualization"
     - "Tableau"
 
