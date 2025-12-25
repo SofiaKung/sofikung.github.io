@@ -21,6 +21,7 @@ project:
     - "Web app"
     - "Hackathon"
     - "Generative AI"
+    - "Featured"
 
 # SEO and additional metadata
 seo:

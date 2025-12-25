@@ -21,6 +21,7 @@ project:
     - "productivity app"
     - "supabase"
     - "nextjs"
+    - "Featured"
 
 # SEO and additional metadata
 seo:
@@ -29,5 +30,6 @@ seo:
     - "Book Tracker"
     - "Web App"
     - "Reading Highlights"
+
   og_image: "assets/bonsaimind.png"
 ---

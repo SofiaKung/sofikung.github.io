@@ -39,4 +39,50 @@ Projects also support:
 Project-level optional:
 - `imageLink` (string, optional): makes the main hero image clickable on the project detail page; falls back to `link` if present.
 
+## Project Filtering
+
+The projects page (`/projects`) includes a filter system that categorizes projects by type. Projects are filtered using category tags in their `tags` array.
+
+### Filter Categories
+
+Three filter categories are available:
+- **Data** — data visualization and analytics projects
+- **ML** — machine learning and AI projects
+- **Web App** — web applications
+
+### How to Use Filter Tags
+
+To make a project appear in a filter category, add the category tag to the project's `tags` array in the frontmatter:
+
+```yaml
+project:
+  tags:
+    - "data"        # Makes it appear in the Data filter
+    - "Dashboard"   # Additional descriptive tags
+    - "R Shiny"
+```
+
+**Available category tags:**
+- `"data"` — for data visualization, dashboards, analytics projects
+- `"ml"` — for machine learning, AI, fraud detection projects
+- `"web"` — for web applications
+
+**Multiple categories:**
+Projects can belong to multiple categories by including multiple category tags:
+
+```yaml
+project:
+  tags:
+    - "web"
+    - "ml"
+    - "Featured"
+    - "AI Tarot"
+```
+
+**Important notes:**
+- Category tags are **case-insensitive** (both `"web"` and `"Web"` work)
+- You can combine category tags with descriptive tags
+- Projects without category tags will still appear in the "All" view
+- The filtering uses substring matching, so ensure category tags are lowercase for consistency
+
 See Update Instructions for how to add or edit content.

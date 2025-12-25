@@ -33,13 +33,13 @@ const posts = (await getCollection('posts'))
 
             <div class="hero-description">
               <p id="hero-blurb">
-                I’m a senior data analyst with 6+ years across tech, crypto and e‑commerce. I turn complex data into dashboards, reports and clear insights that drive product and business decisions.
+                I build AI agents, automate workflows, and design data systems that scale. With 6+ years across tech, crypto, and e-commerce, I turn complex problems into elegant solutions.
               </p>
             </div>
           </div>
 
-          <div class="hero-graphic">
-            <!-- Optional: Add images to /assets/photo-*.JPG to enable deck -->
+          <!-- Photo deck hidden for now -->
+          <!-- <div class="hero-graphic">
             <div class="graphic-element">
               <div class="photo-deck" id="photo-deck" aria-label="Photo gallery">
                 <div class="deck-card"><img src="/assets/photo-1.JPG" alt="Photo 1" loading="lazy" /></div>
@@ -52,7 +52,7 @@ const posts = (await getCollection('posts'))
                 </button>
               </div>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </section>
@@ -122,6 +122,33 @@ const posts = (await getCollection('posts'))
       <div class="container">
         <h2 class="section-title">Professional Experience</h2>
         <div class="experience-list">
+          <details class="experience-item">
+            <summary class="experience-summary">
+              <span class="experience-summary-main">
+                <span class="experience-title">Technical Founder</span>
+                 <div class="experience-company">
+                <a
+                  href="https://www.butterflow.co/"
+                  target="_blank"
+                  rel="noopener"
+                  >ButterFlow</a
+                >
+              </div>
+              </span>
+              <span class="experience-period">2025-Present</span>
+              <span class="experience-indicator" aria-hidden="true"></span>
+            </summary>
+            <div class="experience-body">
+             
+              <ul class="experience-description">
+                <li>
+                  Building AI automation systems with risk controls and analytics to help businesses automate smarter
+
+                </li>
+               
+              </ul>
+            </div>
+          </details>
           <details class="experience-item">
             <summary class="experience-summary">
               <span class="experience-summary-main">
@@ -308,50 +335,55 @@ const posts = (await getCollection('posts'))
         <h2 class="section-title">Skills & Technologies</h2>
         <div class="skills-grid">
           <div class="skill-category">
-            <h3>Technical Skills</h3>
+            <h3>Development & Engineering</h3>
             <div class="skill-tags">
-              <span class="skill-tag">Statistical Analysis</span>
-              <span class="skill-tag">Dashboard Development</span>
-              <span class="skill-tag">ETL Development</span>
-              <span class="skill-tag">Machine Learning</span>
+              <span class="skill-tag">AI Agent Development & LLM Integration</span>
+              <span class="skill-tag">Workflow Automation (n8n)</span>
+              <span class="skill-tag">Python, JavaScript/TypeScript, SQL</span>
+              <span class="skill-tag">API Development & Integration</span>
             </div>
           </div>
           <div class="skill-category">
-            <h3>Programming</h3>
+            <h3>Data Analytics  </h3>
             <div class="skill-tags">
-              <span class="skill-tag">Python</span>
-              <span class="skill-tag">PySpark</span>
-              <span class="skill-tag">SQL</span>
-              <span class="skill-tag">R</span>
-              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">ETL Development & Data Pipelines</span>
+              <span class="skill-tag">Dashboard Development & Visualization</span>
+              <span class="skill-tag">Statistical Analysis & Machine Learning</span>
             </div>
           </div>
           <div class="skill-category">
-            <h3>Risk Strategy</h3>
+            <h3>Specialized Skills</h3>
             <div class="skill-tags">
-              <span class="skill-tag">Fraud Analytics</span>
-              <span class="skill-tag">Anomaly Detection</span>
-              <span class="skill-tag">Feature Abuse Detection</span>
-              <span class="skill-tag">KYC/POA Fraud Detection</span>
-              <span class="skill-tag">Risk Framework Design</span>
-              <span class="skill-tag">Fraud Rules Development</span>
+              <span class="skill-tag">Solution Architecture & Integration Design</span>
+              <span class="skill-tag">Fraud Analytics & Risk Framework Design </span>
+              <span class="skill-tag">Cross-Functional Stakeholder Management</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Let’s Connect -->
+    <!-- Let's Connect -->
     <section class="contact" id="contact">
       <div class="container">
-        <h2 class="section-title">Let’s Connect</h2>
-        <p style="margin: 8px 0 16px; max-width: 60ch;">
-        Open to new ideas, opportunities, and conversations.        
+        <h2 class="section-title">Let's Connect</h2>
+        <p class="contact-description">
+          Whether you're looking to automate workflows, build AI-powered solutions, or design data systems that scale — I'd love to hear about your project.
         </p>
-         <p style="margin: 8px 0 16px; max-width: 60ch;">
-        Email: sofiakung.ai@gmail.com      
-        </p>
- 
+        <div class="contact-links">
+          <a href="mailto:sofiakung.ai@gmail.com" class="contact-link-item">
+            <i class="fa-solid fa-envelope contact-icon" aria-hidden="true"></i>
+            <span>Email</span>
+          </a>
+          <a href="https://www.linkedin.com/in/sofiakung/" target="_blank" rel="noopener" class="contact-link-item">
+            <i class="fab fa-linkedin contact-icon" aria-hidden="true"></i>
+            <span>LinkedIn</span>
+          </a>
+          <a href="https://github.com/sofiakung" target="_blank" rel="noopener" class="contact-link-item">
+            <i class="fab fa-github contact-icon" aria-hidden="true"></i>
+            <span>GitHub</span>
+          </a>
+        </div>
       </div>
     </section>
   </main>
@@ -359,11 +391,10 @@ const posts = (await getCollection('posts'))
     (function(){
       const blurb = document.getElementById('hero-blurb');
       const typedTextSpan = document.getElementById('typed-text');
-      const textArray = ['a data analyst.', 'a risk strategist.', 'an AI builder.'];
+      const textArray = ['an automation specialist.', 'a data analyst.', 'a AI builder.'];
       const blurbs = [
-      "I’m a senior data analyst with 6+ years of experience across crypto, tech, e-commerce and consulting.",
-      "I specialize in dashboard development, experiement design, and metrics design — helping teams make more optimised and data-driven decisions.",
-      "I’m driven to develop analytics solutions that strike the balance user experience, risk impact, and scalability.",
+      "I build AI agents , automate workflows, and design data reporting systems that scale. With 6+ years across tech, crypto, and e-commerce, I turn complex problems into elegant solutions.",
+      "Specializing in n8n automation, AI agent development, and secure integration design for businesses ready to scale with intelligence.",
       ];
 
       if (typedTextSpan && textArray.length) {
