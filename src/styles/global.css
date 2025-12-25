@@ -298,7 +298,7 @@ p {
 }
 
 .hero-description {
-  width: min(100%, clamp(38ch, 45vw, 80ch));
+  /* width: min(100%, clamp(38ch, 45vw, 80ch)); */
   min-height: 100px;
   position: relative;
 }
@@ -859,7 +859,6 @@ section:not(.hero) {
   font-size: var(--font-size-lg);
   color: #252424;
   margin-bottom: 48px;
-  max-width: 600px;
 }
 
 .contact-links {
