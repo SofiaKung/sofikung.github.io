@@ -2,7 +2,6 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { hasDraftTag } from '../../utils/content';
-import '../../styles/blog.css';
 
 export async function getStaticPaths() {
   const items = (await getCollection('posts')).filter((entry) => !hasDraftTag(entry));
@@ -11,22 +10,29 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props as any;
 const data = entry.data;
+const tags = data.tags ?? [];
 const { Content } = await entry.render();
 ---
 <BaseLayout title={data.title}>
-  <main class="article article--post">
+  <main class="article">
     <div class="container">
       <nav class="article-topnav"><a class="article-back" href="/blog/">← Back to blog</a></nav>
       <header class="article-header">
         <p class="article-eyebrow">Post</p>
         <h1 class="article-title">{data.title}</h1>
         <div class="article-meta">
+          {tags.length ? <span class="article-tags">{tags.map((t:string) => <span class="post-tag">{t}</span>)}</span> : null}
           {data.date && <time datetime={data.date}>{data.date_pretty ?? data.date}</time>}
-          {(data.tags ?? []).length ? <span class="article-tags">{(data.tags ?? []).map((t:string) => <span class="post-tag">{t}</span>)}</span> : null}
         </div>
       </header>
-      <figure class="article-hero" hidden></figure>
-      <article class="article-content"><Content /></article>
+      {data.description && <p class="article-lede">{data.description}</p>}
+
+      <section class="project-writing" id="post-content">
+        <article class="article-content">
+          <Content />
+        </article>
+      </section>
+
       <nav class="article-bottomnav"><a class="article-more" href="/blog/">→ More posts</a></nav>
     </div>
   </main>
