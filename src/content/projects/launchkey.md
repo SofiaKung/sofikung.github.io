@@ -2,8 +2,8 @@
 # Basic metadata
 title: "LaunchKey"
 slug: "launchkey"
-date: "2025-01-16"
-date_pretty: "Jan 16, 2025"
+date: "2026-01-11"
+date_pretty: "Jan 11, 2026"
 description: "We built LaunchKey in 7 hours at Google—here's how I designed the UI fast."
 importance: 1
 type: "project"
@@ -17,7 +17,6 @@ hero:
 project:
   tags:
     - "web"
-    - "Featured"
     - "Hackathon"
     - "UI Design"
     - "Firebase"

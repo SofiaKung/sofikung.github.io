@@ -2,7 +2,7 @@
 # Basic metadata
 title: "Shiro"
 slug: "shiro"
-date: "2025-01-16"
+date: "2026-01-16"
 date_pretty: "Jan 16, 2025"
 description: "My personal AI assistant powered by the Claude Agent SDK—built to prioritize, unblock, and keep me accountable."
 importance: 1
@@ -17,7 +17,6 @@ hero:
 project:
   tags:
     - "ml"
-    - "Featured"
     - "AI Agent"
     - "Claude SDK"
     - "Python"

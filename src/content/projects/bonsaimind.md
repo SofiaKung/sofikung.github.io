@@ -21,7 +21,6 @@ project:
     - "productivity app"
     - "supabase"
     - "nextjs"
-    - "Featured"
 
 # SEO and additional metadata
 seo:

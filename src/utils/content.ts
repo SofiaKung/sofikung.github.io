@@ -30,9 +30,11 @@ function getDateValue(entry: ProjectEntry): number {
 }
 
 export function compareProjectImportance(a: ProjectEntry, b: ProjectEntry): number {
+  // Sort by importance first (lower number = higher priority)
   const importanceDiff = getImportanceValue(a) - getImportanceValue(b);
   if (importanceDiff !== 0) return importanceDiff;
 
+  // Then by date descending
   const dateDiff = getDateValue(b) - getDateValue(a);
   if (dateDiff !== 0) return dateDiff;
 

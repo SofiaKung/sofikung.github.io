@@ -5,7 +5,7 @@ slug: "lumina-tarot"
 date: "2025-10-21"
 date_pretty: "Oct 21, 2025"
 description: "An AI-powered tarot reading web app built for the Cursor Hackathon,  using generative AI for visuals and LLMs for accurate, personalized readings."
-importance: 2
+importance: 3
 type: "project"
 external_link: "https://www.lumina-tarot.com"
 
@@ -17,8 +17,6 @@ hero:
 # Project metadata
 project:
   tags:
-    - "web"
-    - "Featured"
     - "AI Tarot"
     - "Elevanlabs"
     - "Generative AI"

@@ -5,7 +5,7 @@ slug: "visualise-spending"
 date: "2019-01-01"
 date_pretty: "Jan 1, 2019"
 description: "Insights into how ministries and agencies spend, with visual analytics"
-importance: 1
+importance: 2
 type: "project"
 external_link: "https://wiki.smu.edu.sg/18191is428g1/GeViz"
 
@@ -20,7 +20,6 @@ hero:
 project:
   tags:
     - "data"
-    - "Featured"
     - "Dashboard"
     - "R Shiny"
     - "ml"
