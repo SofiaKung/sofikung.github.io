@@ -5,7 +5,7 @@ slug: "ai-book-summaries"
 date: "2025-10-08"
 date_pretty: "Oct 8, 2025"
 description: "A web app to track books you've read, store highlights, and generate AI-powered book summaries."
-importance: 3
+importance: 2
 type: "project"
 external_link: "https://www.bonsai-mind.com"
 

@@ -5,7 +5,7 @@ slug: "ai-christmas-cards"
 date: "2025-11-01"
 date_pretty: "Nov 01, 2025"
 description: "An AI-powered Christmas card generator that creates personalized festive cards with custom messages and AI-generated imagery."
-importance: 3
+importance: 4
 type: "project"
 external_link: "https://www.jollycards.site"
 
