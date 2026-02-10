@@ -30,11 +30,45 @@ const posts = (await getCollection('posts'))
             <p class="hero-typing">
               I am <span id="typed-text"></span>
             </p>
-
+ 
             <div class="hero-description">
-              <p id="hero-blurb">
-                I build AI agents, automate workflows, and design data systems that scale. With 6+ years across tech, crypto, and e-commerce, I turn complex problems into elegant solutions.
+          
+              <p>
+               I orchestrate end-to-end fraud detection and automation systems — 6+ years 
+across data and risk systems, with 4+ years owning the full lifecycle from 
+strategy to implementation to optimization. Now applying that foundation to 
+AI integration and product development.
+
+
+                
               </p>
+              <p><strong>What I've built:</strong></p>
+              <ul class="hero-highlights">
+                <li>Fraud detection systems at Binance/Gojek: Designed fraud rules, built data pipelines feeding risk engines, integrated alerting and case management systems — caught $240K+ in losses, prevented 100K+ fraud cases across millions of transactions
+                </li>
+         
+                <li>AI automation workflows reducing manual effort 50-70%</li>
+                <li>Full-stack AI products: integrating LLMs, APIs, and automation workflows</li>
+              </ul>
+              <p><strong>What I bring:</strong></p>
+              <ul class="hero-highlights">
+                <li>Design-driven: I build AI products with intuitive UX, not just functional backends</li>
+                <li>Risk-aware: 4+ years in fraud/trust & safety — I design systems that handle adversarial behavior</li>
+                <li>Data-grounded: I think about metrics, analytics foundations, and data quality in every AI solution</li>
+              </ul>
+        
+              <p>
+                <strong>Currently:</strong> Building AI products and exploring consulting through Butterflow while
+                seeking AI orchestration/product engineering roles in Singapore.
+              </p>
+              <p><strong>Let's talk if you're:</strong></p>
+              <ul class="hero-highlights">
+                <li>Hiring for AI Orchestrator roles(Singapore or remotely)</li>
+                <li>Building fraud detection, risk systems, or trust & safety with AI
+                <li>Looking for someone who bridges strategy and execution in production systems</li>
+   
+</li>
+              </ul>
             </div>
           </div>
 
@@ -369,7 +403,8 @@ const posts = (await getCollection('posts'))
       <div class="container">
         <h2 class="section-title">Let's Connect</h2>
         <p class="contact-description">
-          Whether you're looking to automate workflows, build AI-powered solutions, or design data systems that scale — I'd love to hear about your project.
+          I'm currently seeking AI orchestration and product engineering roles in Singapore. 
+I'd also love to hear about interesting AI automation or fraud detection projects.
         </p>
         <div class="contact-links">
           <a href="mailto:sofiakung.ai@gmail.com" class="contact-link-item">
@@ -390,12 +425,8 @@ const posts = (await getCollection('posts'))
   </main>
   <script is:inline>
     (function(){
-      const blurb = document.getElementById('hero-blurb');
       const typedTextSpan = document.getElementById('typed-text');
-      const textArray = ['a workflow designer.', 'a data analyst.', 'an AI builder.'];
-      const blurbs = [
-      "I translate business needs into data-driven products — whether that's automated workflows, AI agents, or analytics dashboards. With 6+ years across tech, crypto, and e-commerce, I thrive at the intersection of product development, UI/UX, and data analytics, building solutions that are both intelligent and intuitive.",
-      ];
+      const textArray = ['an AI Orchestrator.', 'an AI Product Builder.','a Data Analyst.'];
 
       if (typedTextSpan && textArray.length) {
         let textArrayIndex = 0;
@@ -429,25 +460,6 @@ const posts = (await getCollection('posts'))
         setTimeout(type, newTextDelay);
       }
 
-      if (blurb && blurbs.length) {
-        let blurbIndex = 0;
-        blurb.textContent = blurbs[0];
-
-        function showNextBlurb() {
-          blurb.classList.add('fade-out');
-          setTimeout(() => {
-            blurbIndex = (blurbIndex + 1) % blurbs.length;
-            blurb.textContent = blurbs[blurbIndex];
-            blurb.classList.remove('fade-out');
-            blurb.classList.add('fade-in');
-            setTimeout(() => blurb.classList.remove('fade-in'), 220);
-          }, 180);
-        }
-
-        if (blurbs.length > 1) {
-          setInterval(showNextBlurb, 6000);
-        }
-      }
 
       // Photo deck (swipe through 4 photos + Again button)
       const deck = document.getElementById('photo-deck');
