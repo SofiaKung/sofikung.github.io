@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>LaunchKey – Sofia Kung</title><link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="/_astro/index.DO_sMfGS.css"></head> <body> <nav class="navbar"> <div class="nav-container"> <div class="nav-brand"> <a href="/" style="text-decoration: none; color: inherit">Portfolio</a> </div> <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu"> <i class="fa-solid fa-bars"></i> </button> <div class="nav-links" id="primary-nav"> <a href="/#resume">Resume</a> <a href="/projects/" data-nav="projects">Projects</a> <a href="/blog/" data-nav="blog">Blog</a> <a href="/#contact">Contact</a> </div> </div> </nav> <script>
+  (function() {
+    const p = location.pathname || '';
+    const isBlog = /(?:^|\/)(blog|post)(?:\/|$)/.test(p);
+    const isProjects = /(?:^|\/)(projects|project)(?:\/|$)/.test(p);
+    const navbar = document.querySelector('.navbar');
+
+    // Smooth scroll for in-page links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach((link) => {
+      if (link.__boundScroll) return;
+      link.__boundScroll = true;
+      link.addEventListener('click', function (e) {
+        const href = this.getAttribute('href') || '';
+        const onHome = /^(?:\/?|\/index\.html)$/.test(location.pathname);
+        const hashOnly = href.startsWith('#');
+        const homeHashIdx = onHome && href.startsWith('index.html#');
+        const homeHashRoot = onHome && href.startsWith('/#');
+        if (!hashOnly && !homeHashIdx && !homeHashRoot) return;
+        e.preventDefault();
+        const targetSelector = hashOnly ? href : href.replace(/^(?:index\.html|\/)/, '');
+        const targetSection = document.querySelector(targetSelector);
+        if (targetSection) {
+          const navHeight = (document.querySelector('.navbar')?.offsetHeight) || 0;
+          const targetPosition = targetSection.offsetTop - navHeight - 20;
+          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Update active link on scroll
+    function updateActiveNavLink() {
+      const sections = document.querySelectorAll('section');
+      const navHeight = (document.querySelector('.navbar')?.offsetHeight) || 0;
+      const scrollPos = window.scrollY + navHeight + 50;
+      const links = document.querySelectorAll('.nav-links a');
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+          links.forEach((l) => l.classList.remove('active'));
+          const idSel = `a[href="#${sectionId}"]`;
+          const homeSel = `a[href="index.html#${sectionId}"]`;
+          const rootSel = `a[href="/#${sectionId}"]`;
+          const candidate = document.querySelector(idSel) || document.querySelector(homeSel) || document.querySelector(rootSel);
+          if (candidate) candidate.classList.add('active');
+        }
+      });
+    }
+    window.addEventListener('scroll', updateActiveNavLink, { passive: true });
+    updateActiveNavLink();
+
+    // Initial highlight for current area
+    if (isBlog) {
+      const link = document.querySelector('.nav-links a[data-nav="blog"], .nav-links a[href$="/blog/"]');
+      if (link) link.classList.add('active');
+    }
+    if (isProjects) {
+      const link = document.querySelector('.nav-links a[data-nav="projects"], .nav-links a[href$="/projects/"]');
+      if (link) link.classList.add('active');
+    }
+  })();
+  (function(){
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinksEl = document.getElementById('primary-nav');
+    if (navToggle && navLinksEl && !navToggle.__boundToggle) {
+      navToggle.__boundToggle = true;
+      navToggle.addEventListener('click', () => {
+        const isOpen = document.body.classList.toggle('nav-open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+      navLinksEl.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => {
+          document.body.classList.remove('nav-open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        })
+      );
+    }
+  })();
+
+  // Hide/show nav on scroll (keep it layered above deck)
+  (function(){
+    const navbar = document.querySelector('.navbar');
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', function(){
+      if (!navbar) return;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        navbar.style.transform = 'translateY(-100%)';
+      } else {
+        navbar.style.transform = 'translateY(0)';
+      }
+      lastScrollTop = scrollTop;
+    }, { passive: true });
+  })();
+</script>  <main class="article"> <div class="container"> <nav class="article-topnav"><a class="article-back" href="/projects/">← Back to projects</a></nav> <header class="article-header"> <p class="article-eyebrow">Project</p> <h1 class="article-title">LaunchKey</h1> <div class="article-meta"> <span class="article-tags"><span class="post-tag">web</span><span class="post-tag">Hackathon</span><span class="post-tag">UI Design</span><span class="post-tag">Firebase</span><span class="post-tag">Gemini</span></span> <time datetime="2026-01-11">Jan 11, 2026</time> </div> </header> <p class="article-lede">We built LaunchKey in 7 hours at Google—here&#39;s how I designed the UI fast.</p> <figure class="article-hero"> <img src="/assets/launchkey.png" alt="LaunchKey - A GTM partner discovery platform built with Firebase, Gemini, Gmail and Maps." loading="lazy"> </figure> <section class="project-writing" id="project-writing"> <article class="article-content"> <p>LaunchKey helps companies find, vet, and engage partners in overseas markets with Firebase, Gemini, Gmail and Maps.</p>
+<p><strong>My role:</strong> turning GTM workflow logic into a seamless product experience.</p>
+<p>The part I love? The puzzle of process-to-product design:</p>
+<ul>
+<li>How should users move through this workflow?</li>
+<li>What layouts display options and information in a clean, intuitive way?</li>
+<li>How do I keep everything in one place—no extra pages, no unnecessary clicks?</li>
+</ul>
+<h2 id="my-toolkit-for-speed">My Toolkit for Speed</h2>
+<p><strong>Mobbin</strong> — browsed real B2B patterns for inspiration.</p>
+<p><strong>Stitch</strong> — stitched reference designs together to build wireframes fast.</p>
+<p><strong>Google AI Studio</strong> — turned wireframes into working UI code, ready for integration.</p>
+<h2 id="my-design-workflow">My Design Workflow</h2>
+<p>business process → inspiration → wireframes → code</p>
+<hr>
+<ul>
+<li><a href="https://launchkey.web.app">Demo</a></li>
+<li><a href="https://lnkd.in/g8h--eGN">Repo (MIT)</a></li>
+</ul>  </article> </section>  <nav class="article-bottomnav"><a class="article-more" href="/projects/">→ More projects</a></nav> </div> </main>  <footer class="site-footer"> <div class="container"> <p class="footer-copy">© 2025 Sofia Kung. All rights reserved.</p> </div> </footer> </body></html>

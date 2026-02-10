@@ -17,10 +17,10 @@ hero:
 # Project metadata
 project:
   tags:
-    - "web"
-    - "Web app"
-    - "Hackathon"
-    - "Generative AI"
+    - "app"
+    - "ai"
+    - "hackathon"
+    - "generative ai"
 
 # SEO and additional metadata
 seo:

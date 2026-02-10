@@ -20,9 +20,8 @@ hero:
 project:
   tags:
     - "data"
-    - "Dashboard"
-    - "R Shiny"
-    - "ml"
+    - "r shiny"
+    - "dashboard"
 
 # Content structure
 content_blocks:

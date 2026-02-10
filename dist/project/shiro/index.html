@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Shiro – Sofia Kung</title><link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="/_astro/index.DO_sMfGS.css"></head> <body> <nav class="navbar"> <div class="nav-container"> <div class="nav-brand"> <a href="/" style="text-decoration: none; color: inherit">Portfolio</a> </div> <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu"> <i class="fa-solid fa-bars"></i> </button> <div class="nav-links" id="primary-nav"> <a href="/#resume">Resume</a> <a href="/projects/" data-nav="projects">Projects</a> <a href="/blog/" data-nav="blog">Blog</a> <a href="/#contact">Contact</a> </div> </div> </nav> <script>
+  (function() {
+    const p = location.pathname || '';
+    const isBlog = /(?:^|\/)(blog|post)(?:\/|$)/.test(p);
+    const isProjects = /(?:^|\/)(projects|project)(?:\/|$)/.test(p);
+    const navbar = document.querySelector('.navbar');
+
+    // Smooth scroll for in-page links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach((link) => {
+      if (link.__boundScroll) return;
+      link.__boundScroll = true;
+      link.addEventListener('click', function (e) {
+        const href = this.getAttribute('href') || '';
+        const onHome = /^(?:\/?|\/index\.html)$/.test(location.pathname);
+        const hashOnly = href.startsWith('#');
+        const homeHashIdx = onHome && href.startsWith('index.html#');
+        const homeHashRoot = onHome && href.startsWith('/#');
+        if (!hashOnly && !homeHashIdx && !homeHashRoot) return;
+        e.preventDefault();
+        const targetSelector = hashOnly ? href : href.replace(/^(?:index\.html|\/)/, '');
+        const targetSection = document.querySelector(targetSelector);
+        if (targetSection) {
+          const navHeight = (document.querySelector('.navbar')?.offsetHeight) || 0;
+          const targetPosition = targetSection.offsetTop - navHeight - 20;
+          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Update active link on scroll
+    function updateActiveNavLink() {
+      const sections = document.querySelectorAll('section');
+      const navHeight = (document.querySelector('.navbar')?.offsetHeight) || 0;
+      const scrollPos = window.scrollY + navHeight + 50;
+      const links = document.querySelectorAll('.nav-links a');
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+          links.forEach((l) => l.classList.remove('active'));
+          const idSel = `a[href="#${sectionId}"]`;
+          const homeSel = `a[href="index.html#${sectionId}"]`;
+          const rootSel = `a[href="/#${sectionId}"]`;
+          const candidate = document.querySelector(idSel) || document.querySelector(homeSel) || document.querySelector(rootSel);
+          if (candidate) candidate.classList.add('active');
+        }
+      });
+    }
+    window.addEventListener('scroll', updateActiveNavLink, { passive: true });
+    updateActiveNavLink();
+
+    // Initial highlight for current area
+    if (isBlog) {
+      const link = document.querySelector('.nav-links a[data-nav="blog"], .nav-links a[href$="/blog/"]');
+      if (link) link.classList.add('active');
+    }
+    if (isProjects) {
+      const link = document.querySelector('.nav-links a[data-nav="projects"], .nav-links a[href$="/projects/"]');
+      if (link) link.classList.add('active');
+    }
+  })();
+  (function(){
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinksEl = document.getElementById('primary-nav');
+    if (navToggle && navLinksEl && !navToggle.__boundToggle) {
+      navToggle.__boundToggle = true;
+      navToggle.addEventListener('click', () => {
+        const isOpen = document.body.classList.toggle('nav-open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+      navLinksEl.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => {
+          document.body.classList.remove('nav-open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        })
+      );
+    }
+  })();
+
+  // Hide/show nav on scroll (keep it layered above deck)
+  (function(){
+    const navbar = document.querySelector('.navbar');
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', function(){
+      if (!navbar) return;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        navbar.style.transform = 'translateY(-100%)';
+      } else {
+        navbar.style.transform = 'translateY(0)';
+      }
+      lastScrollTop = scrollTop;
+    }, { passive: true });
+  })();
+</script>  <main class="article"> <div class="container"> <nav class="article-topnav"><a class="article-back" href="/projects/">← Back to projects</a></nav> <header class="article-header"> <p class="article-eyebrow">Project</p> <h1 class="article-title">Shiro</h1> <div class="article-meta"> <span class="article-tags"><span class="post-tag">ml</span><span class="post-tag">AI Agent</span><span class="post-tag">Claude SDK</span><span class="post-tag">Python</span></span> <time datetime="2026-01-16">Jan 16, 2025</time> </div> </header> <p class="article-lede">My personal AI assistant powered by the Claude Agent SDK—built to prioritize, unblock, and keep me accountable.</p> <figure class="article-hero"> <img src="/assets/shiro.png" alt="Shiro - A personal AI assistant built with Claude Agent SDK and Notion integration." loading="lazy"> </figure> <section class="project-writing" id="project-writing"> <article class="article-content"> <p>As someone constantly juggling new ideas, I suffer from “context overflow.” Just like an AI agent. I’m often managing multiple projects, scattered research, and half-finished thoughts—the constant context switching was killing my productivity.</p>
+<p>To solve this, I first built Mind Lake—a centralized knowledge system in Notion. It’s my single source of truth for every idea, project, and learning. It helped, but it wasn’t enough. I realized I didn’t just need a place to store info; I needed a system that understood my 2026 goals well enough to prioritize and unblock work for me.</p>
+<p>So, I spent the last 5 days building Shiro: my personal AI assistant powered by the Claude Agent SDK.</p>
+<h2 id="what-shiro-can-do">What Shiro Can Do</h2>
+<ul>
+<li><strong>Telegram Interface:</strong> I interact with Shiro via text, treating him like a high-level employee.</li>
+<li><strong>Notion Integration:</strong> He searches my Notion workspace to prioritize tasks based on my specific goals and deadlines.</li>
+<li><strong>Content Creation:</strong> Draft content for me based on my latest learning in my project.</li>
+<li><strong>Active Unblocking:</strong> Shiro asks why tasks are stalling and takes initiative—doing the research or suggesting ways to unblock it.</li>
+<li><strong>Daily Accountability:</strong> He sends a priority reminder every morning and a “check-in” every night to keep me on track.</li>
+<li><strong>Self-Evolving Memory:</strong> He learns from my patterns and develops new Claude Skills (modular prompts) to grow his own capabilities.</li>
+</ul>
+<p><strong>Tech Stack:</strong> Python, Claude Agent SDK, Model Context Protocol (MCP), Docker, Fly.io</p>
+<h2 id="why-build-this">Why Build This?</h2>
+<p>You would say why build an AI agent when some of the above can be achieved by Claude chat and Notion MCP? I have learnt so much in the past 5 days building this AI agent and it amazed me.</p>
+<h2 id="what-i-learned-shipping-it">What I Learned Shipping It</h2>
+<p><strong>Agentic Minimalism:</strong> Don’t give your AI agents all the tools and let them pick from it. Define the tools well and when to use them. For example, when it comes to getting data from Notion, MCP is not the best way to get all my active tasks, it was way slower than direct Notion API, in the end I used a hybrid approach.</p>
+<p><strong>The Permission Guardrail:</strong> Early on, I gave Shiro full file write permissions. I was baffled to find new Python files appearing in my local project—turns out Shiro was building his own toolkit to do a better job! I had to implement strict guards. Now, he can only edit his memory and skills, but he cannot touch his core functions (Python files).</p>
+<p><strong>Dynamic nature of AI Agents:</strong> AI agent develops and grows, it would update its learnings and skills on the VM- syncing the ai agent would be key.</p>
+<hr>
+<p>Building Shiro has completely evolved my understanding of AI development.</p>
+<p>I had so much fun building this, can’t wait to share more! Next would be to use a vector db for memory.</p>  </article> </section>  <nav class="article-bottomnav"><a class="article-more" href="/projects/">→ More projects</a></nav> </div> </main>  <footer class="site-footer"> <div class="container"> <p class="footer-copy">© 2025 Sofia Kung. All rights reserved.</p> </div> </footer> </body></html>

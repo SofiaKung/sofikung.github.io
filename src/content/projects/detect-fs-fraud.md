@@ -17,9 +17,9 @@ hero:
 # Project metadata
 project:
   tags:
-    - "ml"
-    - "Fraud detection"
-    - "Machine learning"
+    - "data"
+    - "ai"
+    - "machine learning"
 
 # SEO and additional metadata
 seo:

@@ -18,8 +18,7 @@ hero:
 project:
   tags:
     - "data"
-    - "Visualization"
-    - "Tableau"
+    - "tableau"
 
 # SEO and additional metadata
 seo:

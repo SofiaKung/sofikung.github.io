@@ -17,10 +17,10 @@ hero:
 # Project metadata
 project:
   tags:
-    - "AI Tarot"
-    - "Elevanlabs"
-    - "Generative AI"
-    - "Web App"
+    - "app"
+    - "ai"
+    - "elevenlabs"
+    - "generative ai"
 
 # SEO and additional metadata
 seo:

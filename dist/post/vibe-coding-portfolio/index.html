@@ -1,6 +1,4 @@
-<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>What I Learned Vibe Coding My Portfolio in 4 Days – Sofia Kung</title><link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="/_astro/index.DOT5F1HB.css">
-<style>.article--post .article-content{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;font-size:clamp(18px,1vw + 16px,19px);line-height:1.4;letter-spacing:0}.article--post .article-content li{letter-spacing:-.02em}.article--post .article-content p{letter-spacing:-.02em;text-align:justify;text-justify:inter-word}.article--post .article-title,.article--post .article-subtitle,.article--post .article-content h1,.article--post .article-content h2,.article--post .article-content h3,.article--post .article-content h4{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif}
-</style></head> <body> <nav class="navbar"> <div class="nav-container"> <div class="nav-brand"> <a href="/" style="text-decoration: none; color: inherit">Portfolio</a> </div> <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu"> <i class="fa-solid fa-bars"></i> </button> <div class="nav-links" id="primary-nav"> <a href="/#resume">Resume</a> <a href="/projects/" data-nav="projects">Projects</a> <a href="/blog/" data-nav="blog">Blog</a> <a href="/#contact">Contact</a> </div> </div> </nav> <script>
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>What I Learned Vibe Coding My Portfolio in 4 Days – Sofia Kung</title><link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="/_astro/index.DO_sMfGS.css"></head> <body> <nav class="navbar"> <div class="nav-container"> <div class="nav-brand"> <a href="/" style="text-decoration: none; color: inherit">Portfolio</a> </div> <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu"> <i class="fa-solid fa-bars"></i> </button> <div class="nav-links" id="primary-nav"> <a href="/#resume">Resume</a> <a href="/projects/" data-nav="projects">Projects</a> <a href="/blog/" data-nav="blog">Blog</a> <a href="/#contact">Contact</a> </div> </div> </nav> <script>
   (function() {
     const p = location.pathname || '';
     const isBlog = /(?:^|\/)(blog|post)(?:\/|$)/.test(p);
@@ -96,73 +94,78 @@
       lastScrollTop = scrollTop;
     }, { passive: true });
   })();
-</script>  <main class="article article--post"> <div class="container"> <nav class="article-topnav"><a class="article-back" href="/blog/">← Back to blog</a></nav> <header class="article-header"> <p class="article-eyebrow">Post</p> <h1 class="article-title">What I Learned Vibe Coding My Portfolio in 4 Days</h1> <div class="article-meta"> <time datetime="2025-09-20">Sep 20, 2025</time> <span class="article-tags"><span class="post-tag">Vibe Coding</span><span class="post-tag">Prompting</span></span> </div> </header> <figure class="article-hero" hidden></figure> <article class="article-content"><h2 id="the-discovery-process-learning-what-to-ask">The Discovery Process: Learning What to Ask</h2>
-<p>I started building with a Wix resume template as inspiration, asking LLM questions as I went. While this iterative approach worked, I only realized what I truly wanted to build after several rounds of implementation.</p>
-<p>The process taught me something valuable: I should have first considered which framework, design principles and content management strategy to adopt.</p>
-<p>When I realized that I needed markdown support for blog posts, I had to migrate frameworks—not because I didn’t plan, but because I didn’t know the right questions to ask initially.</p>
-<h2 id="lesson-1-ai-cant-give-you-taste-and-thats-your-advantage">Lesson 1: AI Can’t Give You Taste (And That’s Your Advantage)</h2>
-<p>I built my entire first draft before seeking feedback. My software engineer friends delivered the verdict: “This looks like a resume. You might as well not build one.”</p>
-<p>They followed up with portfolio references that worked—minimalistic, functional designs that matched my goals. After studying these examples, I wasted another day to rebuild the entire homepage.</p>
-<p><strong>Questions to ask on Design &#x26; Taste</strong></p>
+</script>  <main class="article"> <div class="container"> <nav class="article-topnav"><a class="article-back" href="/blog/">← Back to blog</a></nav> <header class="article-header"> <p class="article-eyebrow">Post</p> <h1 class="article-title">What I Learned Vibe Coding My Portfolio in 4 Days</h1> <div class="article-meta"> <span class="article-tags"><span class="post-tag">Vibe Coding</span><span class="post-tag">Prompting</span><span class="post-tag">Learning</span></span> <time datetime="2025-09-20">Sep 20, 2025</time> </div> </header> <p class="article-lede">Lessons on taste, prompting, frameworks, and building a portfolio website with Codex</p> <section class="project-writing" id="post-content"> <article class="article-content"> <h2 id="the-discovery-process-learning-what-to-ask">The Discovery Process: Learning What to Ask</h2>
+<p>I started building this portfolio website with a Wix resume template as inspiration, asking LLM questions as I went. While this iterative approach worked, I only realized what I truly wanted to build after several rounds of implementation.</p>
+<p>The process taught me something valuable: I should have first considered which framework, design approach and content management strategy to adopt.</p>
+<p>When I realized that I needed markdown support for blog posts, I had to migrate to a new framework—not because I didn’t plan, but because I didn’t know the right questions to ask initially.</p>
+<h2 id="ai-cant-give-you-taste">AI Can’t Give You Taste</h2>
+<p>AI can only build what you ask for. Since I based my design on a resume-like template, my software engineer friends told me: “This looks like a resume. You might as well not build one.”</p>
+<p>They gave me a few portfolio references that worked—minimalistic, compact, and functional designs that matched my goals. After studying these examples, I spent another day rebuilding the entire homepage based on the new reference.</p>
+<p>That’s when I realized I needed to define my taste, styling, and purpose clearly before starting—because the effort to rebuild is high. (The specific questions I should have asked are covered in my framework below.)</p>
+<h2 id="trial-and-error-what-works-for-ai-assisted-coding">Trial and Error: What Works for AI-Assisted Coding</h2>
+<p>I started with Claude, hit rate limits, then switched to Codex (ChatGPT Plus). But real progress came when I switched from terminal-based prompting to the Codex plugin in VS Code.</p>
+<p>The VS Code plugin was easy to use—it allowed me to upload reference images easily, made reviewing conversation history seamless, and made iterating on code efficient.</p>
+<p>I discovered that:</p>
 <ul>
-<li>What 3 websites do I want mine to look and feel like?</li>
-<li>What specific features do I love? (Navigation, color schemes, layout, animations)</li>
-<li>What’s the main thing I want visitors to do? (Contact me, view my work, read my writing)</li>
+<li><strong>Screenshot-to-code translation</strong>: Codex could convert UI screenshots into functional code with ~80% accuracy. You can also paste website URLs into your prompt as reference.</li>
+<li><strong>Debugging specificity</strong>: Basic HTML/CSS knowledge helped me give precise feedback. Codex understands better when you say ‘Move the experience-description into the first column of the grid’ than ‘Move the experience-description to the left side of the box.’</li>
+<li><strong>Planning vs. agent mode</strong>: Define requirements in planning mode before implementing in agent mode to prevent unnecessary rework.</li>
 </ul>
-<h2 id="lesson-2-industrial-standards-require-explicit-specification">Lesson 2: Industrial Standards Require Explicit Specification</h2>
-<p>LLMs build like enthusiastic juniors—functional but lacking production standards. They won’t automatically include:</p>
+<h2 id="building-production-quality-code-with-ai">Building Production-Quality Code with AI</h2>
+<p>While building this project, I faced another challenge: getting AI to write quality code. LLMs build like enthusiastic juniors—functional but lacking production standards. They won’t automatically include:</p>
 <ul>
 <li>CSS variables for consistent styling</li>
 <li>Mobile responsiveness</li>
-<li>Clean code architecture</li>
+<li>Automated code cleaning whenever you rebuild or migrate frameworks</li>
 <li>Comprehensive README</li>
+<li>Logical file organization based on your web framework</li>
+<li>Creating reusable page templates and components to keep your styling consistent</li>
 </ul>
-<p><strong>Key learning:</strong> Ask for all of the above explicitly.</p>
-<h2 id="lesson-3-prompting-tools-and-techniques-that-worked-for-me">Lesson 3: Prompting Tools and Techniques That Worked for Me</h2>
-<p>I started with Claude, hit rate limits, then switched to Codex (ChatGPT Plus). But real progress came when I switched from terminal-based prompting to IDE plugin integration.</p>
-<p>The VS Code plugin was easy to use—it allowed me to upload reference images easily, reviewing conversation history was seamless, and iterating on code became efficient.</p>
-<p>I also discovered that:</p>
-<ul>
-<li><strong>Screenshot-to-code translation</strong>: Codex could convert UI screenshots into functional code with ~80% accuracy.</li>
-<li><strong>Debugging specificity</strong>: Basic HTML/CSS knowledge helped me give precise feedback.</li>
-<li><strong>Planning vs. agent mode</strong>: Define requirements in planning mode before implementing in agent mode to prevent unnecessary rework.</li>
-</ul>
-<h2 id="lesson-4-the-main-purpose-of-the-website-shapes-your-technical-architecture">Lesson 4: The Main Purpose of the Website Shapes Your Technical Architecture</h2>
-<p>My portfolio’s core function is showcasing projects and writing, hence my friend suggested GitHub markdown as it is easy to maintain and straightforward.</p>
-<p>The issue was that my vanilla HTML/CSS architecture couldn’t handle markdown gracefully. Every new post triggered layout bugs.</p>
-<p>I learned that the type of website you are building directly influences your technical stack. This should be among the first questions to ask at the beginning.</p>
-<p>This led me to discover Astro framework, which excels at markdown-based sites with native support, file-based routing, and optimized static generation. The framework choice should align with your content strategy, not the other way around.</p>
-<h2 id="additional-learnings">Additional Learnings</h2>
-<p>Building this project taught me topics beyond my existing web development knowledge:</p>
+<p>You have to ask for all of the above explicitly.</p>
+<h2 id="your-websites-purpose-determines-your-tech-stack">Your Website’s Purpose Determines Your Tech Stack</h2>
+<p>Just when I thought I was done building, I hit a fundamental problem: I had chosen the wrong tech stack. Adding new content meant updating JSON files, which quickly became cumbersome to maintain.</p>
+<p>My friend suggested using GitHub markdown as an easier solution, but my vanilla HTML/CSS setup couldn’t handle markdown files gracefully. Every new post triggered layout bugs.</p>
+<p>That’s when I learned that your website’s purpose should drive your tech stack choice—this should be the first question you ask. I needed a framework built for markdown content, which led me to Astro with its native markdown support, file-based routing, and static generation.</p>
+<h3 id="additional-learnings">Additional Learnings</h3>
+<p>Beyond the core lessons, this project taught me about other development skills.</p>
 <ul>
 <li><strong>Version control fluency</strong>: Writing meaningful commit messages and revisiting Git workflows</li>
-<li><strong>Deployment processes</strong>: Learning Astro-specific deployment patterns and hosting considerations</li>
-<li><strong>CMS ecosystem knowledge</strong>: Understanding the spectrum from file-based to headless CMS solutions</li>
+<li><strong>Deployment processes</strong>: Learning Astro deployment and hosting options</li>
+<li><strong>CMS ecosystem knowledge</strong>: Understanding different types of CMS systems from file-based to headless CMS solutions</li>
 </ul>
+<h2 id=""> </h2>
+<hr>
 <h2 id="the-questions-i-wish-id-asked-first">The Questions I Wish I’d Asked First</h2>
-<p>Based on this experience, here are the essential questions to ask beforehand:</p>
-<h3 id="design--vision">Design &#x26; Vision</h3>
+<p>Ask these questions before building anything:</p>
+<h4 id="design--vision">Design &#x26; Vision</h4>
 <ul>
-<li>What 3 websites do I want mine to look and feel like?</li>
-<li>What specific features do I love? (Navigation, color schemes, layout, animations)</li>
+<li>What websites do I want mine to look and feel like? Pick 1 or 2 websites</li>
+<li>What specific elements do I want to steal? (Screenshot specific elements: nav style, button design, color palette, typography)</li>
 <li>What’s the main thing I want visitors to do? (Contact me, view my work, read my writing)</li>
+<li>What’s my content hierarchy? (What should visitors see first, second, third?)</li>
 </ul>
-<h3 id="content-strategy">Content Strategy</h3>
+<h4 id="tech-stack--tools">Tech Stack &#x26; Tools</h4>
 <ul>
-<li><strong>Update frequency affects framework choice</strong>:
+<li>Do I want a simple blog, a portfolio showcase, or something more complex?</li>
+<li>Where will I host this? (GitHub, Vercel, etc.)</li>
+<li>How will I handle version control? (GitHub Desktop, Git basics)</li>
+</ul>
+<h4 id="content-strategy">Content Strategy</h4>
+<ul>
+<li>How often I update affects framework choice:
 <ul>
 <li>Daily/weekly → fast and simple (Astro with markdown)</li>
 <li>Monthly → static generation is fine</li>
 </ul>
 </li>
-<li><strong>Update method determines tech stack</strong>:
+<li>How I update determines tech stack:
 <ul>
 <li>Markdown → Astro, Next.js</li>
 <li>JSON → Static generators</li>
 <li>CMS → Headless CMS + framework</li>
 </ul>
 </li>
-<li><strong>Visitor interaction needs shape hosting</strong>:
+<li>Visitor interaction needs affect hosting decisions:
 <ul>
 <li>None → Static hosting (GitHub Pages, Netlify)</li>
 <li>Comments/forms → Backend services or integrations</li>
@@ -170,16 +173,10 @@
 </ul>
 </li>
 </ul>
-<h3 id="technical-foundation">Technical Foundation</h3>
+<h4 id="quality-code">Quality Code</h4>
 <ul>
-<li>Do I want a simple blog, a portfolio showcase, or something more complex?</li>
-<li>Where will I host this? (GitHub, Vercel, etc.)</li>
-<li>How will I handle version control? (GitHub Desktop, Git basics)</li>
-</ul>
-<h3 id="quality-standards">Quality Standards</h3>
-<ul>
-<li>What are the key steps to ensure good code? (Fast loading, responsive, clean code)</li>
+<li>What are the key steps to ensure my code is good? (Fast loading, responsive, clean code)</li>
 </ul>
 <h2 id="reflection">Reflection</h2>
-<p>Working on this vibe coding project was incredibly rewarding. While some rework was inevitable, the learning made it worthwhile. I hope this framework helps you build faster and more intentionally on your next project.</p>
-<p>Happy building!</p></article> <nav class="article-bottomnav"><a class="article-more" href="/blog/">→ More posts</a></nav> </div> </main>  <footer class="site-footer"> <div class="container"> <div class="footer-row"> <p class="footer-copy">© 2025 Sofia Kung. All rights reserved.</p> <div class="footer-social"> <a href="https://linkedin.com/in/sofiakung" target="_blank" class="social-icon" aria-label="LinkedIn"> <i class="fab fa-linkedin"></i> </a> <a href="https://github.com/SofiaKung" target="_blank" class="social-icon" aria-label="GitHub"> <i class="fab fa-github"></i> </a> <a href="https://public.tableau.com/app/profile/sofiakung" target="_blank" class="social-icon social-icon--tableau" aria-label="Tableau" title="Tableau"> <svg class="icon-tableau" viewBox="0 0 24 24" aria-hidden="true"> <g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"> <line x1="12" y1="5" x2="12" y2="9"></line> <line x1="10" y1="7" x2="14" y2="7"></line> <line x1="6" y1="10" x2="6" y2="13"></line> <line x1="4.5" y1="11.5" x2="7.5" y2="11.5"></line> <line x1="18" y1="10" x2="18" y2="13"></line> <line x1="16.5" y1="11.5" x2="19.5" y2="11.5"></line> <line x1="8" y1="15" x2="8" y2="18"></line> <line x1="6.5" y1="16.5" x2="9.5" y2="16.5"></line> <line x1="16" y1="15" x2="16" y2="18"></line> <line x1="14.5" y1="16.5" x2="17.5" y2="16.5"></line> </g> </svg> </a> </div> </div> </div> </footer> </body></html>
+<p>Working on this vibe coding project was incredibly fun. While some rework was inevitable, the learning made it worthwhile. I hope this framework helps you build faster and more intentionally on your next project.</p>
+<p>Happy building!</p> </article> </section> <nav class="article-bottomnav"><a class="article-more" href="/blog/">→ More posts</a></nav> </div> </main>  <footer class="site-footer"> <div class="container"> <p class="footer-copy">© 2025 Sofia Kung. All rights reserved.</p> </div> </footer> </body></html>

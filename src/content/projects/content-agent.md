@@ -16,10 +16,9 @@ hero:
 # Project metadata
 project:
   tags:
+    - "ai"
     - "n8n"
-    - "LLM"
-    - "Content Strategy"
-    - "Notion"
+    - "notion"
 
 # SEO and additional metadata
 seo:

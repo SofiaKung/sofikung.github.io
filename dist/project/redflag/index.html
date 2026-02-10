@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>RedFlag – Sofia Kung</title><link rel="icon" href="/assets/icon-sk-badge.svg" type="image/svg+xml"><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"><link rel="stylesheet" href="/_astro/index.DO_sMfGS.css"></head> <body> <nav class="navbar"> <div class="nav-container"> <div class="nav-brand"> <a href="/" style="text-decoration: none; color: inherit">Portfolio</a> </div> <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Open menu"> <i class="fa-solid fa-bars"></i> </button> <div class="nav-links" id="primary-nav"> <a href="/#resume">Resume</a> <a href="/projects/" data-nav="projects">Projects</a> <a href="/blog/" data-nav="blog">Blog</a> <a href="/#contact">Contact</a> </div> </div> </nav> <script>
+  (function() {
+    const p = location.pathname || '';
+    const isBlog = /(?:^|\/)(blog|post)(?:\/|$)/.test(p);
+    const isProjects = /(?:^|\/)(projects|project)(?:\/|$)/.test(p);
+    const navbar = document.querySelector('.navbar');
+
+    // Smooth scroll for in-page links
+    const navLinks = document.querySelectorAll('.nav-links a');
+    navLinks.forEach((link) => {
+      if (link.__boundScroll) return;
+      link.__boundScroll = true;
+      link.addEventListener('click', function (e) {
+        const href = this.getAttribute('href') || '';
+        const onHome = /^(?:\/?|\/index\.html)$/.test(location.pathname);
+        const hashOnly = href.startsWith('#');
+        const homeHashIdx = onHome && href.startsWith('index.html#');
+        const homeHashRoot = onHome && href.startsWith('/#');
+        if (!hashOnly && !homeHashIdx && !homeHashRoot) return;
+        e.preventDefault();
+        const targetSelector = hashOnly ? href : href.replace(/^(?:index\.html|\/)/, '');
+        const targetSection = document.querySelector(targetSelector);
+        if (targetSection) {
+          const navHeight = (document.querySelector('.navbar')?.offsetHeight) || 0;
+          const targetPosition = targetSection.offsetTop - navHeight - 20;
+          window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Update active link on scroll
+    function updateActiveNavLink() {
+      const sections = document.querySelectorAll('section');
+      const navHeight = (document.querySelector('.navbar')?.offsetHeight) || 0;
+      const scrollPos = window.scrollY + navHeight + 50;
+      const links = document.querySelectorAll('.nav-links a');
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop;
+        const sectionBottom = sectionTop + section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        if (scrollPos >= sectionTop && scrollPos < sectionBottom) {
+          links.forEach((l) => l.classList.remove('active'));
+          const idSel = `a[href="#${sectionId}"]`;
+          const homeSel = `a[href="index.html#${sectionId}"]`;
+          const rootSel = `a[href="/#${sectionId}"]`;
+          const candidate = document.querySelector(idSel) || document.querySelector(homeSel) || document.querySelector(rootSel);
+          if (candidate) candidate.classList.add('active');
+        }
+      });
+    }
+    window.addEventListener('scroll', updateActiveNavLink, { passive: true });
+    updateActiveNavLink();
+
+    // Initial highlight for current area
+    if (isBlog) {
+      const link = document.querySelector('.nav-links a[data-nav="blog"], .nav-links a[href$="/blog/"]');
+      if (link) link.classList.add('active');
+    }
+    if (isProjects) {
+      const link = document.querySelector('.nav-links a[data-nav="projects"], .nav-links a[href$="/projects/"]');
+      if (link) link.classList.add('active');
+    }
+  })();
+  (function(){
+    const navToggle = document.querySelector('.nav-toggle');
+    const navLinksEl = document.getElementById('primary-nav');
+    if (navToggle && navLinksEl && !navToggle.__boundToggle) {
+      navToggle.__boundToggle = true;
+      navToggle.addEventListener('click', () => {
+        const isOpen = document.body.classList.toggle('nav-open');
+        navToggle.setAttribute('aria-expanded', String(isOpen));
+      });
+      navLinksEl.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => {
+          document.body.classList.remove('nav-open');
+          navToggle.setAttribute('aria-expanded', 'false');
+        })
+      );
+    }
+  })();
+
+  // Hide/show nav on scroll (keep it layered above deck)
+  (function(){
+    const navbar = document.querySelector('.navbar');
+    let lastScrollTop = 0;
+    window.addEventListener('scroll', function(){
+      if (!navbar) return;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      if (scrollTop > lastScrollTop && scrollTop > 100) {
+        navbar.style.transform = 'translateY(-100%)';
+      } else {
+        navbar.style.transform = 'translateY(0)';
+      }
+      lastScrollTop = scrollTop;
+    }, { passive: true });
+  })();
+</script>  <main class="article"> <div class="container"> <nav class="article-topnav"><a class="article-back" href="/projects/">← Back to projects</a></nav> <header class="article-header"> <p class="article-eyebrow">Project</p> <h1 class="article-title">RedFlag</h1> <div class="article-meta"> <span class="article-tags"><span class="post-tag">web</span><span class="post-tag">AI Agent</span><span class="post-tag">Gemini</span><span class="post-tag">Security</span></span> <time datetime="2026-02-01">Feb 01, 2026</time> </div> </header> <p class="article-lede">An AI-powered scam detection tool that puts threat intelligence in the hands of everyday consumers.</p> <figure class="article-hero"> <a href="https://redflag-bay.vercel.app" target="_blank" rel="noopener"><img src="/assets/redflag.png" alt="RedFlag - An AI-powered scam detection tool with screenshot analysis, QR code scanning, and link verification." loading="lazy"></a> </figure> <section class="project-writing" id="project-writing"> <article class="article-content"> <p>Fraud is rampant. The US loses approximately US$34 million daily to scams; in Taiwan, the figure is US$8–9 million. Scam tactics are everywhere — and AI is helping bad actors become more sophisticated, more convincing, and harder to detect.</p>
+<p>If AI is making offense better, we need to make defense better too. That’s why I created RedFlag — a threat detection and risk assessment tool that puts the power of AI-driven scam analysis directly into the hands of everyday consumers.</p>
+<h2 id="what-it-does">What It Does</h2>
+<p>RedFlag is a universal fraud detector. Screenshot a suspicious message or URL, or scan a QR code — an agentic Gemini investigation runs real security tools behind the scenes (WHOIS, DNS/GeoIP, Google Safe Browsing), then cross-references the technical evidence against the content’s claims to surface red flags.</p>
+<p>RedFlag explains fraud through a 3-step narrative: the <strong>hook</strong> (what lured you), the <strong>MO</strong> (how the scam operates), and the <strong>risk signals</strong> (the technical evidence that proves it). Every fact shown in the UI — domain age, registrar, server location, registrant — comes from real API data, not model generation. The app works in 8 languages and auto-detects the user’s locale.</p>
+<p>Drawing from my experience as a fraud analyst — building risk frameworks, fraud rules, and data infrastructure for enterprises — I mapped the consumer scam landscape into three core threat types:</p>
+<ul>
+<li><strong>Phishing Links</strong> — Fraudulent URLs designed to steal credentials or personal data by impersonating trusted websites, from crude fakes to near-perfect replicas of banking portals and government services.</li>
+<li><strong>QR Code Scams</strong> — A growing attack vector where malicious links hide behind QR codes. The consumer sees a seemingly legitimate code on a poster, in a message, or at a payment terminal, but scanning it redirects them to a phishing site.</li>
+<li><strong>Social Engineering Scams</strong> — Scams delivered through conversation: chat messages, SMS, emails, paper mail, or in-app messages. These rely on psychological manipulation — urgency, authority, fear, or trust — rather than technical exploits, making them the hardest to detect and the most damaging.</li>
+</ul>
+<h2 id="how-i-built-it">How I Built It</h2>
+<ul>
+<li><strong>Frontend:</strong> React 19 + TypeScript SPA with Vite, Tailwind CSS, and Framer Motion</li>
+<li><strong>Backend:</strong> Vercel serverless functions with a single <code>/api/analyze</code> endpoint</li>
+<li><strong>AI:</strong> Gemini Interactions API (agentic multi-turn loop) — Gemini autonomously decides which security tools to call, executes them in parallel, then reasons across all results to produce a bilingual fraud analysis</li>
+<li><strong>Intelligence Tools:</strong> 4 backend tools (DNS/GeoIP, RDAP with registrar referral chain, Google Safe Browsing, homograph detection) that Gemini calls as needed</li>
+<li><strong>Trust Layer:</strong> Server-side <code>buildVerifiedFromToolResults()</code> constructs a verified data object from raw tool output, completely independent of the model’s JSON response</li>
+<li><strong>Logging:</strong> Supabase for fire-and-forget analysis logging and user feedback tracking</li>
+<li><strong>i18n:</strong> Custom React Context provider with 8 locale files and browser language auto-detection</li>
+</ul>
+<h2 id="challenges-i-ran-into">Challenges I Ran Into</h2>
+<p><strong>Reliable phishing detection.</strong> I discovered that WHOIS data and other publicly available domain intelligence can be used reliably for detection — domain age, registrar history, and hosting location tell a story before you ever load the page.</p>
+<p><strong>Building a unified analysis pipeline.</strong> I initially built three separate API calls for each feature. Then I realised that these three checks are inherently similar — a URL is a URL whether it was typed, scanned from a QR code, or extracted from a screenshot. Switching to the Gemini Interactions API’s agentic capabilities let the model decide which tools to call, eliminating redundant code and producing smarter, more context-aware analysis.</p>
+<p><strong>Designing for global users.</strong> A user’s language and location are independent from the scam’s language and origin. A Singaporean travelling in Taiwan might encounter a Chinese-language fraud but still want to read the analysis in English — or in Chinese. The solution was dual-language output: analyse in the scam’s native language for accuracy, then present in the user’s preferred language for clarity.</p>
+<h2 id="what-im-proud-of">What I’m Proud Of</h2>
+<p><strong>From manual rules to agentic orchestration.</strong> Traditional fraud detection requires understanding each category of fraud, learning its patterns, then manually creating data features or ML models to detect them. With RedFlag, the paradigm shifts — orchestrating an AI agent with the right tools means the system can reason across fraud categories rather than being hard-coded for each one.</p>
+<p><strong>The 3-step fraud narrative.</strong> Hook, MO, and risk signals make fraud understandable to non-technical users. It’s not a risk score — it’s a story that teaches people how scams actually work, with actionable next steps they can take immediately.</p>
+<p><strong>Geo-mismatch detection.</strong> Cross-referencing server hosting country against registrant country against the brand being impersonated catches sophisticated phishing that no single check would flag.</p>
+<p><strong>The verified data layer.</strong> Gemini reasons about fraud, but the Digital Fingerprint grid shows only real data from actual API responses. This separation means users never see hallucinated facts — a “registered 3 days ago” claim is provably true.</p>
+<p><strong>Screenshot-first input.</strong> Asking someone to paste a suspicious link — and risk accidentally clicking it — defeats the purpose. This was a design decision rooted in user safety.</p>
+<p><strong>Dual-mode fallback.</strong> The Interactions API is in beta and can fail. I built a complete legacy path using <code>generateContent</code> that shares the same system prompt, response schema, and verified data pipeline — so if the agentic path errors, users still get a full analysis without knowing anything went wrong.</p>
+<h2 id="what-i-learned">What I Learned</h2>
+<ul>
+<li><strong>Agentic AI is a paradigm shift.</strong> Letting the model drive tool selection produces smarter, more adaptive analysis than pre-calling everything or routing through separate APIs.</li>
+<li><strong>Open infrastructure is underrated.</strong> Free tools like IANA RDAP, DNS-over-HTTPS, and GeoIP databases can replace expensive commercial threat intel APIs for most fraud detection use cases.</li>
+<li><strong>Security hygiene matters in consumer apps.</strong> Moving API keys from client-side to server-side, implementing rate limiting, and supporting multi-language output were all lessons learned through building rather than theory.</li>
+</ul>
+<hr>
+<ul>
+<li><a href="https://redflag-bay.vercel.app">Try RedFlag</a></li>
+<li><a href="https://redflag-bay.vercel.app/#/architecture">Architecture</a></li>
+</ul>  </article> </section>  <nav class="article-bottomnav"><a class="article-more" href="/projects/">→ More projects</a></nav> </div> </main>  <footer class="site-footer"> <div class="container"> <p class="footer-copy">© 2025 Sofia Kung. All rights reserved.</p> </div> </footer> </body></html>

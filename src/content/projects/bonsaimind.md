@@ -17,8 +17,7 @@ hero:
 # Project metadata
 project:
   tags:
-    - "web"
-    - "productivity app"
+    - "app"
     - "supabase"
     - "nextjs"
 

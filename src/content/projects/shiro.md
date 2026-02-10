@@ -16,10 +16,9 @@ hero:
 # Project metadata
 project:
   tags:
-    - "ml"
-    - "AI Agent"
-    - "Claude SDK"
-    - "Python"
+    - "ai"
+    - "claude sdk"
+    - "python"
 
 # SEO and additional metadata
 seo:

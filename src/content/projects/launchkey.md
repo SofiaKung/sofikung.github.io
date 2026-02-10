@@ -16,11 +16,10 @@ hero:
 # Project metadata
 project:
   tags:
-    - "web"
-    - "Hackathon"
-    - "UI Design"
-    - "Firebase"
-    - "Gemini"
+    - "app"
+    - "ui/ux"
+    - "hackathon"
+    - "firebase"
 
 # SEO and additional metadata
 seo:
